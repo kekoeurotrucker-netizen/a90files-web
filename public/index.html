@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A 90 Files — software, juegos, contenido y soporte desde un único portal.">
+  <meta name="theme-color" content="#0d1113">
+  <title>A 90 Files</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="A 90 Files, inicio">
+      <span class="brand-mark">A90</span>
+      <span class="brand-copy"><strong>A 90</strong><small>FILES</small></span>
+    </a>
+    <nav class="nav" aria-label="Navegación principal">
+      <a href="/software/">Software</a>
+      <a href="/juegos/">Juegos</a>
+      <a href="/canal/">Canal</a>
+      <a href="/soporte/">Soporte</a>
+    </nav>
+    <button class="menu-button" type="button" aria-expanded="false" aria-controls="mobile-nav">Menú</button>
+  </header>
+
+  <nav id="mobile-nav" class="mobile-nav" hidden aria-label="Navegación móvil">
+    <a href="/software/">Software</a><a href="/juegos/">Juegos</a><a href="/canal/">Canal</a><a href="/soporte/">Soporte</a>
+  </nav>
+
+  <main>
+    <section class="hero shell">
+      <div class="eyebrow"><span></span> PORTAL A 90</div>
+      <h1>Un punto de entrada.<br><em>Todo lo demás, separado.</em></h1>
+      <p class="hero-copy">Software, juegos, contenido y soporte organizados por áreas claras. Sin ruido en la portada.</p>
+      <div class="hero-actions">
+        <a class="button primary" href="/software/">Explorar proyectos</a>
+        <a class="button ghost" href="/soporte/">Centro de soporte</a>
+      </div>
+    </section>
+
+    <section class="gate-grid shell" aria-label="Áreas principales">
+      <a class="gate" href="/software/">
+        <span class="gate-index">01</span><div><small>PROYECTOS</small><h2>Software</h2><p>VaultPool y futuras herramientas de A 90.</p></div><span class="arrow">↗</span>
+      </a>
+      <a class="gate" href="/juegos/">
+        <span class="gate-index">02</span><div><small>DESARROLLO</small><h2>Juegos</h2><p>Demos, pruebas y lanzamientos propios.</p></div><span class="arrow">↗</span>
+      </a>
+      <a class="gate" href="/canal/">
+        <span class="gate-index">03</span><div><small>CONTENIDO</small><h2>A 90 por Hora</h2><p>Vídeos, directos, recursos y publicaciones.</p></div><span class="arrow">↗</span>
+      </a>
+      <a class="gate" href="/soporte/">
+        <span class="gate-index">04</span><div><small>AYUDA</small><h2>Soporte</h2><p>Documentación, incidencias y preguntas frecuentes.</p></div><span class="arrow">↗</span>
+      </a>
+    </section>
+
+    <section class="feature shell" aria-labelledby="vaultpool-title">
+      <div class="feature-meta"><span class="status-dot"></span> PROYECTO DESTACADO</div>
+      <div class="feature-main">
+        <div><h2 id="vaultpool-title">VaultPool</h2><p>Almacenamiento multinube local, centrado en seguridad, recuperación y control del usuario.</p></div>
+        <div class="feature-links"><span class="tag">Windows</span><span class="tag">Multinube</span><a href="/software/vaultpool/">Ver proyecto →</a></div>
+      </div>
+    </section>
+
+    <section class="lower shell">
+      <a class="quiet-card" href="/arcade/"><small>A 90 ARCADE</small><strong>Un descanso mientras todo sigue funcionando.</strong><span>Entrar →</span></a>
+      <a class="quiet-card" href="/radar/"><small>RADAR</small><strong>Actualidad seleccionada, cuando aporte algo.</strong><span>Ver radar →</span></a>
+    </section>
+  </main>
+
+  <footer class="footer shell">
+    <span>© <span id="year"></span> A 90 Files</span>
+    <span class="footer-line"></span>
+    <span>Software · Juegos · Contenido · Soporte</span>
+  </footer>
+  <script src="/assets/app.js" defer></script>
+</body>
+</html>
