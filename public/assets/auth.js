@@ -30,7 +30,7 @@ function injectModal(){
   <div class="a90-auth-head"><div><small>CUENTA A 90</small><h2 id="a90-auth-title">Acceder</h2></div><button class="a90-auth-close" type="button" aria-label="Cerrar">×</button></div>
   <div id="a90-auth-guest">
    <div class="a90-auth-tabs"><button type="button" data-tab="login" class="active">Iniciar sesión</button><button type="button" data-tab="register">Crear cuenta</button></div>
-   <div class="a90-social-grid" aria-label="Inicio social"><button type="button" data-oauth="google">Google</button><button type="button" data-oauth="facebook">Facebook</button><button type="button" data-oauth="x" aria-label="X">𝕏</button><button type="button" data-oauth="discord">Discord</button><button type="button" data-oauth="github">GitHub</button><button type="button" data-email-focus>Correo</button></div>
+   <div class="a90-social-grid provider-grid" aria-label="Inicio social"><button class="provider-item provider-google" type="button" data-oauth="google">Google</button><button class="provider-item provider-facebook" type="button" data-oauth="facebook">Facebook</button><button class="provider-item provider-x" type="button" data-oauth="x" aria-label="X"></button><button class="provider-item provider-discord" type="button" data-oauth="discord">Discord</button><button class="provider-item provider-github" type="button" data-oauth="github">GitHub</button><button class="provider-item provider-email" type="button" data-email-focus>Correo</button></div>
    <p class="a90-provider-note">El acceso por correo ya está activo. Los proveedores sociales requieren configurar sus credenciales OAuth antes de habilitarlos.</p>
    <div class="a90-divider">con correo</div>
    <form id="a90-login-form" class="a90-auth-form">
@@ -131,7 +131,7 @@ function render(){
 
 function bindHeader(){
  $$('[data-a90-account]').forEach(b=>b.addEventListener('click',openModal));
- const grid=$('.provider-grid');
+ const grid=$('#foro-login .provider-grid');
  if(grid){
   const mapping=['google','facebook','x','discord','github','email'];
   $$(':scope > .provider-item',grid).forEach((item,i)=>{
@@ -142,5 +142,6 @@ function bindHeader(){
  }
 }
 
-document.addEventListener('DOMContentLoaded',async()=>{injectModal();bindHeader();await loadIdentity();window.A90Auth={open:openModal,getUser:()=>state.user,getProfile:()=>state.profile,getRole:()=>state.role}});
+async function init(){injectModal();bindHeader();await loadIdentity();window.A90Auth={open:openModal,getUser:()=>state.user,getProfile:()=>state.profile,getRole:()=>state.role}}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
