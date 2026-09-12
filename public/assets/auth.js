@@ -1,14 +1,27 @@
 (()=>{
 'use strict';
 let state={user:null,profile:null,role:'user'};
+let providerState={loaded:false,available:false,providers:{github:false,google:false,discord:false,facebook:false,x:false}};
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const PROVIDER_NAMES={github:'GitHub',google:'Google',discord:'Discord',facebook:'Facebook',x:'X'};
 
 async function api(path,{method='GET',body}={}){
  const res=await fetch(path,{method,credentials:'same-origin',headers:body===undefined?{}:{'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body)});
  const data=await res.json().catch(()=>({}));
  if(!res.ok) throw new Error(data?.error||'No se pudo completar la operación.');
  return data;
+}
+
+async function refreshProviders(){
+ try{
+  const d=await api('/api/auth/providers');
+  providerState={loaded:true,available:!!d.available,providers:{...providerState.providers,...(d.providers||{})}};
+ }catch{
+  providerState={...providerState,loaded:true,available:false};
+ }
+ renderProviders();
+ return providerState;
 }
 
 async function loadIdentity(){
@@ -31,7 +44,7 @@ function injectModal(){
   <div id="a90-auth-guest">
    <div class="a90-auth-tabs"><button type="button" data-tab="login" class="active">Iniciar sesión</button><button type="button" data-tab="register">Crear cuenta</button></div>
    <div class="a90-social-grid provider-grid" aria-label="Inicio social"><button class="provider-item provider-google" type="button" data-oauth="google">Google</button><button class="provider-item provider-facebook" type="button" data-oauth="facebook">Facebook</button><button class="provider-item provider-x" type="button" data-oauth="x" aria-label="X"></button><button class="provider-item provider-discord" type="button" data-oauth="discord">Discord</button><button class="provider-item provider-github" type="button" data-oauth="github">GitHub</button><button class="provider-item provider-email" type="button" data-email-focus>Correo</button></div>
-   <p class="a90-provider-note">El acceso por correo ya está activo. Los proveedores sociales requieren configurar sus credenciales OAuth antes de habilitarlos.</p>
+   <p class="a90-provider-note">Comprobando accesos sociales…</p>
    <div class="a90-divider">con correo</div>
    <form id="a90-login-form" class="a90-auth-form">
     <label>Correo<input id="a90-email" type="email" autocomplete="email" maxlength="254" required></label>
@@ -53,7 +66,7 @@ function injectModal(){
   </div>
   <div id="a90-auth-message" class="a90-auth-message" aria-live="polite"></div>
  </section>`;
- document.body.appendChild(d);bindModal(d);
+ document.body.appendChild(d);bindModal(d);renderProviders();
 }
 
 function msg(text,type=''){const e=$('#a90-auth-message');if(!e)return;e.textContent=text||'';e.className='a90-auth-message'+(type?' '+type:'')}
@@ -67,16 +80,30 @@ function setTab(tab){
  const t=$('#a90-auth-title');if(t)t.textContent=tab==='register'?'Crear cuenta':'Acceder';msg('');
 }
 
-function socialPending(provider){
- const names={google:'Google',facebook:'Facebook',x:'X',discord:'Discord',github:'GitHub'};
- msg(`${names[provider]||provider} todavía necesita configurar OAuth en el proveedor. Usa Correo para crear tu cuenta ahora.`,'error');
+function cleanReturnPath(){
+ const u=new URL(location.href);
+ u.searchParams.delete('auth_error');
+ u.searchParams.delete('provider');
+ return u.pathname+u.search;
+}
+
+async function startOAuth(provider){
+ if(!PROVIDER_NAMES[provider]){msg('Proveedor de acceso no válido.','error');return}
+ if(!providerState.loaded) await refreshProviders();
+ if(!providerState.available){msg('No se pudo comprobar el estado de OAuth. Prueba de nuevo en unos segundos.','error');return}
+ if(!providerState.providers[provider]){
+  msg(`${PROVIDER_NAMES[provider]} está preparado en la web, pero todavía falta habilitar sus credenciales OAuth en Supabase.`,'error');
+  return;
+ }
+ const target='/api/auth/oauth/start?provider='+encodeURIComponent(provider)+'&return='+encodeURIComponent(cleanReturnPath());
+ location.assign(target);
 }
 
 function bindModal(root){
  $('.a90-auth-close',root).addEventListener('click',closeModal);
  root.addEventListener('click',e=>{if(e.target===root)closeModal()});
  $$('[data-tab]',root).forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.tab)));
- $$('[data-oauth]',root).forEach(b=>b.addEventListener('click',()=>socialPending(b.dataset.oauth)));
+ $$('[data-oauth]',root).forEach(b=>b.addEventListener('click',()=>startOAuth(b.dataset.oauth)));
  $('[data-email-focus]',root).addEventListener('click',()=>{$('#a90-email')?.focus();msg('')});
 
  $('#a90-login-form',root).addEventListener('submit',async e=>{
@@ -115,6 +142,24 @@ function renderModal(){
  if(state.user){$('#a90-profile-name').textContent=displayName();$('#a90-role').textContent=roleLabel(state.role);$('#a90-alias').value=state.profile?.username||''}
 }
 
+function renderProviders(){
+ $$('[data-oauth]').forEach(button=>{
+  const provider=button.dataset.oauth;
+  const ready=!!providerState.providers[provider];
+  button.classList.toggle('is-provider-ready',ready);
+  button.classList.toggle('is-provider-pending',providerState.loaded&&!ready);
+  button.setAttribute('aria-disabled',ready?'false':'true');
+  button.title=ready?`Continuar con ${PROVIDER_NAMES[provider]}`:`${PROVIDER_NAMES[provider]} · OAuth pendiente`;
+ });
+ const ready=Object.entries(providerState.providers).filter(([,enabled])=>enabled).map(([provider])=>PROVIDER_NAMES[provider]);
+ $$('.a90-provider-note').forEach(note=>{
+  if(!providerState.loaded) note.textContent='Comprobando accesos sociales…';
+  else if(!providerState.available) note.textContent='Correo está activo. No se pudo comprobar ahora el estado de los accesos sociales.';
+  else if(ready.length) note.textContent=`Correo está activo. Acceso social disponible: ${ready.join(', ')}.`;
+  else note.textContent='Correo está activo. Los accesos sociales quedan listos para activarse al añadir sus credenciales OAuth.';
+ });
+}
+
 function render(){
  $$('[data-a90-account]').forEach(btn=>{
   btn.classList.toggle('is-authenticated',!!state.user);
@@ -122,10 +167,11 @@ function render(){
   btn.setAttribute('title',state.user?`${displayName()} · ${roleLabel(state.role)}`:'Iniciar sesión o crear cuenta');
  });
  renderModal();
+ renderProviders();
  const card=$('#foro-login');
  if(card){
-  const note=$('.auth-note',card);if(note)note.textContent=state.user?`Sesión activa como ${displayName()} · ${roleLabel(state.role)}. Esta cuenta funciona en toda A 90 Files.`:'El acceso por correo está activo y la misma sesión funciona en la web y en el foro.';
-  const p=$('.auth-copy p',card);if(p)p.textContent='Correo ya está activo. Google, Facebook, X, Discord y GitHub se habilitarán cuando configuremos sus credenciales OAuth.';
+  const note=$('.auth-note',card);if(note)note.textContent=state.user?`Sesión activa como ${displayName()} · ${roleLabel(state.role)}. Esta cuenta funciona en toda A 90 Files.`:'Correo activo. La misma sesión funciona en toda la web y en el foro.';
+  const p=$('.auth-copy p',card);if(p)p.textContent='Una sola Cuenta A 90 para la web y el foro. El correo nunca se muestra públicamente.';
  }
 }
 
@@ -135,13 +181,42 @@ function bindHeader(){
  if(grid){
   const mapping=['google','facebook','x','discord','github','email'];
   $$(':scope > .provider-item',grid).forEach((item,i)=>{
-   item.setAttribute('aria-disabled','false');item.style.cursor='pointer';
-   item.title=mapping[i]==='email'?'Entrar o registrarse con correo':'OAuth pendiente de configurar';
-   item.addEventListener('click',e=>{e.stopPropagation();if(mapping[i]==='email')openModal();else{openModal();socialPending(mapping[i])}});
+   const provider=mapping[i];
+   item.style.cursor='pointer';
+   item.setAttribute('role','button');
+   item.setAttribute('tabindex','0');
+   const activate=()=>{if(provider==='email'){openModal();$('#a90-email')?.focus()}else{openModal();startOAuth(provider)}};
+   item.addEventListener('click',e=>{e.stopPropagation();activate()});
+   item.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();activate()}});
   });
  }
 }
 
-async function init(){injectModal();bindHeader();await loadIdentity();window.A90Auth={open:openModal,getUser:()=>state.user,getProfile:()=>state.profile,getRole:()=>state.role}}
+function handleOAuthResult(){
+ const u=new URL(location.href);
+ const error=u.searchParams.get('auth_error');
+ const provider=u.searchParams.get('provider')||'';
+ if(!error)return;
+ const name=PROVIDER_NAMES[provider]||'El proveedor';
+ const messages={
+  provider_disabled:`${name} todavía no está habilitado en Supabase.`,
+  provider_invalid:'Proveedor de acceso no válido.',
+  provider_check_failed:'No se pudo comprobar la configuración del proveedor.',
+  request_rejected:'La solicitud de acceso fue rechazada por seguridad.',
+  oauth_denied:`El acceso con ${name} se canceló o fue rechazado.`,
+  oauth_state_invalid:'La sesión de acceso caducó o no es válida. Vuelve a intentarlo.',
+  oauth_exchange_failed:`No se pudo completar el acceso con ${name}.`
+ };
+ u.searchParams.delete('auth_error');u.searchParams.delete('provider');
+ history.replaceState({},document.title,u.pathname+u.search+u.hash);
+ openModal();msg(messages[error]||'No se pudo completar el acceso social.','error');
+}
+
+async function init(){
+ injectModal();bindHeader();
+ await Promise.all([refreshProviders(),loadIdentity()]);
+ handleOAuthResult();
+ window.A90Auth={open:openModal,getUser:()=>state.user,getProfile:()=>state.profile,getRole:()=>state.role,refreshProviders};
+}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
