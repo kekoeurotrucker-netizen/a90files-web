@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Foro de A 90 Files para feedback, soporte, ideas y comunidad.">
+  <meta name="description" content="Foro de A 90 Files para VaultPool, software, juegos, A 90 por Hora, soporte, feedback y comunidad.">
   <meta name="theme-color" content="#061923">
   <title>Foro · A 90 Files</title>
   <link rel="stylesheet" href="/assets/styles.css">
@@ -36,56 +36,125 @@
 
   <main class="forum-shell shell">
     <section class="forum-hero">
-      <div>
+      <div class="forum-intro">
         <span class="forum-kicker">COMUNIDAD A 90</span>
         <h1>Foro</h1>
-        <p>Un espacio separado de la portada para feedback, errores, ideas y conversación sobre los proyectos de A 90.</p>
+        <p>Feedback, soporte, desarrollo y conversación sobre los proyectos y contenidos de A 90. El foro vive aparte de la portada y se accede desde el menú.</p>
+        <div class="forum-summary">
+          <span><b>7</b> categorías</span>
+          <i></i>
+          <span><b>24</b> subforos preparados</span>
+          <i></i>
+          <span>Sin contenido ficticio</span>
+        </div>
       </div>
-      <div class="auth-card">
+
+      <div class="auth-card" id="foro-login">
         <div class="auth-copy">
           <small>CUENTA A 90</small>
-          <strong>Participa con tu cuenta habitual</strong>
-          <p>El acceso social está preparado como siguiente fase de integración.</p>
+          <strong>Entra para participar</strong>
+          <p>Google, Facebook, X, Discord, GitHub y correo quedarán conectados en la fase de autenticación.</p>
         </div>
         <div class="provider-grid" aria-label="Proveedores previstos">
           <span>Google</span><span>Facebook</span><span>X</span><span>Discord</span><span>GitHub</span><span>Correo</span>
         </div>
-        <div class="auth-note">Inicio de sesión todavía no activo.</div>
+        <div class="auth-note">Registro e inicio de sesión todavía no activos.</div>
       </div>
     </section>
 
-    <section class="forum-grid" aria-label="Categorías del foro">
-      <a class="forum-category" href="#">
-        <div class="category-icon">◎</div>
-        <div><small>GENERAL</small><h2>Feedback de la web</h2><p>Diseño, navegación, errores visuales y propuestas para A 90 Files.</p></div>
-        <span class="category-state">Próximamente</span>
-      </a>
-      <a class="forum-category" href="#">
-        <div class="category-icon">VP</div>
-        <div><small>SOFTWARE</small><h2>VaultPool</h2><p>Pruebas, fallos, sugerencias y seguimiento del desarrollo.</p></div>
-        <span class="category-state">Próximamente</span>
-      </a>
-      <a class="forum-category" href="#">
-        <div class="category-icon">!</div>
-        <div><small>INCIDENCIAS</small><h2>Bugs y problemas</h2><p>Reportes claros para reproducir y corregir errores.</p></div>
-        <span class="category-state">Próximamente</span>
-      </a>
-      <a class="forum-category" href="#">
-        <div class="category-icon">+</div>
-        <div><small>IDEAS</small><h2>Funciones y propuestas</h2><p>Ideas votables para futuras versiones y nuevos proyectos.</p></div>
-        <span class="category-state">Próximamente</span>
-      </a>
-      <a class="forum-category" href="#">
-        <div class="category-icon">#</div>
-        <div><small>COMUNIDAD</small><h2>General</h2><p>Presentaciones, conversación y temas relacionados con A 90.</p></div>
-        <span class="category-state">Próximamente</span>
-      </a>
+    <section class="board" aria-label="Foros de A 90">
+      <article class="forum-section forum-section--cyan" id="a90-files">
+        <header class="forum-section-head">
+          <div><span class="section-code">A90</span><div><small>PORTAL Y COMUNIDAD</small><h2>A 90 Files</h2></div></div>
+          <span class="section-note">Información oficial y evolución de la web</span>
+        </header>
+        <div class="subforum-list">
+          <div class="subforum"><span class="subforum-icon">N</span><div><strong>Anuncios y novedades</strong><p>Cambios importantes, nuevas funciones y avisos oficiales.</p></div><span class="empty-state">Sin temas</span></div>
+          <div class="subforum"><span class="subforum-icon">UI</span><div><strong>Feedback de la web</strong><p>Diseño, navegación, responsive, rendimiento y errores visuales.</p></div><span class="empty-state">Sin temas</span></div>
+          <div class="subforum"><span class="subforum-icon">+</span><div><strong>Ideas y sugerencias</strong><p>Propuestas para mejorar A 90 Files y sus distintas áreas.</p></div><span class="empty-state">Sin temas</span></div>
+        </div>
+      </article>
+
+      <article class="forum-section forum-section--blue" id="vaultpool">
+        <header class="forum-section-head">
+          <div><span class="section-code">VP</span><div><small>SOFTWARE · PROYECTO PRINCIPAL</small><h2>VaultPool</h2></div></div>
+          <span class="section-note">Pruebas, soporte y desarrollo</span>
+        </header>
+        <div class="subforum-list">
+          <div class="subforum"><span class="subforum-icon">#</span><div><strong>General</strong><p>Dudas, conversación y noticias relacionadas con VaultPool.</p></div><span class="empty-state">Sin temas</span></div>
+          <div class="subforum"><span class="subforum-icon">⚙</span><div><strong>Instalación y configuración</strong><p>Primer arranque, ajustes, cuentas y configuración local.</p></div><span class="empty-state">Sin temas</span></div>
+          <div class="subforum"><span class="subforum-icon">☁</span><div><strong>Proveedores y conectores</strong><p>MEGA, OneDrive, pCloud y otros servicios compatibles.</p></div><span class="empty-state">Sin temas</span></div>
+          <div class="subforum"><span class="subforum-icon">!</span><div><strong>Bugs e incidencias</strong><p>Errores reproducibles, registros y problemas detectados.</p></div><span class="empty-state">Sin temas</span></div>
+          <div class="subforum"><span class="subforum-icon">+</span><div><strong>Funciones y propuestas</strong><p>Nuevas ideas, mejoras y prioridades para versiones futuras.</p></div><span class="empty-state">Sin temas</span></div>
+        </div>
+      </article>
+
+      <article class="forum-section forum-section--violet" id="software">
+        <header class="forum-section-head">
+          <div><span class="section-code">&lt;/&gt;</span><div><small>DESARROLLO</small><h2>Software y proyectos A 90</h2></div></div>
+          <span class="section-note">Más allá de VaultPool</span>
+        </header>
+        <div class="subforum-list">
+          <div class="subforum"><span class="subforum-icon">APP</span><div><strong>Otros proyectos</strong><p>Nuevas aplicaciones, utilidades y experimentos de A 90.</p></div><span class="empty-state">Sin temas</span></div>
+          <div class="subforum"><span class="subforum-icon">β</span><div><strong>Betas y pruebas</strong><p>Versiones de prueba, testers y resultados de validación.</p></div><span class="empty-state">Sin temas</span></div>
+          <div class="subforum"><span class="subforum-icon">DEV</span><div><strong>Desarrollo y feedback técnico</strong><p>Arquitectura, comportamiento y discusión técnica de los proyectos.</p></div><span class="empty-state">Sin temas</span></div>
+        </div>
+      </article>
+
+      <article class="forum-section forum-section--amber" id="juegos">
+        <header class="forum-section-head">
+          <div><span class="section-code">◆</span><div><small>JUEGOS</small><h2>Gaming y A 90 Games</h2></div></div>
+          <span class="section-note">Juegos propios, simulación y clásicos</span>
+        </header>
+        <div class="subforum-list">
+          <div class="subforum"><span class="subforum-icon">A90</span><div><strong>A 90 Games · Demos y desarrollo</strong><p>Pruebas, feedback y futuros juegos propios.</p></div><span class="empty-state">Sin temas</span></div>
+          <div class="subforum"><span class="subforum-icon">SIM</span><div><strong>Simuladores</strong><p>Euro Truck Simulator 2, American Truck Simulator, BeamNG y similares.</p></div><span class="empty-state">Sin temas</span></div>
+          <div class="subforum"><span class="subforum-icon">8B</span><div><strong>Arcade y clásicos</strong><p>DOOM Shareware, clásicos legales y juegos del área A 90 Arcade.</p></div><span class="empty-state">Sin temas</span></div>
+        </div>
+      </article>
+
+      <article class="forum-section forum-section--coral" id="canal">
+        <header class="forum-section-head">
+          <div><span class="section-code">▶</span><div><small>CONTENIDO</small><h2>A 90 por Hora</h2></div></div>
+          <span class="section-note">Canal, carretera y creación de contenido</span>
+        </header>
+        <div class="subforum-list">
+          <div class="subforum"><span class="subforum-icon">YT</span><div><strong>Vídeos y directos</strong><p>Estrenos, emisiones, reacciones y conversación sobre el canal.</p></div><span class="empty-state">Sin temas</span></div>
+          <div class="subforum"><span class="subforum-icon">TRK</span><div><strong>Camiones y carretera</strong><p>Transporte, vehículos, rutas y mundo profesional del camión.</p></div><span class="empty-state">Sin temas</span></div>
+          <div class="subforum"><span class="subforum-icon">+</span><div><strong>Ideas para vídeos</strong><p>Propuestas de reportajes, gameplays, reacciones y tutoriales.</p></div><span class="empty-state">Sin temas</span></div>
+          <div class="subforum"><span class="subforum-icon">REC</span><div><strong>Streaming y edición</strong><p>PRISM, Premiere, audio, overlays, grabación y producción.</p></div><span class="empty-state">Sin temas</span></div>
+        </div>
+      </article>
+
+      <article class="forum-section forum-section--cyan" id="soporte">
+        <header class="forum-section-head">
+          <div><span class="section-code">?</span><div><small>AYUDA</small><h2>Soporte y tutoriales</h2></div></div>
+          <span class="section-note">Ayuda práctica y documentación</span>
+        </header>
+        <div class="subforum-list">
+          <div class="subforum"><span class="subforum-icon">WEB</span><div><strong>Soporte de A 90 Files</strong><p>Problemas de acceso, navegación y funcionamiento de la web.</p></div><span class="empty-state">Sin temas</span></div>
+          <div class="subforum"><span class="subforum-icon">VP</span><div><strong>Ayuda con VaultPool</strong><p>Consultas de uso que no sean un bug confirmado.</p></div><span class="empty-state">Sin temas</span></div>
+          <div class="subforum"><span class="subforum-icon">DOC</span><div><strong>Guías y tutoriales</strong><p>Documentación creada por A 90 y aportaciones útiles de la comunidad.</p></div><span class="empty-state">Sin temas</span></div>
+        </div>
+      </article>
+
+      <article class="forum-section forum-section--offtopic" id="off-topic">
+        <header class="forum-section-head">
+          <div><span class="section-code">OFF</span><div><small>COMUNIDAD</small><h2>Off-topic</h2></div></div>
+          <span class="section-note">Para lo que no encaja en lo anterior</span>
+        </header>
+        <div class="subforum-list">
+          <div class="subforum"><span class="subforum-icon">HI</span><div><strong>Presentaciones</strong><p>Preséntate y cuéntanos qué te interesa de la comunidad A 90.</p></div><span class="empty-state">Sin temas</span></div>
+          <div class="subforum"><span class="subforum-icon">PC</span><div><strong>Informática y hardware</strong><p>PC, periféricos, configuraciones, componentes y tecnología.</p></div><span class="empty-state">Sin temas</span></div>
+          <div class="subforum"><span class="subforum-icon">☕</span><div><strong>Off-topic general</strong><p>Conversación libre respetando las normas de la comunidad.</p></div><span class="empty-state">Sin temas</span></div>
+        </div>
+      </article>
     </section>
 
     <section class="forum-roadmap">
-      <div><small>FASE ACTUAL</small><strong>Interfaz y estructura</strong></div>
+      <div><small>ESTRUCTURA</small><strong>Categorías y subforos ya definidos</strong></div>
       <div><small>SIGUIENTE</small><strong>Registro, login social y perfiles</strong></div>
-      <div><small>DESPUÉS</small><strong>Temas, respuestas, votos y moderación</strong></div>
+      <div><small>DESPUÉS</small><strong>Crear temas, responder, votar y moderar</strong></div>
     </section>
   </main>
 
