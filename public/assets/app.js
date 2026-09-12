@@ -10,4 +10,4 @@ const topbarInner=document.querySelector('.topbar-inner');if(topbarInner&&!docum
 const providerGrid=document.querySelector('.provider-grid');if(providerGrid){const names=['google','facebook','x','discord','github','email'];providerGrid.querySelectorAll(':scope > span').forEach((item,index)=>{const name=names[index];if(!name)return;item.classList.add('provider-item',`provider-${name}`);if(name==='x'){item.textContent='';item.setAttribute('aria-label','X');}})}
 
 addScript('/assets/auth.js');
-if(document.body.classList.contains('forum-page')){addStylesheet('/assets/forum-live.css');addScript('/assets/forum-app.js')}
+if(document.body.classList.contains('forum-page')){addStylesheet('/assets/forum-live.css');addStylesheet('/assets/forum-mod.css');addScript('/assets/forum-app.js');addScript('/assets/forum-mod.js')}
