@@ -4,9 +4,17 @@ const REFRESH_MAX_AGE=60*60*24*30;
 
 export async function handleSecurityAuth(request,env,url,authWorker){
   if(request.method==='POST'&&(url.pathname==='/api/auth/login'||url.pathname==='/api/auth/signup')){
+    if(!sameOrigin(request,url))return json({error:'Solicitud rechazada.'},403);
     let data;try{data=await request.clone().json()}catch{return json({error:'Datos no válidos.'},400)}
     const expected=url.pathname.endsWith('/signup')?'signup':'login';
-    const check=await verifyTurnstile(request,env,url,data?.turnstile_token,expected);
+    const token=data?.turnstile_token;
+    if(!validTurnstileToken(token))return json({error:'Completa la verificación anti-bot.'},400);
+
+    if(String(env.SUPABASE_NATIVE_CAPTCHA||'false').toLowerCase()==='true'){
+      return nativeEmailAuth(env,url,data,expected,token);
+    }
+
+    const check=await verifyTurnstile(request,env,url,token,expected);
     if(check)return check;
     return authWorker.fetch(request,env);
   }
@@ -16,9 +24,11 @@ export async function handleSecurityAuth(request,env,url,authWorker){
   return null;
 }
 
+function sameOrigin(request,url){const origin=request.headers.get('Origin');if(origin&&origin!==url.origin)return false;const site=request.headers.get('Sec-Fetch-Site');return !site||site==='same-origin'||site==='same-site'||site==='none'}
+function validTurnstileToken(token){return typeof token==='string'&&token.length>=10&&token.length<=4096}
+
 async function verifyTurnstile(request,env,url,token,action){
   if(!env.TURNSTILE_SECRET)return json({error:'Verificación anti-bot temporalmente no disponible.'},503);
-  if(typeof token!=='string'||token.length<10||token.length>4096)return json({error:'Completa la verificación anti-bot.'},400);
   const form=new FormData();
   form.set('secret',env.TURNSTILE_SECRET);form.set('response',token);form.set('idempotency_key',crypto.randomUUID());
   const ip=request.headers.get('CF-Connecting-IP');if(ip)form.set('remoteip',ip);
@@ -27,6 +37,29 @@ async function verifyTurnstile(request,env,url,token,action){
   if(body.hostname!==url.hostname||body.action!==action)return json({error:'Verificación anti-bot no válida.'},403);
   return null;
 }
+
+async function nativeEmailAuth(env,url,data,mode,token){
+  const email=String(data?.email||'').trim().toLowerCase();
+  const password=data?.password;
+  if(!validEmail(email)||!validPassword(password))return json({error:mode==='signup'?'Usa un correo válido y una contraseña de entre 10 y 128 caracteres.':'Introduce un correo válido y una contraseña de al menos 10 caracteres.'},400);
+  const security={captcha_token:token};
+  if(mode==='login'){
+    const r=await supabase(env,'/auth/v1/token?grant_type=password',null,{method:'POST',body:JSON.stringify({email,password,gotrue_meta_security:security})});
+    if(!r.res.ok)return json({error:authError(r.body,r.res.status)},r.res.status===400?401:r.res.status);
+    return new Response(JSON.stringify({ok:true}),{status:200,headers:tokenHeaders(r.body)});
+  }
+  const displayName=cleanName(data?.display_name)||'Usuario';
+  const path='/auth/v1/signup?redirect_to='+encodeURIComponent(`${url.origin}/`);
+  const r=await supabase(env,path,null,{method:'POST',body:JSON.stringify({email,password,data:{full_name:displayName},gotrue_meta_security:security})});
+  if(!r.res.ok)return json({error:authError(r.body,r.res.status)},r.res.status);
+  if(r.body?.access_token)return new Response(JSON.stringify({ok:true,requires_confirmation:false}),{status:200,headers:tokenHeaders(r.body)});
+  return json({ok:true,requires_confirmation:true},200);
+}
+
+function authError(body,status){const raw=String(body?.msg||body?.message||body?.error_description||body?.error||'').toLowerCase();if(status===429)return 'Demasiados intentos. Espera un poco y vuelve a probar.';if(raw.includes('captcha'))return 'La verificación anti-bot ha caducado o no es válida.';if(raw.includes('invalid login credentials'))return 'Correo o contraseña incorrectos.';if(raw.includes('email not confirmed'))return 'Confirma primero el correo.';if(raw.includes('already registered')||raw.includes('user already registered'))return 'Ese correo ya tiene una cuenta.';if(raw.includes('password'))return 'La contraseña no cumple los requisitos de seguridad.';return 'No se pudo completar la autenticación.'}
+function validEmail(v){return typeof v==='string'&&v.length<=254&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)}
+function validPassword(v){return typeof v==='string'&&v.length>=10&&v.length<=128}
+function cleanName(v){return typeof v==='string'?v.trim().replace(/[\u0000-\u001f\u007f]/g,'').slice(0,80):''}
 
 async function mfaStatus(request,env){
   const s=await session(request,env);if(!s.user)return json({error:'Inicia sesión primero.'},401);
@@ -59,11 +92,7 @@ async function session(request,env){const access=parseCookies(request)[ACCESS_CO
 async function authUser(env,access){const r=await supabase(env,'/auth/v1/user',access);return r.res.ok?r.body:null}
 async function roleOf(env,access,id){const r=await supabase(env,`/rest/v1/user_roles?user_id=eq.${encodeURIComponent(id)}&select=role&limit=1`,access);return r.res.ok&&Array.isArray(r.body)&&r.body[0]?.role?r.body[0].role:'user'}
 function mfaPayload(s,role,factors){const f=factors||[];return {required:role==='super_admin',current_level:aal(s.access),verified:f.some(x=>x.factor_type==='totp'&&x.status==='verified'),factors:f}}
-async function listFactors(env,access,user){
-  const r=await supabase(env,'/auth/v1/factors',access);
-  if(r.res.ok){const b=r.body||{};let raw=[];if(Array.isArray(b))raw=b;else if(Array.isArray(b.all))raw=b.all;else raw=[...(Array.isArray(b.totp)?b.totp:[]),...(Array.isArray(b.phone)?b.phone:[])];const out=normalizeFactors(raw);if(out.length||raw.length===0)return out}
-  return normalizeFactors(Array.isArray(user?.factors)?user.factors:[]);
-}
+async function listFactors(env,access,user){const r=await supabase(env,'/auth/v1/factors',access);if(r.res.ok){const b=r.body||{};let raw=[];if(Array.isArray(b))raw=b;else if(Array.isArray(b.all))raw=b.all;else raw=[...(Array.isArray(b.totp)?b.totp:[]),...(Array.isArray(b.phone)?b.phone:[])];const out=normalizeFactors(raw);if(out.length||raw.length===0)return out}return normalizeFactors(Array.isArray(user?.factors)?user.factors:[])}
 function normalizeFactors(raw){return raw.map(f=>({id:String(f.id||''),status:String(f.status||''),factor_type:String(f.factor_type||f.factorType||f.type||'').toLowerCase(),friendly_name:String(f.friendly_name||f.friendlyName||'')})).filter(f=>uuid(f.id))}
 function aal(token){try{const p=String(token).split('.')[1]||'',n=p.replace(/-/g,'+').replace(/_/g,'/'),v=JSON.parse(atob(n+'='.repeat((4-n.length%4)%4)));return v?.aal==='aal2'?'aal2':'aal1'}catch{return 'aal1'}}
 function uuid(v){return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(v||''))}
