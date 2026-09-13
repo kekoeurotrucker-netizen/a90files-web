@@ -1,10 +1,15 @@
 import authWorker from './index.js';
 import {handleForumApi} from './forum-api.js';
 import {handleModApi} from './mod-api.js';
+import {handleExtraAuth} from './oauth-extra.js';
 
 export default {
   async fetch(request,env,ctx){
     const url=new URL(request.url);
+
+    const extraAuth=await handleExtraAuth(request,env,url);
+    if(extraAuth)return extraAuth;
+
     if(url.pathname.startsWith('/api/mod/')){
       if(!['GET','POST'].includes(request.method)) return json({error:'Método no permitido.'},405);
       if(request.method==='POST'&&!sameOrigin(request,url)) return json({error:'Solicitud rechazada.'},403);
