@@ -30,12 +30,12 @@ async function verifyTurnstile(request,env,url,token,action){
 
 async function mfaStatus(request,env){
   const s=await session(request,env);if(!s.user)return json({error:'Inicia sesión primero.'},401);
-  const role=await roleOf(env,s.access,s.user.id);
-  return json({ok:true,role,mfa:mfaPayload(s,role)});
+  const role=await roleOf(env,s.access,s.user.id),factors=await listFactors(env,s.access,s.user);
+  return json({ok:true,role,mfa:mfaPayload(s,role,factors)});
 }
 async function mfaEnroll(request,env){
   const s=await requireSuperAdmin(request,env);if(s.error)return s.error;
-  const factors=safeFactors(s.user);if(factors.some(f=>f.factor_type==='totp'&&f.status==='verified'))return json({error:'El MFA ya está activado.'},409);
+  const factors=await listFactors(env,s.access,s.user);if(factors.some(f=>f.factor_type==='totp'&&f.status==='verified'))return json({error:'El MFA ya está activado.'},409);
   for(const f of factors.filter(f=>f.factor_type==='totp'&&f.status!=='verified'))await supabase(env,`/auth/v1/factors/${encodeURIComponent(f.id)}`,s.access,{method:'DELETE'});
   const r=await supabase(env,'/auth/v1/factors',s.access,{method:'POST',body:JSON.stringify({factor_type:'totp',friendly_name:'A90 Super Admin'})});
   if(!r.res.ok||!r.body?.id||!r.body?.totp)return json({error:'No se pudo iniciar la activación MFA.'},r.res.status||502);
@@ -46,7 +46,7 @@ async function mfaVerify(request,env){
   let data;try{data=await request.json()}catch{return json({error:'Datos MFA no válidos.'},400)}
   const factorId=String(data?.factor_id||''),code=String(data?.code||'').trim();
   if(!uuid(factorId)||!/^[0-9]{6,10}$/.test(code))return json({error:'Código MFA no válido.'},400);
-  const factor=safeFactors(s.user).find(f=>f.id===factorId&&f.factor_type==='totp');if(!factor)return json({error:'Factor MFA no válido.'},400);
+  const factors=await listFactors(env,s.access,s.user),factor=factors.find(f=>f.id===factorId&&f.factor_type==='totp');if(!factor)return json({error:'Factor MFA no válido.'},400);
   const ch=await supabase(env,`/auth/v1/factors/${encodeURIComponent(factorId)}/challenge`,s.access,{method:'POST',body:'{}'});
   if(!ch.res.ok||!ch.body?.id)return json({error:'No se pudo iniciar el desafío MFA.'},ch.res.status||502);
   const vr=await supabase(env,`/auth/v1/factors/${encodeURIComponent(factorId)}/verify`,s.access,{method:'POST',body:JSON.stringify({challenge_id:ch.body.id,code})});
@@ -58,8 +58,13 @@ async function requireSuperAdmin(request,env){const s=await session(request,env)
 async function session(request,env){const access=parseCookies(request)[ACCESS_COOKIE]||'';if(!access)return {access:'',user:null};return {access,user:await authUser(env,access)}}
 async function authUser(env,access){const r=await supabase(env,'/auth/v1/user',access);return r.res.ok?r.body:null}
 async function roleOf(env,access,id){const r=await supabase(env,`/rest/v1/user_roles?user_id=eq.${encodeURIComponent(id)}&select=role&limit=1`,access);return r.res.ok&&Array.isArray(r.body)&&r.body[0]?.role?r.body[0].role:'user'}
-function mfaPayload(s,role){const f=safeFactors(s.user);return {required:role==='super_admin',current_level:aal(s.access),verified:f.some(x=>x.factor_type==='totp'&&x.status==='verified'),factors:f}}
-function safeFactors(user){return (Array.isArray(user?.factors)?user.factors:[]).map(f=>({id:String(f.id||''),status:String(f.status||''),factor_type:String(f.factor_type||f.factorType||f.type||'').toLowerCase(),friendly_name:String(f.friendly_name||f.friendlyName||'')})).filter(f=>uuid(f.id))}
+function mfaPayload(s,role,factors){const f=factors||[];return {required:role==='super_admin',current_level:aal(s.access),verified:f.some(x=>x.factor_type==='totp'&&x.status==='verified'),factors:f}}
+async function listFactors(env,access,user){
+  const r=await supabase(env,'/auth/v1/factors',access);
+  if(r.res.ok){const b=r.body||{};let raw=[];if(Array.isArray(b))raw=b;else if(Array.isArray(b.all))raw=b.all;else raw=[...(Array.isArray(b.totp)?b.totp:[]),...(Array.isArray(b.phone)?b.phone:[])];const out=normalizeFactors(raw);if(out.length||raw.length===0)return out}
+  return normalizeFactors(Array.isArray(user?.factors)?user.factors:[]);
+}
+function normalizeFactors(raw){return raw.map(f=>({id:String(f.id||''),status:String(f.status||''),factor_type:String(f.factor_type||f.factorType||f.type||'').toLowerCase(),friendly_name:String(f.friendly_name||f.friendlyName||'')})).filter(f=>uuid(f.id))}
 function aal(token){try{const p=String(token).split('.')[1]||'',n=p.replace(/-/g,'+').replace(/_/g,'/'),v=JSON.parse(atob(n+'='.repeat((4-n.length%4)%4)));return v?.aal==='aal2'?'aal2':'aal1'}catch{return 'aal1'}}
 function uuid(v){return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(String(v||''))}
 function parseCookies(request){const out={};for(const part of (request.headers.get('Cookie')||'').split(';')){const i=part.indexOf('=');if(i<0)continue;const k=part.slice(0,i).trim();if(!k)continue;try{out[k]=decodeURIComponent(part.slice(i+1).trim())}catch{out[k]=part.slice(i+1).trim()}}return out}
