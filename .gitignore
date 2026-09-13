@@ -1,0 +1,35 @@
+# Local environment / secrets
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+*.local
+
+# Private keys / certificates
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+
+# Credential and secret dumps
+credentials*.json
+credentials*.txt
+secrets*.json
+secrets*.txt
+*client_secret*.json
+*client_secret*.txt
+
+# Tooling / OS
+node_modules/
+.wrangler/
+.DS_Store
+Thumbs.db
+
+# Temporary exports / backups
+*.bak
+*.tmp
+*.swp
+*.zip
