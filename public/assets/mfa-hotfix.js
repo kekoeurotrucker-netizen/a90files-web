@@ -45,7 +45,16 @@ async function mount(){
  try{const status=await api('/api/auth/mfa/status');if(status.role==='super_admin')render(card,status)}catch{}finally{mounting=false}
 }
 function schedule(){[0,100,350,900].forEach(ms=>setTimeout(()=>void mount(),ms))}
+function openDirectMfa(){
+ if(new URL(location.href).searchParams.get('mfa')!=='1')return;
+ let tries=0;
+ const timer=setInterval(()=>{
+  tries++;
+  if(window.A90Auth?.open){clearInterval(timer);window.A90Auth.open();schedule();}
+  else if(tries>30)clearInterval(timer);
+ },100);
+}
 document.addEventListener('click',e=>{if(e.target.closest?.('[data-a90-account]'))schedule()},true);
 new MutationObserver(()=>{if($('.a90-profile-card'))schedule()}).observe(document.documentElement,{childList:true,subtree:true});
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{schedule();openDirectMfa()},{once:true});else{schedule();openDirectMfa()}
 })();
