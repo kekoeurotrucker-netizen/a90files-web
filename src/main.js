@@ -16,7 +16,7 @@ export default {
       const headers=new Headers(original.headers);
       headers.set('Content-Type','application/javascript; charset=utf-8');
       headers.set('Cache-Control','no-cache');
-      return new Response(text+"\n;import('/assets/security-auth.js');\n",{status:original.status,headers});
+      return new Response(text+"\n;import('/assets/security-auth.js');import('/assets/mfa-hotfix.js');\n",{status:original.status,headers});
     }
 
     const health=await handleHealth(request,env,url);
