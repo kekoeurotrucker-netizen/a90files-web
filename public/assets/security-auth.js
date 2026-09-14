@@ -28,7 +28,7 @@ document.addEventListener('submit',e=>{
  if(e.target?.id==='a90-login-form'){e.preventDefault();e.stopImmediatePropagation();void submitLogin()}
  else if(e.target?.id==='a90-register-form'){e.preventDefault();e.stopImmediatePropagation();void submitSignup()}
 },true);
-document.addEventListener('click',e=>{const tab=e.target.closest?.('[data-tab]');if(tab)setTimeout(()=>void renderTurnstile(tab.dataset.tab==='register'?'signup':'login'),0);const account=e.target.closest?.('[data-a90-account]');if(account)setTimeout(()=>void refreshMfaCard(),80)},true);
+document.addEventListener('click',e=>{const tab=e.target.closest?.('[data-tab]');if(tab)setTimeout(()=>void renderTurnstile(tab.dataset.tab==='register'?'signup':'login'),0)},true);
 
 function injectMfaCard(status){
  const card=$('.a90-profile-card');if(!card||$('#a90-security-mfa-card'))return;
@@ -57,11 +57,10 @@ function openDirectMfa(){
   if(window.A90Auth?.open){
    clearInterval(timer);
    window.A90Auth.open();
-   setTimeout(()=>void refreshMfaCard(),100);
   }else if(tries>30){clearInterval(timer)}
  },100);
 }
 
 addCss();
-const ready=()=>{void renderTurnstile('login');setTimeout(()=>void refreshMfaCard(),150);openDirectMfa()};
+const ready=()=>{void renderTurnstile('login');openDirectMfa()};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready,{once:true});else ready();
