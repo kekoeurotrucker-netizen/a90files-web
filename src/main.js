@@ -55,12 +55,17 @@ async function normalizeMfaEnrollResponse(response){
   if(!qr)return response;
 
   let normalized=qr;
-  if(!/^data:image\//i.test(qr)&&!/^https?:\/\//i.test(qr)){
-    const svgIndex=qr.toLowerCase().indexOf('<svg');
-    if(svgIndex>=0){
-      const svg=qr.slice(svgIndex);
-      normalized='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+  if(/^data:image\/svg\+xml/i.test(qr)){
+    const comma=qr.indexOf(',');
+    if(comma>=0&&!/;base64/i.test(qr.slice(0,comma))){
+      let payload=qr.slice(comma+1);
+      try{payload=decodeURIComponent(payload)}catch{}
+      const svgIndex=payload.toLowerCase().indexOf('<svg');
+      if(svgIndex>=0)normalized='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(payload.slice(svgIndex));
     }
+  }else if(!/^data:image\//i.test(qr)&&!/^https?:\/\//i.test(qr)){
+    const svgIndex=qr.toLowerCase().indexOf('<svg');
+    if(svgIndex>=0)normalized='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(qr.slice(svgIndex));
   }
 
   if(normalized===qr)return response;
