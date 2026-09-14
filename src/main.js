@@ -16,7 +16,7 @@ export default {
       const headers=new Headers(original.headers);
       headers.set('Content-Type','application/javascript; charset=utf-8');
       headers.set('Cache-Control','no-cache, no-store, must-revalidate');
-      const inlineMfa=`\n;(${mfaClientBootstrap.toString()})();\n`;
+      const inlineMfa=`\n;(function(){const __name=(fn)=>fn;(${mfaClientBootstrap.toString()})();})();\n`;
       return new Response(text+inlineMfa+"\n;import('/assets/security-auth.js');\n",{status:original.status,headers});
     }
 
