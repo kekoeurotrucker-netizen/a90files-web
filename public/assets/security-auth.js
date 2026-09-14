@@ -49,7 +49,19 @@ async function refreshMfaCard(){try{const s=await call('/api/auth/mfa/status');i
 async function startMfa(){message('Preparando MFA…');try{const d=await call('/api/auth/mfa/enroll',{method:'POST',body:{}});pendingFactor=d.factor_id;$('#a90-security-mfa-actions').classList.add('a90-auth-hidden');const setup=$('#a90-security-mfa-setup');setup.classList.remove('a90-auth-hidden');$('#a90-security-mfa-qr').src=d.qr_code||'';$('#a90-security-mfa-secret').textContent=d.secret||'';message('Escanea el QR e introduce el código generado.','ok')}catch(e){message(e.message,'error')}}
 async function verifyPendingMfa(){const code=$('#a90-security-mfa-code')?.value.trim()||'';if(!pendingFactor||!/^[0-9]{6,10}$/.test(code)){message('Introduce el código de tu app Authenticator.','error');return}message('Verificando MFA…');try{await call('/api/auth/mfa/verify',{method:'POST',body:{factor_id:pendingFactor,code}});location.reload()}catch(e){message(e.message,'error')}}
 async function verifyExistingMfa(factorId){const code=$('#a90-security-mfa-login-code')?.value.trim()||'';if(!factorId||!/^[0-9]{6,10}$/.test(code)){message('Introduce un código MFA válido.','error');return}message('Verificando MFA…');try{await call('/api/auth/mfa/verify',{method:'POST',body:{factor_id:factorId,code}});location.reload()}catch(e){message(e.message,'error')}}
+function openDirectMfa(){
+ if(new URL(location.href).searchParams.get('mfa')!=='1')return;
+ let tries=0;
+ const timer=setInterval(()=>{
+  tries++;
+  if(window.A90Auth?.open){
+   clearInterval(timer);
+   window.A90Auth.open();
+   setTimeout(()=>void refreshMfaCard(),100);
+  }else if(tries>30){clearInterval(timer)}
+ },100);
+}
 
 addCss();
-const ready=()=>{void renderTurnstile('login');setTimeout(()=>void refreshMfaCard(),150)};
+const ready=()=>{void renderTurnstile('login');setTimeout(()=>void refreshMfaCard(),150);openDirectMfa()};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready,{once:true});else ready();
