@@ -52,14 +52,23 @@ async function normalizeMfaEnrollResponse(response){
   if(!response.ok)return response;
   let data;try{data=await response.clone().json()}catch{return response}
   const qr=typeof data?.qr_code==='string'?data.qr_code.trim():'';
-  if(qr.startsWith('<svg')){
-    data.qr_code='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(qr);
-    const headers=new Headers(response.headers);
-    headers.set('Content-Type','application/json; charset=utf-8');
-    headers.set('Cache-Control','private, no-store');
-    return new Response(JSON.stringify(data),{status:response.status,statusText:response.statusText,headers});
+  if(!qr)return response;
+
+  let normalized=qr;
+  if(!/^data:image\//i.test(qr)&&!/^https?:\/\//i.test(qr)){
+    const svgIndex=qr.toLowerCase().indexOf('<svg');
+    if(svgIndex>=0){
+      const svg=qr.slice(svgIndex);
+      normalized='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+    }
   }
-  return response;
+
+  if(normalized===qr)return response;
+  data.qr_code=normalized;
+  const headers=new Headers(response.headers);
+  headers.set('Content-Type','application/json; charset=utf-8');
+  headers.set('Cache-Control','private, no-store');
+  return new Response(JSON.stringify(data),{status:response.status,statusText:response.statusText,headers});
 }
 
 function sameOrigin(request,url){const origin=request.headers.get('Origin');if(origin&&origin!==url.origin)return false;const site=request.headers.get('Sec-Fetch-Site');return !site||site==='same-origin'||site==='same-site'||site==='none'}
