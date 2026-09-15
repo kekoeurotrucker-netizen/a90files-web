@@ -45,8 +45,6 @@ html,body{background:#142023;color:var(--text)}
 }
 .header-status{border-color:rgba(15,76,92,.48);color:#9eaaad}
 .header-status span,.live-dot{background:#f59e0b;box-shadow:0 0 12px rgba(245,158,11,.72)}
-
-/* Panels are now charcoal; the petrol tone belongs to the page itself. */
 .panel{
   border-color:rgba(94,126,132,.19);
   background:linear-gradient(155deg,rgba(12,20,22,.985),rgba(7,12,14,.99));
@@ -59,11 +57,7 @@ html,body{background:#142023;color:var(--text)}
 .hero-content h1 em{color:#c5ccce}
 .hero-content p,.project-copy{color:#abb5b8}
 .button{border-color:rgba(112,139,144,.22)}
-.button.primary{
-  background:linear-gradient(135deg,#f59e0b,#d98b2b);
-  color:#17120a;
-  box-shadow:0 8px 24px rgba(245,158,11,.20);
-}
+.button.primary{background:linear-gradient(135deg,#f59e0b,#d98b2b);color:#17120a;box-shadow:0 8px 24px rgba(245,158,11,.20)}
 .button.primary:hover{box-shadow:0 10px 28px rgba(245,158,11,.30)}
 .button.secondary{background:rgba(255,255,255,.03);color:#c7cdcf}
 .button.secondary:hover{border-color:rgba(245,158,11,.34);background:rgba(245,158,11,.06);color:#fff}
@@ -71,33 +65,18 @@ html,body{background:#142023;color:var(--text)}
 .project-panel{background:linear-gradient(160deg,rgba(12,20,22,.99),rgba(7,12,14,.995))}
 .project-label{color:#91a4a7}
 .project-state{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.23);color:#f1bd65}
-.vp-mark{
-  background:linear-gradient(145deg,#15363d,#0d2024);
-  border-color:rgba(15,76,92,.72);
-  box-shadow:0 8px 24px rgba(15,76,92,.15);
-  color:#d8edef;
-}
+.vp-mark{background:linear-gradient(145deg,#15363d,#0d2024);border-color:rgba(15,76,92,.72);box-shadow:0 8px 24px rgba(15,76,92,.15);color:#d8edef}
 .project-brand p{color:#85979b}
 .project-meta span{background:rgba(255,255,255,.03);border-color:rgba(108,139,144,.16);color:#9da9ac}
 .project-main{background:linear-gradient(135deg,rgba(15,76,92,.30),rgba(245,158,11,.08));border-color:rgba(245,158,11,.22);color:#eef6f6}
 .project-main:hover{background:linear-gradient(135deg,rgba(15,76,92,.42),rgba(245,158,11,.13));border-color:rgba(245,158,11,.36)}
 .icon-button{border-color:rgba(108,139,144,.20);color:#9ba9ac}.icon-button:hover{border-color:rgba(245,158,11,.34);background:rgba(245,158,11,.06)}
-
 .section-grid{padding:0;border-radius:0;background:transparent;border:0;box-shadow:none}
-.area-card{
-  --accent:#0f4c5c;
-  border-color:rgba(88,112,117,.10);
-  background:linear-gradient(150deg,#080d0f 0%,#05090a 58%,#030607 100%);
-  box-shadow:0 10px 24px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.014);
-}
+.area-card{--accent:#0f4c5c;border-color:rgba(88,112,117,.10);background:linear-gradient(150deg,#080d0f 0%,#05090a 58%,#030607 100%);box-shadow:0 10px 24px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.014)}
 .area-card:nth-child(1),.area-card:nth-child(3){--accent:#4c8b96}
 .area-card:nth-child(2),.area-card:nth-child(4){--accent:#f59e0b}
 .area-card:before{opacity:.56}
-.area-card:hover{
-  border-color:color-mix(in srgb,var(--accent) 28%,transparent);
-  background:linear-gradient(150deg,#0d1719 0%,#091113 58%,#060a0b 100%);
-  box-shadow:0 12px 28px rgba(0,0,0,.22),0 0 18px color-mix(in srgb,var(--accent) 5%,transparent);
-}
+.area-card:hover{border-color:color-mix(in srgb,var(--accent) 28%,transparent);background:linear-gradient(150deg,#0d1719 0%,#091113 58%,#060a0b 100%);box-shadow:0 12px 28px rgba(0,0,0,.22),0 0 18px color-mix(in srgb,var(--accent) 5%,transparent)}
 .area-icon{background:color-mix(in srgb,var(--accent) 8%,#05090a);border-color:color-mix(in srgb,var(--accent) 20%,transparent);box-shadow:none}
 .area-arrow{opacity:.78;color:color-mix(in srgb,var(--accent) 72%,#9ca8ab)}
 .area-card small{color:color-mix(in srgb,var(--accent) 60%,#718086)}
@@ -107,3 +86,13 @@ html,body{background:#142023;color:var(--text)}
 .mobile-nav{border-bottom-color:rgba(15,76,92,.30);background:rgba(10,15,17,.97)}
 .mobile-nav a{color:#a5b0b3}
 .menu-button{border-color:rgba(95,126,132,.24);color:#c5cecf}
+
+/* Force the social block to stay obvious even if an older social-global.css is cached. */
+@media(min-width:1281px){
+  .a90-social-rail{right:18px!important;top:50%!important;bottom:auto!important;z-index:80!important;display:flex!important;flex-direction:column!important;gap:8px!important;transform:translateY(-50%)!important;padding:8px!important;border:1px solid rgba(90,139,149,.26)!important;border-radius:15px!important;background:linear-gradient(180deg,rgba(7,13,15,.96),rgba(5,10,12,.93))!important;box-shadow:0 12px 34px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.04)!important}
+  .a90-social-link{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:9px!important;width:118px!important;height:38px!important;padding:0 10px!important;border:1px solid rgba(93,128,135,.20)!important;border-radius:10px!important;color:#d6e1e3!important;opacity:1!important;transform:none!important}
+  .a90-social-link:after{content:attr(aria-label)!important;display:block!important;position:static!important;right:auto!important;top:auto!important;transform:none!important;padding:0!important;border:0!important;background:none!important;color:#b9c6c9!important;font-size:10px!important;font-weight:650!important;letter-spacing:.02em!important;white-space:nowrap!important;opacity:1!important;box-shadow:none!important}
+  .a90-social-link svg{width:18px!important;height:18px!important;display:block!important;fill:currentColor!important}
+  .a90-social-link:hover{background:linear-gradient(135deg,rgba(15,76,92,.30),rgba(245,158,11,.08))!important;border-color:rgba(245,158,11,.30)!important;color:#fff!important;transform:translateX(-2px)!important}
+  .a90-social-link:hover:after{color:#fff!important;opacity:1!important;transform:none!important}
+}
