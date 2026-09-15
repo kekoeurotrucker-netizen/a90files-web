@@ -19,6 +19,17 @@ export default {
       return new Response(text+"\n;import('/assets/security-auth.js');\n",{status:original.status,headers});
     }
 
+    if(url.pathname==='/assets/forum-app.js'){
+      const original=await env.ASSETS.fetch(request);
+      if(!original.ok)return original;
+      const text=await original.text();
+      const headers=new Headers(original.headers);
+      headers.set('Content-Type','application/javascript; charset=utf-8');
+      headers.set('Cache-Control','no-cache, no-store, must-revalidate');
+      const extra="\n;(()=>{if(!document.querySelector('link[data-forum-rich]')){const l=document.createElement('link');l.rel='stylesheet';l.href='/assets/forum-rich.css';l.dataset.forumRich='1';document.head.append(l)}import('/assets/forum-rich.js');})();\n";
+      return new Response(text+extra,{status:original.status,headers});
+    }
+
     const health=await handleHealth(request,env,url);
     if(health)return hardenApi(health);
 
