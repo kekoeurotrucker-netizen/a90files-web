@@ -19,8 +19,14 @@ export async function handleSecurityAuth(request,env,url,authWorker){
     return authWorker.fetch(request,env);
   }
   if(url.pathname==='/api/auth/mfa/status'&&request.method==='GET')return mfaStatus(request,env);
-  if(url.pathname==='/api/auth/mfa/enroll'&&request.method==='POST')return mfaEnroll(request,env);
-  if(url.pathname==='/api/auth/mfa/verify'&&request.method==='POST')return mfaVerify(request,env);
+  if(url.pathname==='/api/auth/mfa/enroll'&&request.method==='POST'){
+    if(!sameOrigin(request,url))return json({error:'Solicitud rechazada.'},403);
+    return mfaEnroll(request,env);
+  }
+  if(url.pathname==='/api/auth/mfa/verify'&&request.method==='POST'){
+    if(!sameOrigin(request,url))return json({error:'Solicitud rechazada.'},403);
+    return mfaVerify(request,env);
+  }
   return null;
 }
 
