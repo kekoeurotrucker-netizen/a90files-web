@@ -1,0 +1,97 @@
+:root{
+  --bg:#111619;
+  --bg2:#182124;
+  --panel:#13272b;
+  --panel2:#0f1d20;
+  --text:#f2f3f2;
+  --muted:#9aa5a9;
+  --line:rgba(107,139,145,.24);
+  --cyan:#0f4c5c;
+  --cyan2:#71aeb5;
+  --blue:#f59e0b;
+  --amber:#f59e0b;
+  --coral:#d98b2b;
+  --violet:#b59a67;
+  --white:#fff;
+}
+
+body{background:var(--bg);color:var(--text)}
+.home{
+  background:
+    radial-gradient(circle at 12% 5%,rgba(15,76,92,.38),transparent 31%),
+    radial-gradient(circle at 88% 10%,rgba(245,158,11,.10),transparent 25%),
+    radial-gradient(circle at 96% 92%,rgba(15,76,92,.16),transparent 25%),
+    linear-gradient(145deg,#111619 0%,#172124 48%,#101619 100%);
+}
+.ambient{
+  background-image:
+    linear-gradient(rgba(149,177,181,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(149,177,181,.025) 1px,transparent 1px);
+}
+.topbar{border-bottom-color:rgba(15,76,92,.42);background:rgba(15,20,22,.92)}
+.brand-mark{
+  background:linear-gradient(145deg,#17343a,#111d20);
+  border-color:rgba(15,76,92,.78);
+  box-shadow:0 0 24px rgba(15,76,92,.22),inset 0 1px 0 rgba(255,255,255,.07);
+  color:#d9ecee;
+}
+.brand-copy small{color:#829095}
+.nav a{color:#a9b0b3}
+.nav a:hover{background:rgba(15,76,92,.22);color:#fff}
+.nav a.active{
+  background:linear-gradient(135deg,rgba(15,76,92,.34),rgba(245,158,11,.10));
+  color:#fff7e8;
+  box-shadow:inset 0 0 0 1px rgba(245,158,11,.20);
+}
+.header-status{border-color:rgba(15,76,92,.55);color:#9eaaad}
+.header-status span,.live-dot{background:#f59e0b;box-shadow:0 0 12px rgba(245,158,11,.72)}
+.panel{
+  border-color:rgba(92,128,134,.24);
+  background:linear-gradient(155deg,rgba(20,43,47,.98),rgba(15,23,26,.98));
+  box-shadow:0 16px 40px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.035);
+}
+.hero-panel:after,.project-panel:before{background:linear-gradient(90deg,#0f4c5c,#f59e0b,transparent)}
+.panel-glow{background:radial-gradient(circle,rgba(15,76,92,.28),rgba(245,158,11,.055) 43%,transparent 70%)}
+.eyebrow{color:#8fa7aa}
+.eyebrow span{background:linear-gradient(90deg,#0f4c5c,#f59e0b)}
+.hero-content h1 em{color:#c5ccce}
+.hero-content p,.project-copy{color:#abb5b8}
+.button{border-color:rgba(112,139,144,.24)}
+.button.primary{
+  background:linear-gradient(135deg,#f59e0b,#d98b2b);
+  color:#17120a;
+  box-shadow:0 8px 24px rgba(245,158,11,.20);
+}
+.button.primary:hover{box-shadow:0 10px 28px rgba(245,158,11,.30)}
+.button.secondary{background:rgba(255,255,255,.035);color:#c7cdcf}
+.button.secondary:hover{border-color:rgba(245,158,11,.38);background:rgba(245,158,11,.07);color:#fff}
+.mini-stats{color:#87979b}.mini-stats b{color:#e9b854}.mini-stats i{background:rgba(126,151,155,.22)}
+.project-panel{background:linear-gradient(160deg,rgba(19,43,47,.99),rgba(14,22,25,.99))}
+.project-label{color:#91a4a7}
+.project-state{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.25);color:#f1bd65}
+.vp-mark{
+  background:linear-gradient(145deg,#17424b,#11272c);
+  border-color:rgba(15,76,92,.85);
+  box-shadow:0 8px 24px rgba(15,76,92,.20);
+  color:#d8edef;
+}
+.project-brand p{color:#85979b}
+.project-meta span{background:rgba(255,255,255,.035);border-color:rgba(108,139,144,.18);color:#9da9ac}
+.project-main{background:linear-gradient(135deg,rgba(15,76,92,.42),rgba(245,158,11,.10));border-color:rgba(245,158,11,.24);color:#eef6f6}
+.project-main:hover{background:linear-gradient(135deg,rgba(15,76,92,.56),rgba(245,158,11,.16));border-color:rgba(245,158,11,.40)}
+.icon-button{border-color:rgba(108,139,144,.22);color:#9ba9ac}.icon-button:hover{border-color:rgba(245,158,11,.38);background:rgba(245,158,11,.07)}
+.area-card{
+  --accent:#0f4c5c;
+  border-color:rgba(95,126,132,.22);
+  background:linear-gradient(145deg,rgba(20,39,42,.98),rgba(14,22,25,.98));
+}
+.area-card:nth-child(1),.area-card:nth-child(3){--accent:#4c8b96}
+.area-card:nth-child(2),.area-card:nth-child(4){--accent:#f59e0b}
+.area-card:hover{background:linear-gradient(145deg,rgba(23,48,52,.99),rgba(16,26,29,.99))}
+.area-card p{color:#9ca8ab}
+.area-arrow{color:color-mix(in srgb,var(--accent) 72%,#9ca8ab)}
+.area-card small{color:color-mix(in srgb,var(--accent) 76%,#89979b)}
+.footer{color:#74868a}.footer a:hover{color:#f0b955}
+.mobile-nav{border-bottom-color:rgba(15,76,92,.35);background:rgba(15,20,22,.97)}
+.mobile-nav a{color:#a5b0b3}
+.menu-button{border-color:rgba(95,126,132,.26);color:#c5cecf}
