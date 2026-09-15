@@ -1,0 +1,109 @@
+name: Production smoke tests
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-smoke
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      BASE_URL: https://a90files-web.a90files.workers.dev
+    steps:
+      - name: Check public pages, auth gates and security headers
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          tmp="$(mktemp -d)"
+          trap 'rm -rf "$tmp"' EXIT
+
+          request() {
+            local name="$1"; shift
+            curl --fail-with-body --silent --show-error \
+              --connect-timeout 10 --max-time 25 \
+              -D "$tmp/$name.headers" -o "$tmp/$name.body" "$@"
+          }
+
+          status_request() {
+            local name="$1"; shift
+            curl --silent --show-error \
+              --connect-timeout 10 --max-time 25 \
+              -D "$tmp/$name.headers" -o "$tmp/$name.body" \
+              -w '%{http_code}' "$@"
+          }
+
+          echo '1/8 Health endpoint'
+          request health "$BASE_URL/api/health"
+          grep -Eq '"ok"[[:space:]]*:[[:space:]]*true' "$tmp/health.body"
+          grep -Eq '"service"[[:space:]]*:[[:space:]]*"a90files-web"' "$tmp/health.body"
+
+          echo '2/8 Public pages'
+          for path in / /software/ /juegos/ /canal/ /soporte/ /foro/; do
+            code="$(curl --silent --show-error --output /dev/null --connect-timeout 10 --max-time 25 --write-out '%{http_code}' "$BASE_URL$path")"
+            test "$code" = '200' || { echo "Unexpected $code for $path"; exit 1; }
+          done
+
+          echo '3/8 Anonymous session and forum board'
+          request session "$BASE_URL/api/auth/session"
+          grep -Eq '"authenticated"[[:space:]]*:[[:space:]]*false' "$tmp/session.body"
+          request board "$BASE_URL/api/forum/board"
+          grep -q '"categories"' "$tmp/board.body"
+
+          echo '4/8 Turnstile frontend is deployed'
+          request turnstile "$BASE_URL/assets/security-auth.js"
+          grep -q 'challenges.cloudflare.com/turnstile/v0/api.js' "$tmp/turnstile.body"
+          grep -q 'turnstile_token' "$tmp/turnstile.body"
+          grep -q 'action:kind' "$tmp/turnstile.body"
+
+          echo '5/8 Login rejects missing Turnstile token'
+          code="$(status_request no_turnstile \
+            -X POST "$BASE_URL/api/auth/login" \
+            -H "Origin: $BASE_URL" \
+            -H 'Content-Type: application/json' \
+            --data '{"email":"smoke-test@example.invalid","password":"SmokeTestPassword123!"}')"
+          test "$code" = '400' || { cat "$tmp/no_turnstile.body"; echo "Expected 400, got $code"; exit 1; }
+          grep -qi 'anti-bot' "$tmp/no_turnstile.body"
+
+          echo '6/8 Cross-origin POST is rejected'
+          code="$(status_request csrf \
+            -X POST "$BASE_URL/api/auth/login" \
+            -H 'Origin: https://evil.example' \
+            -H 'Content-Type: application/json' \
+            --data '{"email":"smoke-test@example.invalid","password":"SmokeTestPassword123!","turnstile_token":"not-a-real-turnstile-token"}')"
+          test "$code" = '403' || { cat "$tmp/csrf.body"; echo "Expected 403, got $code"; exit 1; }
+
+          echo '7/8 Method and authorization gates'
+          code="$(status_request method -X PUT "$BASE_URL/api/forum/topic")"
+          test "$code" = '405' || { cat "$tmp/method.body"; echo "Expected 405, got $code"; exit 1; }
+
+          code="$(status_request mod "$BASE_URL/api/mod/reports")"
+          test "$code" = '401' || { cat "$tmp/mod.body"; echo "Expected 401, got $code"; exit 1; }
+
+          code="$(status_request forum_write \
+            -X POST "$BASE_URL/api/forum/topic" \
+            -H "Origin: $BASE_URL" \
+            -H 'Content-Type: application/json' \
+            --data '{"category_id":2,"title":"Smoke test","body":"This must never be written because the request is anonymous."}')"
+          test "$code" = '401' || { cat "$tmp/forum_write.body"; echo "Expected 401, got $code"; exit 1; }
+
+          echo '8/8 Static security headers'
+          request home "$BASE_URL/"
+          tr -d '\r' < "$tmp/home.headers" > "$tmp/home.headers.clean"
+          grep -Eqi '^strict-transport-security:[[:space:]]*max-age=' "$tmp/home.headers.clean"
+          grep -Eqi '^x-frame-options:[[:space:]]*DENY$' "$tmp/home.headers.clean"
+          grep -Eqi '^x-content-type-options:[[:space:]]*nosniff$' "$tmp/home.headers.clean"
+          grep -Eqi '^content-security-policy:.*challenges\.cloudflare\.com' "$tmp/home.headers.clean"
+
+          echo 'Production smoke tests passed.'
