@@ -6,7 +6,13 @@ import {handleHealth} from './health.js';
 import {handleSecurityAuth} from './security-auth-api.js';
 
 const FORUM_BUILD='20260916-forum-polish-1';
-const GLOBAL_BUILD='20260916-social-1';
+const GLOBAL_BUILD='20260916-social-2';
+const SOCIAL_RAIL=`<nav class="a90-social-rail" aria-label="Redes sociales de A 90 por Hora">
+<a class="a90-social-link" href="https://www.facebook.com/a90porhorafb/?locale=es_ES" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.414c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.97H15.83c-1.491 0-1.956.931-1.956 1.887v2.264h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg></a>
+<a class="a90-social-link" href="https://www.instagram.com/a90porhora/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.849.07 1.17.053 1.805.249 2.227.413a4.412 4.412 0 0 1 1.608 1.045 4.412 4.412 0 0 1 1.045 1.608c.164.422.36 1.057.413 2.227.058 1.265.07 1.645.07 4.849s-.012 3.584-.07 4.849c-.053 1.17-.249 1.805-.413 2.227a4.412 4.412 0 0 1-1.045 1.608 4.412 4.412 0 0 1-1.608 1.045c-.422.164-1.057.36-2.227.413-1.265.058-1.645.07-4.849.07s-3.584-.012-4.849-.07c-1.17-.053-1.805-.249-2.227-.413a4.412 4.412 0 0 1-1.608-1.045 4.412 4.412 0 0 1-1.045-1.608c-.164-.422-.36-1.057-.413-2.227-.058-1.265-.07-1.645-.07-4.849s.012-3.584.07-4.849c.053-1.17.249-1.805.413-2.227A4.412 4.412 0 0 1 3.691 3.316 4.412 4.412 0 0 1 5.299 2.271c.422-.164 1.057-.36 2.227-.413C8.416 2.175 8.796 2.163 12 2.163zm0 3.675A6.162 6.162 0 1 0 12 18.162 6.162 6.162 0 0 0 12 5.838zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-10.605a1.44 1.44 0 1 1 0 2.88 1.44 1.44 0 0 1 0-2.88z"/></svg></a>
+<a class="a90-social-link" href="https://www.youtube.com/@A90PorHora" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.016 3.016 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.016 3.016 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+<a class="a90-social-link" href="https://www.tiktok.com/@a90porhora" target="_blank" rel="noopener noreferrer" aria-label="TikTok" title="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94a7.95 7.95 0 0 1-4.28 3.05c-1.36.37-2.84.39-4.2.04-1.55-.39-2.96-1.23-4.03-2.41A8.08 8.08 0 0 1 .68 16.6c-.02-.85-.01-1.7-.01-2.55.17-1.85.89-3.65 2.18-5a7.9 7.9 0 0 1 4.62-2.34c.83-.08 1.67-.06 2.5-.02v4.16c-.83-.27-1.78-.2-2.57.16a3.49 3.49 0 0 0-1.88 2.14c-.2.49-.14 1.03-.13 1.55.2 1.42 1.57 2.61 3.01 2.48.96-.01 1.88-.57 2.38-1.38.16-.28.35-.57.36-.9.09-1.62.05-3.24.06-4.87.01-3.67-.01-7.34.02-11.01.44.01.88.01 1.31 0z"/></svg></a>
+</nav>`;
 
 export default {
   async fetch(request,env,ctx){
@@ -35,7 +41,7 @@ export default {
       const headers=new Headers(original.headers);
       headers.set('Content-Type','text/html; charset=utf-8');
       headers.set('Cache-Control','no-cache, no-store, must-revalidate');
-      return hardenStatic(await injectGlobalUi(new Response(html,{status:original.status,statusText:original.statusText,headers})));
+      return hardenStatic(await injectGlobalUi(new Response(html,{status:original.status,statusText:original.statusText,headers}),true));
     }
 
     const health=await handleHealth(request,env,url);
@@ -63,18 +69,19 @@ export default {
 
     const response=await authWorker.fetch(request,env,ctx);
     if(url.pathname.startsWith('/api/'))return hardenApi(response);
-    return hardenStatic(await injectGlobalUi(response));
+    const pageRoute=url.pathname==='/'||url.pathname.endsWith('/');
+    return hardenStatic(await injectGlobalUi(response,pageRoute));
   }
 };
 
-async function injectGlobalUi(response){
+async function injectGlobalUi(response,force=false){
   const type=response.headers.get('Content-Type')||'';
-  if(!type.includes('text/html'))return response;
+  if(!force&&!type.includes('text/html'))return response;
   let html=await response.text();
+  if(!html.includes('</body>')&&!html.includes('</head>'))return response;
   const stylesheet=`<link rel="stylesheet" href="/assets/social-global.css?v=${GLOBAL_BUILD}">`;
-  const script=`<script src="/assets/social-global.js?v=${GLOBAL_BUILD}" defer></script>`;
   if(!html.includes('/assets/social-global.css'))html=html.replace('</head>',`${stylesheet}\n</head>`);
-  if(!html.includes('/assets/social-global.js'))html=html.replace('</body>',`${script}\n</body>`);
+  if(!html.includes('class="a90-social-rail"'))html=html.replace('</body>',`${SOCIAL_RAIL}\n</body>`);
   const headers=new Headers(response.headers);
   headers.set('Content-Type','text/html; charset=utf-8');
   return new Response(html,{status:response.status,statusText:response.statusText,headers});
