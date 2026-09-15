@@ -75,6 +75,13 @@ function enhanceMarkup(root=document){
   });
 }
 
+function enhanceForumIntro(){
+  const intro=document.querySelector('.forum-intro p');
+  if(!intro||intro.dataset.communityIntro)return;
+  intro.dataset.communityIntro='1';
+  intro.textContent='Este es el espacio de la comunidad A 90: habla de VaultPool, software, juegos y contenidos, comparte tus propios proyectos, pide feedback, busca colaboradores y ayuda a otros usuarios. Da igual si estás empezando o si ya tienes algo publicado: aquí la idea es enseñar, probar, aprender y mejorar juntos.';
+}
+
 function insert(textarea,before,after=''){
   const s=textarea.selectionStart,e=textarea.selectionEnd,sel=textarea.value.slice(s,e);
   textarea.setRangeText(before+sel+after,s,e,'end');textarea.focus();textarea.dispatchEvent(new Event('input',{bubbles:true}));
@@ -110,7 +117,7 @@ function enhanceToolbar(bar){
   );
 }
 
-function scan(root=document){enhanceMarkup(root);root.querySelectorAll?.('.forum-live-toolbar,.editor-toolbar').forEach(enhanceToolbar)}
+function scan(root=document){enhanceForumIntro();enhanceMarkup(root);root.querySelectorAll?.('.forum-live-toolbar,.editor-toolbar').forEach(enhanceToolbar)}
 
 const observer=new MutationObserver(muts=>{for(const m of muts)for(const n of m.addedNodes)if(n.nodeType===1)scan(n)});
 observer.observe(document.documentElement,{childList:true,subtree:true});
