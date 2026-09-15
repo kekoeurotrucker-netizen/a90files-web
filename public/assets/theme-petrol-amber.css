@@ -95,3 +95,25 @@ body{background:var(--bg);color:var(--text)}
 .mobile-nav{border-bottom-color:rgba(15,76,92,.35);background:rgba(15,20,22,.97)}
 .mobile-nav a{color:#a5b0b3}
 .menu-button{border-color:rgba(95,126,132,.26);color:#c5cecf}
+
+/* Darker lower section: keep the hero untouched and let the lower cards recede. */
+.area-card{
+  border-color:rgba(95,126,132,.13);
+  background:linear-gradient(145deg,rgba(9,24,27,.99),rgba(5,13,16,.995));
+}
+.area-card:before{opacity:.72}
+.area-card:hover{
+  border-color:color-mix(in srgb,var(--accent) 30%,transparent);
+  background:linear-gradient(145deg,rgba(11,30,33,.995),rgba(6,16,19,.998));
+  box-shadow:0 10px 24px color-mix(in srgb,var(--accent) 8%,transparent);
+}
+.area-icon{
+  background:color-mix(in srgb,var(--accent) 9%,transparent);
+  border-color:color-mix(in srgb,var(--accent) 22%,transparent);
+  box-shadow:none;
+}
+.area-card small{color:color-mix(in srgb,var(--accent) 62%,#74868a)}
+.area-card h2{color:#e6ebec}
+.area-card p{color:#7f9094}
+.footer{color:#5f7074}
+.footer a:hover{color:#c88b1d}
