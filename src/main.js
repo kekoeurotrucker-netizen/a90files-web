@@ -5,6 +5,8 @@ import {handleExtraAuth} from './oauth-extra.js';
 import {handleHealth} from './health.js';
 import {handleSecurityAuth} from './security-auth-api.js';
 
+const FORUM_BUILD='20260915-rich2';
+
 export default {
   async fetch(request,env,ctx){
     const url=new URL(request.url);
@@ -19,15 +21,20 @@ export default {
       return new Response(text+"\n;import('/assets/security-auth.js');\n",{status:original.status,headers});
     }
 
-    if(url.pathname==='/assets/forum-app.js'){
+    if(url.pathname==='/foro/'||url.pathname.startsWith('/foro/')){
       const original=await env.ASSETS.fetch(request);
-      if(!original.ok)return original;
-      const text=await original.text();
+      if(!original.ok)return hardenStatic(original);
+      const type=original.headers.get('Content-Type')||'';
+      if(!type.includes('text/html'))return hardenStatic(original);
+      let html=await original.text();
+      const styles=`\n<link rel="stylesheet" href="/assets/forum-live.css?v=${FORUM_BUILD}">\n<link rel="stylesheet" href="/assets/forum-mod.css?v=${FORUM_BUILD}">\n<link rel="stylesheet" href="/assets/forum-rich.css?v=${FORUM_BUILD}">\n`;
+      const scripts=`\n<script src="/assets/forum-app.js?v=${FORUM_BUILD}" defer></script>\n<script src="/assets/forum-mod.js?v=${FORUM_BUILD}" defer></script>\n<script src="/assets/forum-rich.js?v=${FORUM_BUILD}" defer></script>\n`;
+      if(!html.includes(`/assets/forum-rich.css?v=${FORUM_BUILD}`))html=html.replace('</head>',styles+'</head>');
+      if(!html.includes(`/assets/forum-rich.js?v=${FORUM_BUILD}`))html=html.replace('</body>',scripts+'</body>');
       const headers=new Headers(original.headers);
-      headers.set('Content-Type','application/javascript; charset=utf-8');
+      headers.set('Content-Type','text/html; charset=utf-8');
       headers.set('Cache-Control','no-cache, no-store, must-revalidate');
-      const extra="\n;(()=>{if(!document.querySelector('link[data-forum-rich]')){const l=document.createElement('link');l.rel='stylesheet';l.href='/assets/forum-rich.css';l.dataset.forumRich='1';document.head.append(l)}import('/assets/forum-rich.js');})();\n";
-      return new Response(text+extra,{status:original.status,headers});
+      return hardenStatic(new Response(html,{status:original.status,statusText:original.statusText,headers}));
     }
 
     const health=await handleHealth(request,env,url);
