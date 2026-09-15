@@ -33,13 +33,20 @@ function openTag(tag,arg){
     if(tag==='button')a.className='forum-rich-button';
     return a;
   }
+  if(tag==='img'){
+    const src=safeUrl(arg);if(!src)return null;
+    const img=document.createElement('img');
+    img.className='forum-rich-image';img.src=src;img.alt='Imagen del tema';img.loading='lazy';img.decoding='async';
+    img.style.cssText='display:block;width:auto;max-width:100%;max-height:760px;margin:12px auto;border-radius:14px;border:1px solid rgba(105,174,196,.18);background:#041821;box-shadow:0 12px 32px rgba(0,0,0,.20);object-fit:contain';
+    return img;
+  }
   return null;
 }
 
 function parseBbcode(text){
   const frag=document.createDocumentFragment();
   const stack=[{tag:null,node:frag}];
-  const re=/\[(\/)?(b|i|u|s|center|quote|code|spoiler|h2|h3|color|size|url|button)(?:=([^\]\n]+))?\]/ig;
+  const re=/\[(\/)?(b|i|u|s|center|quote|code|spoiler|h2|h3|color|size|url|button|img)(?:=([^\]\n]+))?\]/ig;
   let last=0;
   for(const m of text.matchAll(re)){
     const current=stack[stack.length-1].node;
@@ -50,7 +57,7 @@ function parseBbcode(text){
       else appendText(current,m[0]);
     }else{
       const node=openTag(tag,arg);
-      if(node){current.appendChild(node);stack.push({tag,node});}
+      if(node){current.appendChild(node);if(tag!=='img')stack.push({tag,node});}
       else appendText(current,m[0]);
     }
     last=m.index+m[0].length;
@@ -61,7 +68,7 @@ function parseBbcode(text){
 
 function transformTextNode(node){
   const text=node.nodeValue||'';
-  if(!/\[(?:\/?)(?:b|i|u|s|center|quote|code|spoiler|h2|h3|color|size|url|button)(?:=|\])/i.test(text))return;
+  if(!/\[(?:\/?)(?:b|i|u|s|center|quote|code|spoiler|h2|h3|color|size|url|button|img)(?:=|\])/i.test(text))return;
   node.replaceWith(parseBbcode(text));
 }
 
@@ -96,7 +103,7 @@ function showHelp(){
   const close=tool('×','Cerrar ayuda',()=>overlay.remove());close.className='forum-rich-help-close';
   const h=document.createElement('h2');h.textContent='Formato del foro';
   const p=document.createElement('p');p.textContent='Puedes usar los botones del editor o escribir BBCode seguro directamente. El HTML crudo nunca se ejecuta.';
-  const pre=document.createElement('pre');pre.textContent='[b]Negrita[/b]\n[i]Cursiva[/i]\n[u]Subrayado[/u]\n[h2]Título[/h2]\n[center]Centrado[/center]\n[color=#49d7e6]Color[/color]\n[quote]Cita[/quote]\n[spoiler]Spoiler[/spoiler]\n[url=https://ejemplo.com]Enlace[/url]\n[button=https://ejemplo.com]Botón[/button]';
+  const pre=document.createElement('pre');pre.textContent='[b]Negrita[/b]\n[i]Cursiva[/i]\n[u]Subrayado[/u]\n[h2]Título[/h2]\n[center]Centrado[/center]\n[color=#49d7e6]Color[/color]\n[quote]Cita[/quote]\n[spoiler]Spoiler[/spoiler]\n[url=https://ejemplo.com]Enlace[/url]\n[button=https://ejemplo.com]Botón[/button]\n[img=https://ejemplo.com/imagen.jpg]';
   card.append(close,h,p,pre);overlay.append(card);overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()});document.body.append(overlay);close.focus();
 }
 
@@ -110,6 +117,7 @@ function enhanceToolbar(bar){
     tool('Título','Título destacado',()=>insert(ta,'[h2]','[/h2]')),
     tool('Cita','Cita',()=>insert(ta,'[quote]','[/quote]')),
     tool('Centrar','Centrar texto',()=>insert(ta,'[center]','[/center]')),
+    tool('Imagen','Insertar imagen por URL',()=>{const url=ask('URL de la imagen:','https://');if(!url||!safeUrl(url))return;insert(ta,`[img=${url}]`,'')}),
     tool('Botón','Insertar botón con enlace',()=>{const url=ask('URL del botón:','https://');if(!url||!safeUrl(url))return;const label=ask('Texto del botón:','Abrir enlace');if(label===null)return;insert(ta,`[button=${url}]${label||'Abrir enlace'}[/button]`)}),
     tool('Color','Color del texto',()=>{const color=ask('Color (#RRGGBB o nombre CSS):','#49d7e6');if(!color)return;insert(ta,`[color=${color}]`,'[/color]')}),
     tool('Enlace','Insertar enlace',()=>{const url=ask('URL:','https://');if(!url||!safeUrl(url))return;const label=ask('Texto del enlace:','Enlace');if(label===null)return;insert(ta,`[url=${url}]${label||url}[/url]`)}),
