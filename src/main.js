@@ -4,8 +4,9 @@ import {handleModApi} from './mod-api-secure.js';
 import {handleExtraAuth} from './oauth-extra.js';
 import {handleHealth} from './health.js';
 import {handleSecurityAuth} from './security-auth-api.js';
+import {handleCommunityProjectsSetup} from './community-projects-setup.js';
 
-const FORUM_BUILD='20260915-rich2';
+const FORUM_BUILD='20260915-community-projects';
 
 export default {
   async fetch(request,env,ctx){
@@ -28,9 +29,9 @@ export default {
       if(!type.includes('text/html'))return hardenStatic(original);
       let html=await original.text();
       const styles=`\n<link rel="stylesheet" href="/assets/forum-live.css?v=${FORUM_BUILD}">\n<link rel="stylesheet" href="/assets/forum-mod.css?v=${FORUM_BUILD}">\n<link rel="stylesheet" href="/assets/forum-rich.css?v=${FORUM_BUILD}">\n`;
-      const scripts=`\n<script src="/assets/forum-app.js?v=${FORUM_BUILD}" defer></script>\n<script src="/assets/forum-mod.js?v=${FORUM_BUILD}" defer></script>\n<script src="/assets/forum-rich.js?v=${FORUM_BUILD}" defer></script>\n`;
+      const scripts=`\n<script src="/assets/forum-app.js?v=${FORUM_BUILD}" defer></script>\n<script src="/assets/forum-mod.js?v=${FORUM_BUILD}" defer></script>\n<script src="/assets/forum-rich.js?v=${FORUM_BUILD}" defer></script>\n<script src="/assets/forum-community-intro.js?v=${FORUM_BUILD}" defer></script>\n`;
       if(!html.includes(`/assets/forum-rich.css?v=${FORUM_BUILD}`))html=html.replace('</head>',styles+'</head>');
-      if(!html.includes(`/assets/forum-rich.js?v=${FORUM_BUILD}`))html=html.replace('</body>',scripts+'</body>');
+      if(!html.includes(`/assets/forum-community-intro.js?v=${FORUM_BUILD}`))html=html.replace('</body>',scripts+'</body>');
       const headers=new Headers(original.headers);
       headers.set('Content-Type','text/html; charset=utf-8');
       headers.set('Cache-Control','no-cache, no-store, must-revalidate');
@@ -48,6 +49,9 @@ export default {
 
     const extraAuth=await handleExtraAuth(request,env,url);
     if(extraAuth)return hardenApi(extraAuth);
+
+    const communitySetup=await handleCommunityProjectsSetup(request,env,url);
+    if(communitySetup)return hardenApi(communitySetup);
 
     if(url.pathname.startsWith('/api/mod/')){
       if(!['GET','POST'].includes(request.method)) return hardenApi(json({error:'Método no permitido.'},405));
