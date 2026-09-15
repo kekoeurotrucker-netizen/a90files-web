@@ -4,7 +4,6 @@ import {handleModApi} from './mod-api-secure.js';
 import {handleExtraAuth} from './oauth-extra.js';
 import {handleHealth} from './health.js';
 import {handleSecurityAuth} from './security-auth-api.js';
-import {handleCommunityProjectsSetup} from './community-projects-setup.js';
 
 const FORUM_BUILD='20260915-community-projects';
 
@@ -49,9 +48,6 @@ export default {
 
     const extraAuth=await handleExtraAuth(request,env,url);
     if(extraAuth)return hardenApi(extraAuth);
-
-    const communitySetup=await handleCommunityProjectsSetup(request,env,url);
-    if(communitySetup)return hardenApi(communitySetup);
 
     if(url.pathname.startsWith('/api/mod/')){
       if(!['GET','POST'].includes(request.method)) return hardenApi(json({error:'Método no permitido.'},405));
