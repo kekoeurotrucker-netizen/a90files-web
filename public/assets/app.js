@@ -6,7 +6,7 @@ addStylesheet('/assets/auth.css');
 addStylesheet('/assets/auth-icons.css');
 addStylesheet('/assets/auth-extra.css');
 addStylesheet('/assets/software-menu.css');
-addStylesheet('/assets/social-global.css?v=20260916-social-2');
+addStylesheet('/assets/social-global.css?v=20260916-social-3');
 
 const softwareProjects=[
   {href:'/software/vaultpool/',name:'VaultPool Storage',meta:'Multinube local · Windows',mark:'VP',key:'vaultpool'},
@@ -21,6 +21,6 @@ const topbarInner=document.querySelector('.topbar-inner');if(topbarInner&&!docum
 
 const providerGrid=document.querySelector('.provider-grid');if(providerGrid){const names=['google','facebook','x','discord','github','email'];providerGrid.querySelectorAll(':scope > span').forEach((item,index)=>{const name=names[index];if(!name)return;item.classList.add('provider-item',`provider-${name}`);if(name==='x'){item.textContent='';item.setAttribute('aria-label','X');}})}
 
-addScript('/assets/social-global.js?v=20260916-social-2');
+addScript('/assets/social-global.js?v=20260916-social-3');
 addScript('/assets/auth.js');
 addScript('/assets/auth-extra.js');
