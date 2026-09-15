@@ -12,4 +12,3 @@ const providerGrid=document.querySelector('.provider-grid');if(providerGrid){con
 
 addScript('/assets/auth.js');
 addScript('/assets/auth-extra.js');
-if(document.body.classList.contains('forum-page')){addStylesheet('/assets/forum-live.css');addStylesheet('/assets/forum-mod.css');addScript('/assets/forum-app.js');addScript('/assets/forum-mod.js')}
