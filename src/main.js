@@ -6,6 +6,7 @@ import {handleHealth} from './health.js';
 import {handleSecurityAuth} from './security-auth-api.js';
 
 const FORUM_BUILD='20260915-community-projects';
+const GLOBAL_BUILD='20260916-social-1';
 
 export default {
   async fetch(request,env,ctx){
@@ -34,7 +35,7 @@ export default {
       const headers=new Headers(original.headers);
       headers.set('Content-Type','text/html; charset=utf-8');
       headers.set('Cache-Control','no-cache, no-store, must-revalidate');
-      return hardenStatic(new Response(html,{status:original.status,statusText:original.statusText,headers}));
+      return hardenStatic(await injectGlobalUi(new Response(html,{status:original.status,statusText:original.statusText,headers})));
     }
 
     const health=await handleHealth(request,env,url);
@@ -62,9 +63,22 @@ export default {
 
     const response=await authWorker.fetch(request,env,ctx);
     if(url.pathname.startsWith('/api/'))return hardenApi(response);
-    return hardenStatic(response);
+    return hardenStatic(await injectGlobalUi(response));
   }
 };
+
+async function injectGlobalUi(response){
+  const type=response.headers.get('Content-Type')||'';
+  if(!type.includes('text/html'))return response;
+  let html=await response.text();
+  const stylesheet=`<link rel="stylesheet" href="/assets/social-global.css?v=${GLOBAL_BUILD}">`;
+  const script=`<script src="/assets/social-global.js?v=${GLOBAL_BUILD}" defer></script>`;
+  if(!html.includes('/assets/social-global.css'))html=html.replace('</head>',`${stylesheet}\n</head>`);
+  if(!html.includes('/assets/social-global.js'))html=html.replace('</body>',`${script}\n</body>`);
+  const headers=new Headers(response.headers);
+  headers.set('Content-Type','text/html; charset=utf-8');
+  return new Response(html,{status:response.status,statusText:response.statusText,headers});
+}
 
 async function normalizeMfaEnrollResponse(response){
   if(!response.ok)return response;
