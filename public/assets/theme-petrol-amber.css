@@ -96,24 +96,27 @@ body{background:var(--bg);color:var(--text)}
 .mobile-nav a{color:#a5b0b3}
 .menu-button{border-color:rgba(95,126,132,.26);color:#c5cecf}
 
-/* Darker lower section: keep the hero untouched and let the lower cards recede. */
+/* Lower homepage zone: deliberately much darker than the hero. */
 .area-card{
-  border-color:rgba(95,126,132,.13);
-  background:linear-gradient(145deg,rgba(9,24,27,.99),rgba(5,13,16,.995));
+  border-color:rgba(88,112,117,.09);
+  background:linear-gradient(150deg,#080d0f 0%,#05090a 58%,#030607 100%);
+  box-shadow:0 12px 30px rgba(0,0,0,.26),inset 0 1px 0 rgba(255,255,255,.018);
 }
-.area-card:before{opacity:.72}
+.area-card:before{opacity:.48}
 .area-card:hover{
-  border-color:color-mix(in srgb,var(--accent) 30%,transparent);
-  background:linear-gradient(145deg,rgba(11,30,33,.995),rgba(6,16,19,.998));
-  box-shadow:0 10px 24px color-mix(in srgb,var(--accent) 8%,transparent);
+  border-color:color-mix(in srgb,var(--accent) 24%,transparent);
+  background:linear-gradient(150deg,#0c1517 0%,#081012 58%,#05090a 100%);
+  box-shadow:0 14px 30px rgba(0,0,0,.34),0 0 20px color-mix(in srgb,var(--accent) 5%,transparent);
 }
 .area-icon{
-  background:color-mix(in srgb,var(--accent) 9%,transparent);
-  border-color:color-mix(in srgb,var(--accent) 22%,transparent);
+  background:color-mix(in srgb,var(--accent) 7%,#05090a);
+  border-color:color-mix(in srgb,var(--accent) 18%,transparent);
   box-shadow:none;
 }
-.area-card small{color:color-mix(in srgb,var(--accent) 62%,#74868a)}
-.area-card h2{color:#e6ebec}
-.area-card p{color:#7f9094}
-.footer{color:#5f7074}
-.footer a:hover{color:#c88b1d}
+.area-arrow{opacity:.72}
+.area-card small{color:color-mix(in srgb,var(--accent) 54%,#69767a)}
+.area-card h2{color:#dce1e2}
+.area-card p{color:#6d7a7e}
+.footer{color:#526064}
+.footer a{color:#617075}
+.footer a:hover{color:#b87c18}
