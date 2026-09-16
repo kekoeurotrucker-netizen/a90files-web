@@ -21,6 +21,31 @@ const topbarInner=document.querySelector('.topbar-inner');if(topbarInner&&!docum
 
 const providerGrid=document.querySelector('.provider-grid');if(providerGrid){const names=['google','facebook','x','discord','github','email'];providerGrid.querySelectorAll(':scope > span').forEach((item,index)=>{const name=names[index];if(!name)return;item.classList.add('provider-item',`provider-${name}`);if(name==='x'){item.textContent='';item.setAttribute('aria-label','X');}})}
 
+const vaultPoolPublicBase='https://ugwdxcmmxeqzoxgdofkd.supabase.co/storage/v1/object/public/vaultpool-public/';
+const vaultPoolPublicMap=new Map([
+  ['/assets/vaultpool/promo.jpg',vaultPoolPublicBase+'vaultpool-promo.jpg'],
+  ['/assets/vaultpool/clouds.jpg',vaultPoolPublicBase+'vaultpool-clouds.jpg'],
+  ['/assets/vaultpool/ui-light.jpg',vaultPoolPublicBase+'vaultpool-ui-light.jpg'],
+  ['/assets/vaultpool/ui-dark.jpg',vaultPoolPublicBase+'vaultpool-ui-dark.jpg'],
+  ['/downloads/Vault-Pool-Storage-Installer.exe',vaultPoolPublicBase+'Vault-Pool-Storage-Installer.exe']
+]);
+function rewriteVaultPoolPublicAssets(root=document){
+  const nodes=[];
+  if(root?.matches?.('img[src],a[href]'))nodes.push(root);
+  root?.querySelectorAll?.('img[src],a[href]').forEach(n=>nodes.push(n));
+  for(const node of nodes){
+    const attr=node.tagName==='IMG'?'src':'href';
+    const raw=node.getAttribute(attr);if(!raw)continue;
+    let path;try{path=new URL(raw,location.origin).pathname}catch{continue}
+    const target=vaultPoolPublicMap.get(path);if(!target)continue;
+    node.setAttribute(attr,target);
+    if(node.tagName==='A'&&path.endsWith('.exe')){node.setAttribute('download','Vault-Pool-Storage-Installer.exe');node.setAttribute('rel','noopener')}
+  }
+}
+rewriteVaultPoolPublicAssets();
+const vaultPoolAssetObserver=new MutationObserver(mutations=>{for(const mutation of mutations)for(const node of mutation.addedNodes)if(node.nodeType===1)rewriteVaultPoolPublicAssets(node)});
+vaultPoolAssetObserver.observe(document.documentElement,{childList:true,subtree:true});
+
 addScript('/assets/social-global.js?v=20260916-social-3');
 addScript('/assets/auth.js');
 addScript('/assets/auth-extra.js');
