@@ -1,0 +1,17 @@
+.forum-recent-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:12px 0 16px}
+.forum-recent-module{min-width:0;overflow:hidden;border:1px solid rgba(98,151,165,.18);border-radius:16px;background:linear-gradient(155deg,rgba(10,39,51,.96),rgba(5,24,33,.98));box-shadow:0 12px 28px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.025)}
+.forum-recent-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding:14px 15px 11px;border-bottom:1px solid rgba(105,174,196,.1)}
+.forum-recent-head small{display:block;margin-bottom:3px;color:#5f9eaa;font-size:8px;font-weight:800;letter-spacing:.14em}
+.forum-recent-head h2{margin:0;color:#edf5f6;font-size:16px;letter-spacing:-.025em}
+.forum-recent-count{display:grid;place-items:center;min-width:24px;height:24px;padding:0 7px;border:1px solid rgba(73,215,230,.16);border-radius:999px;background:rgba(73,215,230,.055);color:#8bcad3;font-size:9px;font-weight:800}
+.forum-recent-list{display:grid}
+.forum-recent-row{display:grid;grid-template-columns:28px minmax(0,1fr) 18px;align-items:center;gap:9px;padding:10px 12px;border-bottom:1px solid rgba(105,174,196,.075);transition:.17s ease}
+.forum-recent-row:last-child{border-bottom:0}.forum-recent-row:hover{background:rgba(73,215,230,.045)}
+.forum-recent-icon{display:grid;place-items:center;width:28px;height:28px;border:1px solid rgba(73,215,230,.15);border-radius:9px;background:rgba(73,215,230,.045);color:#7dd8e3;font-size:10px;font-weight:800}
+.forum-recent-copy{min-width:0;display:flex;flex-direction:column;gap:2px}
+.forum-recent-copy strong{overflow:hidden;color:#dfe8ea;font-size:11px;line-height:1.25;text-overflow:ellipsis;white-space:nowrap}
+.forum-recent-copy small{overflow:hidden;color:#6f8b93;font-size:8.5px;text-overflow:ellipsis;white-space:nowrap}
+.forum-recent-excerpt{display:-webkit-box;overflow:hidden;margin-top:2px;color:#859ba1;font-size:9px;line-height:1.35;-webkit-line-clamp:1;-webkit-box-orient:vertical}
+.forum-recent-arrow{color:#547781;font-size:18px;line-height:1;text-align:right}.forum-recent-row:hover .forum-recent-arrow{color:#8ddce5}
+.forum-recent-empty,.forum-recent-error{margin:0;padding:15px;color:#718991;font-size:9px}
+@media(max-width:760px){.forum-recent-grid{grid-template-columns:1fr}.forum-recent-row{padding:10px}.forum-recent-copy strong{font-size:10.5px}}
