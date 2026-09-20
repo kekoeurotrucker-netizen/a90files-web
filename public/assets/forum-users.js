@@ -84,7 +84,8 @@ function render(data){
 
   const head=el('header','forum-users-head');
   const copy=el('div');
-  copy.append(el('small','','COMUNIDAD EN VIVO'),el('h2','', 'Usuarios del foro'));
+  const title=el('h2','', 'Usuarios del foro');title.id='forum-users-title';
+  copy.append(el('small','','COMUNIDAD EN VIVO'),title);
   const stats=el('div','forum-users-stats');
   stats.append(el('span','forum-users-online-count',`${online.length} conectados`),el('span','',`${users.length} registrados`));
   head.append(copy,stats);
