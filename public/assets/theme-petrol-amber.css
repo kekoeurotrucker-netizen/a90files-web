@@ -96,16 +96,7 @@ html,body{background:#080d0f;color:var(--text)}
 .mobile-nav a{color:#a5b0b3}
 .menu-button{border-color:rgba(95,126,132,.24);color:#c5cecf}
 
-/* Keep the social block clearly visible. */
-@media(min-width:1281px){
-  .a90-social-rail{right:18px!important;top:50%!important;bottom:auto!important;z-index:80!important;display:flex!important;flex-direction:column!important;gap:8px!important;transform:translateY(-50%)!important;padding:8px!important;border:1px solid rgba(90,139,149,.26)!important;border-radius:15px!important;background:linear-gradient(180deg,rgba(7,13,15,.96),rgba(5,10,12,.93))!important;box-shadow:0 12px 34px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.04)!important}
-  .a90-social-link{display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:9px!important;width:118px!important;height:38px!important;padding:0 10px!important;border:1px solid rgba(93,128,135,.20)!important;border-radius:10px!important;color:#d6e1e3!important;opacity:1!important;transform:none!important}
-  .a90-social-link:after{content:attr(aria-label)!important;display:block!important;position:static!important;right:auto!important;top:auto!important;transform:none!important;padding:0!important;border:0!important;background:none!important;color:#b9c6c9!important;font-size:10px!important;font-weight:650!important;letter-spacing:.02em!important;white-space:nowrap!important;opacity:1!important;box-shadow:none!important}
-  .a90-social-link svg{width:18px!important;height:18px!important;display:block!important;fill:currentColor!important}
-  .a90-social-link:hover{background:linear-gradient(135deg,rgba(15,76,92,.30),rgba(245,158,11,.08))!important;border-color:rgba(245,158,11,.30)!important;color:#fff!important;transform:translateX(-2px)!important}
-  .a90-social-link:hover:after{color:#fff!important;opacity:1!important;transform:none!important}
-}
-
+/* Social links are styled globally in social-global.css. */
 
 /* Homepage news ticker: reuses the low-value mini-stats slot for live portal updates. */
 .news-ticker{display:flex;align-items:center;min-width:0;width:min(48vw,500px);margin-left:auto;overflow:hidden;border:1px solid rgba(104,138,143,.18);border-radius:11px;background:rgba(4,10,12,.36)}
