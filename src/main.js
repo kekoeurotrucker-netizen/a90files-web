@@ -5,7 +5,7 @@ import {handleExtraAuth} from './oauth-extra.js';
 import {handleHealth} from './health.js';
 import {handleSecurityAuth} from './security-auth-api.js';
 
-const FORUM_BUILD='20260920-users-2';
+const FORUM_BUILD='20260920-recent-1';
 const GLOBAL_BUILD='20260916-social-5';
 const SOCIAL_RAIL=`<nav class="a90-social-rail" aria-label="Redes sociales de A 90 por Hora">
 <a class="a90-social-link" href="https://www.facebook.com/a90porhorafb/?locale=es_ES" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.414c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.97H15.83c-1.491 0-1.956.931-1.956 1.887v2.264h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg></a>
@@ -34,8 +34,8 @@ export default {
       const type=original.headers.get('Content-Type')||'';
       if(!type.includes('text/html'))return hardenStatic(original);
       let html=await original.text();
-      const styles=`\n<link rel="stylesheet" href="/assets/forum-live.css?v=${FORUM_BUILD}">\n<link rel="stylesheet" href="/assets/forum-mod.css?v=${FORUM_BUILD}">\n<link rel="stylesheet" href="/assets/forum-rich.css?v=${FORUM_BUILD}">\n<link rel="stylesheet" href="/assets/forum-polish.css?v=${FORUM_BUILD}">\n<link rel="stylesheet" href="/assets/forum-users.css?v=${FORUM_BUILD}">\n`;
-      const scripts=`\n<script src="/assets/forum-app.js?v=${FORUM_BUILD}" defer></script>\n<script src="/assets/forum-mod.js?v=${FORUM_BUILD}" defer></script>\n<script src="/assets/forum-rich.js?v=${FORUM_BUILD}" defer></script>\n<script src="/assets/forum-community-intro.js?v=${FORUM_BUILD}" defer></script>\n<script src="/assets/forum-users.js?v=${FORUM_BUILD}" defer></script>\n`;
+      const styles=`\n<link rel="stylesheet" href="/assets/forum-live.css?v=${FORUM_BUILD}">\n<link rel="stylesheet" href="/assets/forum-mod.css?v=${FORUM_BUILD}">\n<link rel="stylesheet" href="/assets/forum-rich.css?v=${FORUM_BUILD}">\n<link rel="stylesheet" href="/assets/forum-polish.css?v=${FORUM_BUILD}">\n<link rel="stylesheet" href="/assets/forum-users.css?v=${FORUM_BUILD}">\n<link rel="stylesheet" href="/assets/forum-recent.css?v=${FORUM_BUILD}">\n`;
+      const scripts=`\n<script src="/assets/forum-app.js?v=${FORUM_BUILD}" defer></script>\n<script src="/assets/forum-mod.js?v=${FORUM_BUILD}" defer></script>\n<script src="/assets/forum-rich.js?v=${FORUM_BUILD}" defer></script>\n<script src="/assets/forum-community-intro.js?v=${FORUM_BUILD}" defer></script>\n<script src="/assets/forum-users.js?v=${FORUM_BUILD}" defer></script>\n<script src="/assets/forum-recent.js?v=${FORUM_BUILD}" defer></script>\n`;
       if(!html.includes(`/assets/forum-polish.css?v=${FORUM_BUILD}`))html=html.replace('</head>',styles+'</head>');
       if(!html.includes(`/assets/forum-community-intro.js?v=${FORUM_BUILD}`))html=html.replace('</body>',scripts+'</body>');
       const headers=new Headers(original.headers);
