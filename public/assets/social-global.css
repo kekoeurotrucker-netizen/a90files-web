@@ -70,6 +70,7 @@
   vertical-align:middle!important;
 }
 .a90-social-link:hover{
+  z-index:30!important;
   transform:translateY(-1px)!important;
   color:#f4f7f7!important;
   border-color:rgba(245,158,11,.26)!important;
@@ -79,6 +80,7 @@
     0 0 0 1px rgba(245,158,11,.025)!important;
 }
 .a90-social-link:focus-visible{
+  z-index:30!important;
   outline:none!important;
   color:#fff!important;
   border-color:rgba(245,158,11,.38)!important;
