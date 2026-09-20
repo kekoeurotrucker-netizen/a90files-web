@@ -13,6 +13,8 @@ export async function handleForumApi(request,env,url){
     if(url.pathname==='/api/forum/reply'&&request.method==='POST') return createReply(request,env);
     if(url.pathname==='/api/forum/reaction'&&request.method==='POST') return toggleReaction(request,env);
     if(url.pathname==='/api/forum/report'&&request.method==='POST') return createReport(request,env);
+    if(url.pathname==='/api/forum/users'&&request.method==='GET') return publicUsers(request,env);
+    if(url.pathname==='/api/forum/presence'&&request.method==='POST') return presencePing(request,env);
     return respond({error:'Ruta del foro no encontrada.'},404);
   }catch(error){
     console.error('A90 forum error',error?.message||error);
@@ -222,6 +224,22 @@ async function requireSession(request,env){
 
 async function rpc(env,access,name,payload){
   return db(env,`/rest/v1/rpc/${name}`,access,{method:'POST',headers:{'Prefer':'return=representation'},body:JSON.stringify(payload)});
+}
+
+
+async function publicUsers(request,env){
+  const s=await visibleContext(request,env);
+  const r=await rpc(env,s.token,'forum_public_users',{});
+  if(!r.res.ok)return respond({error:'No se pudo cargar la lista de usuarios.'},502,s.refreshed);
+  const users=Array.isArray(r.body)?r.body:[];
+  return respond({users,total:users.length,online:users.filter(u=>u?.is_online).length},200,s.refreshed);
+}
+
+async function presencePing(request,env){
+  const s=await requireSession(request,env);if(s.error)return s.error;
+  const r=await rpc(env,s.access,'forum_presence_ping',{});
+  if(!r.res.ok)return respond({error:'No se pudo actualizar el estado de conexión.'},400,s.refreshed);
+  return respond({ok:true},200,s.refreshed);
 }
 
 async function createTopic(request,env){
