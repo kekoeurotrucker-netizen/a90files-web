@@ -1,82 +1,89 @@
-/* Global social links: always part of the normal document flow, after the page footer. */
+/* A 90 social links — compact, centered and always in normal document flow. */
 .a90-social-rail{
   position:static!important;
-  left:auto!important;
-  right:auto!important;
-  top:auto!important;
-  bottom:auto!important;
+  inset:auto!important;
   z-index:auto!important;
   display:flex!important;
   flex-direction:row!important;
   align-items:center!important;
   justify-content:center!important;
   flex-wrap:nowrap!important;
-  gap:6px!important;
+  gap:8px!important;
   transform:none!important;
   width:max-content!important;
   max-width:calc(100% - 24px)!important;
-  margin:10px auto 18px!important;
-  padding:5px 8px!important;
-  border:1px solid rgba(93,128,135,.14)!important;
+  margin:14px auto 20px!important;
+  padding:8px 10px!important;
+  border:1px solid rgba(94,126,132,.20)!important;
   border-radius:999px!important;
-  background:rgba(5,10,12,.56)!important;
-  backdrop-filter:blur(10px)!important;
-  box-shadow:0 6px 20px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.02)!important;
+  background:linear-gradient(180deg,rgba(13,25,29,.94),rgba(7,15,18,.96))!important;
+  backdrop-filter:blur(12px)!important;
+  box-shadow:0 10px 26px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.03)!important;
 }
 .a90-social-link{
   position:relative!important;
-  display:grid!important;
-  place-items:center!important;
-  width:28px!important;
-  height:28px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex:0 0 36px!important;
+  width:36px!important;
+  height:36px!important;
   padding:0!important;
-  border:1px solid transparent!important;
+  margin:0!important;
+  border:1px solid rgba(111,148,155,.14)!important;
   border-radius:999px!important;
-  background:transparent!important;
-  color:#82969c!important;
-  opacity:.82!important;
+  background:rgba(255,255,255,.018)!important;
+  color:#9aadb1!important;
+  opacity:1!important;
   transform:none!important;
   text-decoration:none!important;
-  transition:color .18s ease,background .18s ease,border-color .18s ease,opacity .18s ease,transform .18s ease!important;
+  box-sizing:border-box!important;
+  transition:transform .18s ease,background .18s ease,border-color .18s ease,color .18s ease,box-shadow .18s ease!important;
 }
-.a90-social-link:after{
-  content:attr(aria-label)!important;
-  position:absolute!important;
-  left:50%!important;
-  bottom:35px!important;
-  right:auto!important;
-  top:auto!important;
-  transform:translate(-50%,4px)!important;
-  padding:4px 7px!important;
-  border:1px solid rgba(93,128,135,.16)!important;
-  border-radius:8px!important;
-  background:rgba(5,10,12,.96)!important;
-  color:#cbd6d8!important;
-  font-size:9px!important;
-  font-weight:600!important;
-  line-height:1.2!important;
-  white-space:nowrap!important;
-  opacity:0!important;
-  pointer-events:none!important;
-  box-shadow:0 8px 18px rgba(0,0,0,.24)!important;
-  transition:opacity .16s ease,transform .16s ease!important;
+.a90-social-link::before,
+.a90-social-link::after{
+  content:none!important;
+  display:none!important;
 }
-.a90-social-link:hover,.a90-social-link:focus-visible{
-  color:#eef4f5!important;
-  background:rgba(15,76,92,.16)!important;
-  border-color:rgba(245,158,11,.18)!important;
-  opacity:1!important;
-  transform:translateY(-1px)!important;
+.a90-social-link svg{
+  display:block!important;
+  width:17px!important;
+  height:17px!important;
+  min-width:17px!important;
+  min-height:17px!important;
+  margin:0!important;
+  fill:currentColor!important;
+}
+.a90-social-link:hover{
+  transform:translateY(-2px)!important;
+  color:#f4f7f8!important;
+  border-color:rgba(245,158,11,.34)!important;
+  background:rgba(245,158,11,.08)!important;
+  box-shadow:0 8px 18px rgba(0,0,0,.18),0 0 0 1px rgba(245,158,11,.03)!important;
+}
+.a90-social-link:focus-visible{
   outline:none!important;
+  color:#f4f7f8!important;
+  border-color:rgba(245,158,11,.42)!important;
+  background:rgba(245,158,11,.09)!important;
+  box-shadow:0 0 0 3px rgba(245,158,11,.13),0 8px 18px rgba(0,0,0,.18)!important;
 }
-.a90-social-link:hover:after,.a90-social-link:focus-visible:after{
-  opacity:1!important;
-  transform:translate(-50%,0)!important;
-}
-.a90-social-link svg{display:block!important;width:14px!important;height:14px!important;fill:currentColor!important}
-.a90-social-link:focus-visible{box-shadow:0 0 0 2px rgba(245,158,11,.12)!important}
 @media(max-width:620px){
-  .a90-social-rail{gap:5px!important;margin:8px auto 14px!important;padding:4px 7px!important;max-width:calc(100% - 18px)!important}
-  .a90-social-link{width:27px!important;height:27px!important}
-  .a90-social-link:after{display:none!important}
+  .a90-social-rail{
+    gap:7px!important;
+    margin:12px auto 16px!important;
+    padding:7px 9px!important;
+    max-width:calc(100% - 18px)!important;
+  }
+  .a90-social-link{
+    flex-basis:34px!important;
+    width:34px!important;
+    height:34px!important;
+  }
+  .a90-social-link svg{
+    width:16px!important;
+    height:16px!important;
+    min-width:16px!important;
+    min-height:16px!important;
+  }
 }
