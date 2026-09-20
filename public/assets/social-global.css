@@ -1,4 +1,4 @@
-/* A 90 social links — centered footer capsule, compact and consistent. */
+/* A 90 social links — centered, compact footer capsule. */
 .a90-social-rail{
   position:static!important;
   inset:auto!important;
@@ -8,51 +8,52 @@
   align-items:center!important;
   justify-content:center!important;
   flex-wrap:nowrap!important;
-  gap:6px!important;
+  gap:8px!important;
   transform:none!important;
-  width:170px!important;
+  width:max-content!important;
   max-width:calc(100% - 24px)!important;
-  min-height:48px!important;
-  margin:14px auto 18px!important;
-  padding:7px!important;
-  border:1px solid rgba(103,151,160,.30)!important;
+  min-height:0!important;
+  margin:12px auto 18px!important;
+  padding:8px 10px!important;
+  border:1px solid rgba(103,151,160,.22)!important;
   border-radius:999px!important;
-  background:#0a1519!important;
+  background:linear-gradient(180deg,rgba(11,25,29,.98),rgba(7,17,20,.98))!important;
   backdrop-filter:blur(12px)!important;
   -webkit-backdrop-filter:blur(12px)!important;
   box-shadow:
-    0 12px 28px rgba(0,0,0,.30),
-    0 0 0 1px rgba(15,76,92,.08),
+    0 10px 26px rgba(0,0,0,.28),
     inset 0 1px 0 rgba(255,255,255,.035)!important;
   box-sizing:border-box!important;
+  overflow:visible!important;
 }
 .a90-social-link{
   position:relative!important;
-  display:grid!important;
-  place-items:center!important;
-  flex:0 0 34px!important;
-  width:34px!important;
-  height:34px!important;
-  min-width:34px!important;
-  min-height:34px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex:0 0 36px!important;
+  width:36px!important;
+  height:36px!important;
+  min-width:36px!important;
+  min-height:36px!important;
   padding:0!important;
   margin:0!important;
-  border:1px solid transparent!important;
+  border:1px solid rgba(104,139,145,.10)!important;
   border-radius:50%!important;
-  background:transparent!important;
-  color:#87999e!important;
+  background:rgba(255,255,255,.018)!important;
+  color:#899b9f!important;
   opacity:1!important;
   transform:none!important;
   text-decoration:none!important;
   line-height:1!important;
   box-sizing:border-box!important;
-  overflow:visible!important;
+  overflow:hidden!important;
   transition:
-    background .16s ease,
-    border-color .16s ease,
-    color .16s ease,
-    transform .16s ease,
-    box-shadow .16s ease!important;
+    background .18s ease,
+    border-color .18s ease,
+    color .18s ease,
+    transform .18s ease,
+    box-shadow .18s ease!important;
 }
 .a90-social-link::before,
 .a90-social-link::after{
@@ -61,53 +62,79 @@
 }
 .a90-social-link svg{
   display:block!important;
-  width:16px!important;
-  height:16px!important;
-  min-width:16px!important;
-  min-height:16px!important;
+  width:17px!important;
+  height:17px!important;
+  min-width:17px!important;
+  min-height:17px!important;
   margin:0!important;
   padding:0!important;
   fill:currentColor!important;
   transform:none!important;
+  transform-origin:center!important;
   vertical-align:middle!important;
 }
 .a90-social-link:hover{
-  z-index:30!important;
-  transform:translateY(-1px)!important;
+  z-index:1!important;
+  transform:translateY(-2px)!important;
   color:#f4f7f7!important;
-  border-color:rgba(245,158,11,.26)!important;
-  background:rgba(245,158,11,.09)!important;
-  box-shadow:
-    0 6px 15px rgba(0,0,0,.18),
-    0 0 0 1px rgba(245,158,11,.025)!important;
+  border-color:rgba(245,158,11,.30)!important;
+  background:rgba(245,158,11,.085)!important;
+  box-shadow:0 7px 16px rgba(0,0,0,.20)!important;
 }
 .a90-social-link:focus-visible{
-  z-index:30!important;
+  z-index:1!important;
   outline:none!important;
   color:#fff!important;
-  border-color:rgba(245,158,11,.38)!important;
+  border-color:rgba(245,158,11,.42)!important;
   background:rgba(245,158,11,.10)!important;
   box-shadow:0 0 0 3px rgba(245,158,11,.12)!important;
 }
+
+/* Keep the capsule centered as a normal-flow footer element on every page. */
+body>.a90-social-rail,
+main~.a90-social-rail,
+footer~.a90-social-rail{
+  align-self:center!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+.footer{
+  gap:16px;
+  flex-wrap:wrap;
+}
+.footer nav{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:14px;
+}
+
 @media(max-width:620px){
   .a90-social-rail{
-    gap:5px!important;
-    margin:12px auto 16px!important;
-    padding:6px!important;
-    width:158px!important;
+    gap:7px!important;
+    margin:10px auto 16px!important;
+    padding:7px 9px!important;
     max-width:calc(100% - 18px)!important;
   }
   .a90-social-link{
-    flex-basis:32px!important;
-    width:32px!important;
-    height:32px!important;
-    min-width:32px!important;
-    min-height:32px!important;
+    flex-basis:34px!important;
+    width:34px!important;
+    height:34px!important;
+    min-width:34px!important;
+    min-height:34px!important;
   }
   .a90-social-link svg{
-    width:15px!important;
-    height:15px!important;
-    min-width:15px!important;
-    min-height:15px!important;
+    width:16px!important;
+    height:16px!important;
+    min-width:16px!important;
+    min-height:16px!important;
+  }
+  .footer{
+    justify-content:center!important;
+    align-items:center!important;
+    text-align:center!important;
+  }
+  .footer nav{
+    justify-content:center!important;
   }
 }
