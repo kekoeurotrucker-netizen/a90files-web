@@ -15,6 +15,7 @@ export async function handleForumApi(request,env,url){
     if(url.pathname==='/api/forum/report'&&request.method==='POST') return createReport(request,env);
     if(url.pathname==='/api/forum/users'&&request.method==='GET') return publicUsers(request,env);
     if(url.pathname==='/api/forum/presence'&&request.method==='POST') return presencePing(request,env);
+    if(url.pathname==='/api/forum/recent'&&request.method==='GET') return recentActivity(request,env);
     return respond({error:'Ruta del foro no encontrada.'},404);
   }catch(error){
     console.error('A90 forum error',error?.message||error);
@@ -240,6 +241,87 @@ async function presencePing(request,env){
   const r=await rpc(env,s.access,'forum_presence_ping',{});
   if(!r.res.ok)return respond({error:'No se pudo actualizar el estado de conexión.'},400,s.refreshed);
   return respond({ok:true},200,s.refreshed);
+}
+
+
+async function recentActivity(request,env){
+  const s=await visibleContext(request,env);
+
+  const [topicsRes,postsRes]=await Promise.all([
+    db(env,'/rest/v1/forum_topics?select=id,category_id,author_id,title,created_at,last_post_at&is_hidden=eq.false&order=created_at.desc&limit=8',s.token),
+    db(env,'/rest/v1/forum_posts?select=id,topic_id,author_id,body,created_at&deleted_at=is.null&is_hidden=eq.false&order=created_at.desc&limit=40',s.token)
+  ]);
+
+  if(!topicsRes.res.ok||!postsRes.res.ok)return respond({error:'No se pudo cargar la actividad reciente.'},502,s.refreshed);
+
+  const latestTopics=Array.isArray(topicsRes.body)?topicsRes.body:[];
+  const recentPosts=Array.isArray(postsRes.body)?postsRes.body:[];
+  const topicIds=[...new Set([...latestTopics.map(t=>t.id),...recentPosts.map(p=>p.topic_id)].filter(Boolean))];
+
+  let topicMap={};
+  let categoryMap={};
+  const rootIds=new Set();
+
+  if(topicIds.length){
+    const [allTopicsRes,allPostsRes]=await Promise.all([
+      db(env,`/rest/v1/forum_topics?id=in.(${topicIds.join(',')})&select=id,category_id,author_id,title,created_at&is_hidden=eq.false&limit=200`,s.token),
+      db(env,`/rest/v1/forum_posts?topic_id=in.(${topicIds.join(',')})&select=id,topic_id,created_at&deleted_at=is.null&is_hidden=eq.false&order=created_at.asc,id.asc&limit=5000`,s.token)
+    ]);
+
+    if(allTopicsRes.res.ok&&Array.isArray(allTopicsRes.body)){
+      for(const item of allTopicsRes.body)topicMap[item.id]=item;
+      const categoryIds=[...new Set(allTopicsRes.body.map(t=>t.category_id).filter(Boolean))];
+      if(categoryIds.length){
+        const cr=await db(env,`/rest/v1/forum_categories?id=in.(${categoryIds.join(',')})&select=id,name,slug&is_visible=eq.true&limit=200`,s.token);
+        if(cr.res.ok&&Array.isArray(cr.body))for(const item of cr.body)categoryMap[item.id]=item;
+      }
+    }
+
+    if(allPostsRes.res.ok&&Array.isArray(allPostsRes.body)){
+      const seen=new Set();
+      for(const post of allPostsRes.body){
+        if(seen.has(post.topic_id))continue;
+        seen.add(post.topic_id);
+        rootIds.add(post.id);
+      }
+    }
+  }
+
+  const replies=recentPosts.filter(p=>!rootIds.has(p.id)&&topicMap[p.topic_id]).slice(0,8);
+  const authorIds=[...latestTopics.map(t=>t.author_id),...replies.map(p=>p.author_id)];
+  const authors=await profilesFor(env,s.token,authorIds);
+
+  const cleanExcerpt=value=>{
+    const text=String(value||'')
+      .replace(/\[(.*?)\]\((?:https?:\/\/)?[^)]+\)/g,'$1')
+      .replace(/[\*_~>#|]/g,' ')
+      .replace(/\s+/g,' ')
+      .trim();
+    return text.length>150?text.slice(0,147)+'…':text;
+  };
+
+  const topicsOut=latestTopics.slice(0,6).map(t=>({
+    id:t.id,
+    title:t.title,
+    created_at:t.created_at,
+    category:categoryMap[t.category_id]||null,
+    author:authors[t.author_id]||null
+  }));
+
+  const repliesOut=replies.slice(0,6).map(p=>{
+    const topic=topicMap[p.topic_id];
+    return {
+      id:p.id,
+      topic_id:p.topic_id,
+      topic_title:topic?.title||'Tema',
+      created_at:p.created_at,
+      excerpt:cleanExcerpt(p.body),
+      category:topic?categoryMap[topic.category_id]||null:null,
+      author:authors[p.author_id]||null
+    };
+  });
+
+  return respond({topics:topicsOut,replies:repliesOut},200,s.refreshed);
 }
 
 async function createTopic(request,env){
