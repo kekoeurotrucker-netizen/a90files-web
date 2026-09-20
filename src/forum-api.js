@@ -231,9 +231,32 @@ async function rpc(env,access,name,payload){
 async function publicUsers(request,env){
   const s=await visibleContext(request,env);
   const r=await rpc(env,s.token,'forum_public_users',{});
-  if(!r.res.ok)return respond({error:'No se pudo cargar la lista de usuarios.'},502,s.refreshed);
+  if(!r.res.ok)return respond({error:'No se pudo cargar el resumen de usuarios.'},502,s.refreshed);
+
   const users=Array.isArray(r.body)?r.body:[];
-  return respond({users,total:users.length,online:users.filter(u=>u?.is_online).length},200,s.refreshed);
+  const roles=['super_admin','admin','moderator','user'];
+  const emptyCounts=()=>Object.fromEntries(roles.map(role=>[role,0]));
+  const onlineByRole=emptyCounts();
+  const offlineByRole=emptyCounts();
+
+  for(const user of users){
+    const role=roles.includes(user?.role)?user.role:'user';
+    if(user?.is_online)onlineByRole[role]++;
+    else offlineByRole[role]++;
+  }
+
+  const online=Object.values(onlineByRole).reduce((sum,n)=>sum+n,0);
+  const offline=Object.values(offlineByRole).reduce((sum,n)=>sum+n,0);
+
+  return respond({
+    total:online+offline,
+    online,
+    offline,
+    by_role:{
+      online:onlineByRole,
+      offline:offlineByRole
+    }
+  },200,s.refreshed);
 }
 
 async function presencePing(request,env){
