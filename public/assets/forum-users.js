@@ -72,7 +72,8 @@ function ensurePanel(){
   panel=el('section','forum-users-panel');
   panel.id='forum-users';
   panel.setAttribute('aria-labelledby','forum-users-title');
-  hero.insertAdjacentElement('afterend',panel);
+  const board=document.querySelector('.board');
+  (board||hero).insertAdjacentElement('afterend',panel);
   return panel;
 }
 
