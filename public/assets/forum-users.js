@@ -30,27 +30,17 @@ async function api(path,opts={}){
   return data;
 }
 
-function roleCounts(users){
-  const counts=Object.fromEntries(ROLE_ORDER.map(role=>[role,0]));
-  for(const user of users){
-    const role=ROLE_ORDER.includes(user?.role)?user.role:'user';
-    counts[role]++;
-  }
-  return counts;
-}
-
-function makeSummary(title,users,online){
+function makeSummary(title,total,counts,online){
   const section=el('section','forum-users-summary '+(online?'online':'offline'));
   const head=el('header','forum-users-summary-head');
-  head.append(el('h3','',title),el('span','forum-users-summary-total',String(users.length)));
+  head.append(el('h3','',title),el('span','forum-users-summary-total',String(total||0)));
 
   const grid=el('div','forum-users-role-grid');
-  const counts=roleCounts(users);
   for(const role of ROLE_ORDER){
     const item=el('div','forum-users-role-item');
     item.append(
       el('span','forum-users-role-name',ROLE_NAMES[role]),
-      el('strong','forum-users-role-count',String(counts[role]))
+      el('strong','forum-users-role-count',String(Number(counts?.[role])||0))
     );
     grid.append(item);
   }
@@ -71,9 +61,10 @@ function ensurePanel(){
 
 function render(data){
   const target=ensurePanel();
-  const users=Array.isArray(data.users)?data.users:[];
-  const online=users.filter(u=>u?.is_online);
-  const offline=users.filter(u=>!u?.is_online);
+  const online=Number(data?.online)||0;
+  const offline=Number(data?.offline)||0;
+  const total=Number(data?.total)||(online+offline);
+  const byRole=data?.by_role||{};
 
   const head=el('header','forum-users-head');
   const copy=el('div');
@@ -82,15 +73,15 @@ function render(data){
 
   const stats=el('div','forum-users-stats');
   stats.append(
-    el('span','forum-users-online-count',`${online.length} conectados`),
-    el('span','',`${users.length} registrados`)
+    el('span','forum-users-online-count',`${online} conectados`),
+    el('span','',`${total} registrados`)
   );
   head.append(copy,stats);
 
   const groups=el('div','forum-users-groups');
   groups.append(
-    makeSummary('Conectados',online,true),
-    makeSummary('Desconectados',offline,false)
+    makeSummary('Conectados',online,byRole.online,true),
+    makeSummary('Desconectados',offline,byRole.offline,false)
   );
 
   target.replaceChildren(head,groups);
@@ -102,8 +93,7 @@ async function refresh(){
     if(session?.authenticated){
       await api('/api/forum/presence',{method:'POST'}).catch(()=>{});
     }
-    const users=await api('/api/forum/users');
-    render(users);
+    render(await api('/api/forum/users'));
   }catch(error){
     const target=ensurePanel();
     target.replaceChildren(el('p','forum-users-error','No se pudo cargar el resumen de usuarios.'));
