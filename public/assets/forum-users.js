@@ -8,6 +8,14 @@ const POLL_MS=45000;
 let panel=null;
 let timer=null;
 
+const ROLE_ORDER=['super_admin','admin','moderator','user'];
+const ROLE_NAMES={
+  super_admin:'Super Admin',
+  admin:'Admin',
+  moderator:'Moderador',
+  user:'Usuario'
+};
+
 const el=(tag,className,text)=>{
   const node=document.createElement(tag);
   if(className)node.className=className;
@@ -22,48 +30,32 @@ async function api(path,opts={}){
   return data;
 }
 
-function displayName(user){return user?.username||user?.display_name||'Usuario'}
-function roleName(role){return({user:'Usuario',moderator:'Moderador',admin:'Admin',super_admin:'Super Admin'})[role]||'Usuario'}
-function initials(user){
-  const chars=displayName(user).match(/[A-Za-zÁÉÍÓÚÜÑ0-9]/gi)||['A','9'];
-  return chars.slice(0,2).join('').toUpperCase();
-}
-function safeAvatar(value){
-  try{
-    const u=new URL(value);
-    return u.protocol==='https:'?u.href:null;
-  }catch{return null}
+function roleCounts(users){
+  const counts=Object.fromEntries(ROLE_ORDER.map(role=>[role,0]));
+  for(const user of users){
+    const role=ROLE_ORDER.includes(user?.role)?user.role:'user';
+    counts[role]++;
+  }
+  return counts;
 }
 
-function makeUser(user){
-  const row=el('li','forum-user-row '+(user.is_online?'is-online':'is-offline'));
-  const avatar=el('span','forum-user-avatar');
-  const src=safeAvatar(user.avatar_url);
-  if(src){
-    const img=document.createElement('img');
-    img.src=src;
-    img.alt='';
-    img.loading='lazy';
-    img.referrerPolicy='no-referrer';
-    avatar.append(img);
-  }else avatar.textContent=initials(user);
+function makeSummary(title,users,online){
+  const section=el('section','forum-users-summary '+(online?'online':'offline'));
+  const head=el('header','forum-users-summary-head');
+  head.append(el('h3','',title),el('span','forum-users-summary-total',String(users.length)));
 
-  const copy=el('span','forum-user-copy');
-  copy.append(el('strong','',displayName(user)),el('small','',roleName(user.role)));
-  const state=el('span','forum-user-state',user.is_online?'Conectado':'Desconectado');
-  state.prepend(el('i','forum-user-dot'));
-  row.append(avatar,copy,state);
-  return row;
-}
+  const grid=el('div','forum-users-role-grid');
+  const counts=roleCounts(users);
+  for(const role of ROLE_ORDER){
+    const item=el('div','forum-users-role-item');
+    item.append(
+      el('span','forum-users-role-name',ROLE_NAMES[role]),
+      el('strong','forum-users-role-count',String(counts[role]))
+    );
+    grid.append(item);
+  }
 
-function makeGroup(title,users,online){
-  const section=el('section','forum-users-group '+(online?'online':'offline'));
-  const head=el('header','forum-users-group-head');
-  head.append(el('h3','',title),el('span','',String(users.length)));
-  const list=el('ul','forum-users-list');
-  if(users.length)users.forEach(user=>list.append(makeUser(user)));
-  else list.append(el('li','forum-users-empty',online?'No hay usuarios conectados ahora mismo.':'No hay usuarios desconectados.'));
-  section.append(head,list);
+  section.append(head,grid);
   return section;
 }
 
@@ -87,12 +79,20 @@ function render(data){
   const copy=el('div');
   const title=el('h2','', 'Usuarios del foro');title.id='forum-users-title';
   copy.append(el('small','','COMUNIDAD EN VIVO'),title);
+
   const stats=el('div','forum-users-stats');
-  stats.append(el('span','forum-users-online-count',`${online.length} conectados`),el('span','',`${users.length} registrados`));
+  stats.append(
+    el('span','forum-users-online-count',`${online.length} conectados`),
+    el('span','',`${users.length} registrados`)
+  );
   head.append(copy,stats);
 
   const groups=el('div','forum-users-groups');
-  groups.append(makeGroup('Conectados',online,true),makeGroup('Desconectados',offline,false));
+  groups.append(
+    makeSummary('Conectados',online,true),
+    makeSummary('Desconectados',offline,false)
+  );
+
   target.replaceChildren(head,groups);
 }
 
@@ -106,7 +106,7 @@ async function refresh(){
     render(users);
   }catch(error){
     const target=ensurePanel();
-    target.replaceChildren(el('p','forum-users-error','No se pudo cargar la lista de usuarios.'));
+    target.replaceChildren(el('p','forum-users-error','No se pudo cargar el resumen de usuarios.'));
   }
 }
 
