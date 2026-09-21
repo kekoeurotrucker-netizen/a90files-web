@@ -1,4 +1,4 @@
-name: VaultPool temporary PowerShell
+name: VaultPool temporary build tools
 on:
   push:
     branches:
@@ -10,21 +10,53 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Pack runner PowerShell
+      - name: Setup Go 1.27.0
+        uses: actions/setup-go@v6
+        with:
+          go-version: '1.27.0'
+          cache: false
+
+      - name: Prepare minimal offline toolchain
         shell: bash
         run: |
           set -euo pipefail
-          PWSH="$(command -v pwsh)"
-          REAL="$(readlink -f "$PWSH")"
-          ROOT="$(dirname "$REAL")"
-          mkdir -p /tmp/vppwsh
-          tar -C "$ROOT" -czf /tmp/vppwsh/pwsh-linux-x64.tar.gz .
-          sha256sum /tmp/vppwsh/pwsh-linux-x64.tar.gz > /tmp/vppwsh/SHA256SUMS.txt
-          "$PWSH" -NoLogo -NoProfile -Command '$PSVersionTable.PSVersion.ToString()' > /tmp/vppwsh/PWSH_VERSION.txt
-      - name: Upload PowerShell
+          mkdir -p /tmp/vpdeps /tmp/vptools/toolchain /tmp/vptools/proxy
+          cat > /tmp/vpdeps/go.mod <<'EOF'
+          module github.com/vaultpool-project/vaultpool
+          go 1.24
+          require (
+            github.com/FilenCloudDienste/filen-sdk-go v0.0.39
+            github.com/klauspost/compress v1.19.2
+            github.com/klauspost/reedsolomon v1.14.2
+            github.com/pdfcpu/pdfcpu v0.9.1
+            golang.org/x/crypto v0.35.0
+          )
+          EOF
+          cd /tmp/vpdeps
+          go mod tidy || true
+          go mod download all
+          tar -C "$(go env GOROOT)" -czf /tmp/vptools/toolchain/go1.27.0-linux-amd64.tar.gz .
+          cp -a "$(go env GOPATH)/pkg/mod/cache/download/." /tmp/vptools/proxy/
+          find /tmp/vptools/proxy -type f ! -name '*.zip' ! -name '*.mod' ! -name '*.info' ! -name 'list' ! -name '*.lock' -delete
+          find /tmp/vptools/proxy -type f -name '*.lock' -delete
+          tar -C /tmp/vptools/proxy -czf /tmp/vptools/goproxy.tar.gz .
+          sha256sum /tmp/vptools/toolchain/*.tar.gz /tmp/vptools/goproxy.tar.gz > /tmp/vptools/SHA256SUMS.txt
+          du -h /tmp/vptools/toolchain/*.tar.gz /tmp/vptools/goproxy.tar.gz
+
+      - name: Upload toolchain
         uses: actions/upload-artifact@v4
         with:
-          name: vaultpool-pwsh
-          path: /tmp/vppwsh/*
+          name: vaultpool-go127-toolchain
+          path: /tmp/vptools/toolchain/*
+          compression-level: 0
+          retention-days: 1
+
+      - name: Upload module proxy
+        uses: actions/upload-artifact@v4
+        with:
+          name: vaultpool-go-offline-proxy
+          path: |
+            /tmp/vptools/goproxy.tar.gz
+            /tmp/vptools/SHA256SUMS.txt
           compression-level: 0
           retention-days: 1
