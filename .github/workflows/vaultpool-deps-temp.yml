@@ -29,10 +29,40 @@ jobs:
           printf 'go=%s\nGOROOT=%s\nGOMODCACHE=%s\n' "$(go version)" "$GOROOT" "$GOMODCACHE" > out/VERSIONS.txt
           tar -C "$GOROOT" -czf out/go-toolchain.tar.gz .
           tar -C "$GOMODCACHE" -czf out/modcache.tar.gz .
-          sha256sum out/*.tar.gz > out/SHA256SUMS.txt
+          sha256sum out/go-toolchain.tar.gz out/modcache.tar.gz > out/SHA256SUMS.txt
+          split -b 350M out/modcache.tar.gz out/modcache.part-
+          ls -lh out
       - uses: actions/upload-artifact@v4
         with:
-          name: vp-go12413-deps
-          path: .github/vpdeps/out/
+          name: vp-go12413-toolchain
+          path: |
+            .github/vpdeps/out/go-toolchain.tar.gz
+            .github/vpdeps/out/VERSIONS.txt
+            .github/vpdeps/out/SHA256SUMS.txt
+          compression-level: 0
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vp-go12413-mod-aa
+          path: .github/vpdeps/out/modcache.part-aa
+          compression-level: 0
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vp-go12413-mod-ab
+          path: .github/vpdeps/out/modcache.part-ab
+          compression-level: 0
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vp-go12413-mod-ac
+          path: .github/vpdeps/out/modcache.part-ac
+          compression-level: 0
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        if: ${{ hashFiles('.github/vpdeps/out/modcache.part-ad') != '' }}
+        with:
+          name: vp-go12413-mod-ad
+          path: .github/vpdeps/out/modcache.part-ad
           compression-level: 0
           retention-days: 1
