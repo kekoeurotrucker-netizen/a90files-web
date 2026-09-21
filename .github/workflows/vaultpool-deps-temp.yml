@@ -1,0 +1,38 @@
+name: VaultPool dependency cache
+on:
+  push:
+    branches:
+      - vp-deps-go124-20260921
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.13'
+          cache: false
+      - name: Download pinned modules
+        working-directory: .github/vpdeps
+        run: |
+          set -euxo pipefail
+          go version
+          go mod download all
+          mkdir -p out
+          GOROOT="$(go env GOROOT)"
+          GOMODCACHE="$(go env GOMODCACHE)"
+          printf 'go=%s\nGOROOT=%s\nGOMODCACHE=%s\n' "$(go version)" "$GOROOT" "$GOMODCACHE" > out/VERSIONS.txt
+          tar -C "$GOROOT" -czf out/go-toolchain.tar.gz .
+          tar -C "$GOMODCACHE" -czf out/modcache.tar.gz .
+          sha256sum out/*.tar.gz > out/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vp-go12413-deps
+          path: .github/vpdeps/out/
+          compression-level: 0
+          retention-days: 1
