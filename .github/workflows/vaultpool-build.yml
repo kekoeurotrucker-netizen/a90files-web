@@ -1,0 +1,82 @@
+name: VaultPool Windows Build
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - "_vaultpool-build/**"
+      - ".github/workflows/vaultpool-build.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go 1.24
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.24.0"
+          cache: false
+
+      - name: Extract source
+        shell: powershell
+        run: |
+          New-Item -ItemType Directory -Force src,out | Out-Null
+          tar.exe -xf _vaultpool-build/source.tar.xz -C src
+          if (!(Test-Path src\go.mod)) { throw "go.mod missing after extraction" }
+
+      - name: Static UI checks
+        shell: powershell
+        run: |
+          node --check src\internal\ui\assets\app.js
+          $app = Get-Content src\internal\ui\assets\app.js -Raw
+          $css = Get-Content src\internal\ui\assets\app.css -Raw
+          $html = Get-Content src\internal\ui\assets\index.html -Raw
+          if ($app -notmatch 'category-chip__label') { throw "category pill patch missing" }
+          if ($css -notmatch '--vp-cat') { throw "category colors missing" }
+          if ($html -notmatch 'data-view="arcade"') { throw "arcade nav missing" }
+          if ($html -notmatch '127\.0\.0\.1:8744') { throw "arcade sidecar frame missing" }
+          if ($app -notmatch 'Client Secret' -or $app -notmatch 'pcloud') { throw "pCloud UI missing" }
+
+      - name: Download modules
+        working-directory: src
+        run: go mod download
+
+      - name: Test
+        working-directory: src
+        run: go test ./...
+
+      - name: Vet
+        working-directory: src
+        run: go vet ./...
+
+      - name: Build Windows core
+        working-directory: src
+        shell: powershell
+        run: |
+          $env:GOOS="windows"
+          $env:GOARCH="amd64"
+          $env:CGO_ENABLED="0"
+          go build -trimpath -ldflags "-H=windowsgui -s -w -X github.com/vaultpool-project/vaultpool/internal/buildinfo.Version=0.24.20-final" -o ..\out\vaultcore.exe .\cmd\vaultpool
+          if (!(Test-Path ..\out\vaultcore.exe)) { throw "vaultcore.exe not produced" }
+
+      - name: Verify build metadata
+        shell: powershell
+        run: |
+          go version -m out\vaultcore.exe | Tee-Object -FilePath out\BUILDINFO.txt
+          $m = Get-Content out\BUILDINFO.txt -Raw
+          if ($m -notmatch 'github.com/FilenCloudDienste/filen-sdk-go') { throw "official Filen SDK missing from binary metadata" }
+          if ($m -notmatch 'github.com/vaultpool-project/vaultpool') { throw "VaultPool module metadata missing" }
+          Get-FileHash out\vaultcore.exe -Algorithm SHA256 | Format-List | Out-File out\SHA256.txt
+
+      - name: Upload core artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vaultpool-core-0.24.20
+          path: out/
+          if-no-files-found: error
