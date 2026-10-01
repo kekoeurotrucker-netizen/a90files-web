@@ -10,7 +10,7 @@ addStylesheet('/assets/social-global.css?v=20260916-social-3');
 
 const softwareProjects=[
   {href:'/software/vaultpool/',name:'VaultPool Storage',meta:'Multinube local · Windows',mark:'VP',key:'vaultpool'},
-  {href:'/software/logistic-trucker/',name:'Logistic Trucker',meta:'Simulación logística · En desarrollo',mark:'LT',key:'logistic-trucker'}
+  {href:'/software/autominer/',name:'AutoMiner',meta:'Minería adaptativa · Próximamente',mark:'AM',key:'autominer'}
 ];
 function makeProjectLink(project){const a=document.createElement('a');a.href=project.href;a.dataset.project=project.key;const icon=document.createElement('span');icon.className='software-nav-icon';icon.textContent=project.mark;const copy=document.createElement('span');copy.className='software-nav-item-copy';const strong=document.createElement('strong');strong.textContent=project.name;const small=document.createElement('small');small.textContent=project.meta;copy.append(strong,small);a.append(icon,copy);return a}
 function enhanceSoftwareNavigation(){const path=location.pathname;document.querySelectorAll('.nav').forEach(nav=>{if(nav.querySelector('.software-nav'))return;const link=[...nav.children].find(el=>el.tagName==='A'&&new URL(el.getAttribute('href')||'',location.origin).pathname==='/software/');if(!link)return;const details=document.createElement('details');details.className='software-nav';const summary=document.createElement('summary');summary.className='software-nav-trigger';if(path.startsWith('/software/'))summary.classList.add('active');summary.setAttribute('aria-label','Software: abrir proyectos');const label=document.createElement('span');label.textContent='Software';const chev=document.createElement('span');chev.className='software-nav-chevron';chev.setAttribute('aria-hidden','true');chev.textContent='⌄';summary.append(label,chev);const menu=document.createElement('div');menu.className='software-nav-menu';menu.setAttribute('aria-label','Proyectos de software');softwareProjects.forEach(p=>menu.append(makeProjectLink(p)));details.append(summary,menu);link.replaceWith(details)});if(mobileNav&&!mobileNav.querySelector('.mobile-software-nav')){const link=[...mobileNav.children].find(el=>el.tagName==='A'&&new URL(el.getAttribute('href')||'',location.origin).pathname==='/software/');if(link){const details=document.createElement('details');details.className='mobile-software-nav';const summary=document.createElement('summary');summary.textContent='Software';const menu=document.createElement('div');menu.className='mobile-software-menu';softwareProjects.forEach(p=>{const a=document.createElement('a');a.href=p.href;a.textContent=p.name;menu.append(a)});details.append(summary,menu);link.replaceWith(details)}}}
@@ -49,3 +49,29 @@ vaultPoolAssetObserver.observe(document.documentElement,{childList:true,subtree:
 addScript('/assets/social-global.js?v=20260916-social-3');
 addScript('/assets/auth.js');
 addScript('/assets/auth-extra.js');
+
+
+function initHomeNewsSlider(){
+  document.querySelectorAll('[data-news-slider]').forEach(slider=>{
+    const track=slider.querySelector('[data-news-track]');
+    const slides=[...slider.querySelectorAll('.home-news-slide')];
+    const prev=slider.querySelector('[data-news-prev]');
+    const next=slider.querySelector('[data-news-next]');
+    const count=slider.querySelector('[data-news-count]');
+    if(!track||slides.length<2)return;
+    let index=0,timer=null,paused=false;
+    const render=()=>{track.style.transform='translateX(-'+(index*100)+'%)';if(count)count.textContent=(index+1)+' / '+slides.length;};
+    const go=step=>{index=(index+step+slides.length)%slides.length;render();restart();};
+    const stop=()=>{if(timer){clearInterval(timer);timer=null;}};
+    const start=()=>{stop();if(!paused)timer=setInterval(()=>{index=(index+1)%slides.length;render();},6000);};
+    const restart=()=>{if(!paused)start();};
+    prev?.addEventListener('click',()=>go(-1));
+    next?.addEventListener('click',()=>go(1));
+    slider.addEventListener('mouseenter',()=>{paused=true;stop();});
+    slider.addEventListener('mouseleave',()=>{paused=false;start();});
+    slider.addEventListener('focusin',()=>{paused=true;stop();});
+    slider.addEventListener('focusout',event=>{if(!slider.contains(event.relatedTarget)){paused=false;start();}});
+    render();start();
+  });
+}
+initHomeNewsSlider();
