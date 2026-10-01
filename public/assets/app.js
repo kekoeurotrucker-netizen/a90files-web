@@ -53,20 +53,23 @@ addScript('/assets/auth-extra.js');
 
 function initHomeNewsSlider(){
   document.querySelectorAll('[data-news-slider]').forEach(slider=>{
-    const track=slider.querySelector('[data-news-track]');
-    const slides=[...slider.querySelectorAll('.home-news-slide')];
+    const items=[...slider.querySelectorAll('.home-news-item')];
     const prev=slider.querySelector('[data-news-prev]');
     const next=slider.querySelector('[data-news-next]');
-    const count=slider.querySelector('[data-news-count]');
-    if(!track||slides.length<2)return;
+    if(items.length<2)return;
     let index=0,timer=null,paused=false;
-    const render=()=>{track.style.transform='translateX(-'+(index*100)+'%)';if(count)count.textContent=(index+1)+' / '+slides.length;};
-    const go=step=>{index=(index+step+slides.length)%slides.length;render();restart();};
+    const render=()=>{
+      items.forEach((item,i)=>{
+        item.classList.toggle('is-active',i===index);
+        const text=item.querySelector('span');
+        if(text){text.style.animation='none';void text.offsetWidth;text.style.animation='';}
+      });
+    };
     const stop=()=>{if(timer){clearInterval(timer);timer=null;}};
-    const start=()=>{stop();if(!paused)timer=setInterval(()=>{index=(index+1)%slides.length;render();},6000);};
-    const restart=()=>{if(!paused)start();};
-    prev?.addEventListener('click',()=>go(-1));
-    next?.addEventListener('click',()=>go(1));
+    const start=()=>{stop();if(!paused)timer=setInterval(()=>{index=(index+1)%items.length;render();},8000);};
+    const go=step=>{index=(index+step+items.length)%items.length;render();start();};
+    prev?.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();go(-1);});
+    next?.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();go(1);});
     slider.addEventListener('mouseenter',()=>{paused=true;stop();});
     slider.addEventListener('mouseleave',()=>{paused=false;start();});
     slider.addEventListener('focusin',()=>{paused=true;stop();});
