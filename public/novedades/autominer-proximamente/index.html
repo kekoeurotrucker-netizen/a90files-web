@@ -3,12 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="AutoMiner, próximamente en A 90 Files: minería adaptativa para Windows con prioridad a la temperatura, la estabilidad y la vida útil del hardware.">
+  <meta name="description" content="AutoMiner, próximamente en A 90 Files: interfaz real en desarrollo, minería adaptativa para Windows, control térmico y prioridad a la vida útil del hardware.">
   <meta name="theme-color" content="#080d0f">
   <title>AutoMiner — próximamente en Windows — A 90 Files</title>
+  <link rel="icon" href="/assets/autominer/autominer-icon.webp">
   <link rel="stylesheet" href="/assets/styles.css">
-  <link rel="stylesheet" href="/assets/theme-petrol-amber.css?v=20260920-news-1">
-  <link rel="stylesheet" href="/assets/news.css?v=20260920-1">
+  <link rel="stylesheet" href="/assets/theme-petrol-amber.css?v=20261001-visual-3">
+  <link rel="stylesheet" href="/assets/news.css?v=20261001-visual-3">
 </head>
 <body class="news-page">
   <header class="topbar">
@@ -24,48 +25,52 @@
     <div class="news-breadcrumbs"><a href="/">Inicio</a> / <a href="/novedades/">Novedades</a> / AutoMiner</div>
 
     <section class="news-article-hero">
-      <div class="news-article-copy" style="grid-column:1/-1">
+      <div class="news-article-copy">
+        <img class="news-brand-logo" src="/assets/autominer/autominer-logo.webp" alt="AutoMiner">
         <div class="news-kicker">01 OCT 2026 · AUTOMINER · PRÓXIMAMENTE</div>
-        <h1>AutoMiner: minería adaptativa pensada para cuidar el hardware</h1>
-        <p>Estamos preparando AutoMiner para Windows: una aplicación que supervisa un minero externo y adapta su intensidad según la temperatura y la carga real del PC. Todavía no existe una versión pública para descargar.</p>
-        <div class="news-meta"><span>Windows</span><span>En desarrollo</span><span>Protección térmica</span><span>Carga adaptativa</span></div>
-        <div class="news-actions"><a class="button primary" href="/foro/?t=33">Seguir AutoMiner en el foro →</a></div>
+        <h1>AutoMiner ya enseña su interfaz real de desarrollo</h1>
+        <p>Estamos preparando AutoMiner para Windows: una aplicación local que supervisa un minero externo y busca adaptar su intensidad al margen real del PC. Ya podemos enseñar una interfaz de desarrollo funcionando, pero todavía no existe una build pública para descargar.</p>
+        <div class="news-meta"><span>Windows</span><span>En desarrollo</span><span>Interfaz real</span><span>Protección térmica</span><span>Carga adaptativa</span></div>
+        <div class="news-actions"><a class="button primary" href="/software/autominer/">Abrir ficha de AutoMiner →</a><a class="button secondary" href="/foro/?t=33">Seguir en el foro</a></div>
       </div>
+      <figure class="news-article-media"><img src="/assets/autominer/autominer-cover.jpg" alt="AutoMiner con su interfaz de desarrollo" loading="eager" decoding="async"><figcaption><strong>AUTOMINER</strong> · Imagen promocional basada en la interfaz real en desarrollo</figcaption></figure>
     </section>
 
     <article class="news-article-body">
-      <h2>Próximamente, pero todavía no publicado</h2>
-      <p>AutoMiner sigue en desarrollo. <strong>Aún no hemos publicado ni subido una versión pública para Windows</strong>, así que por ahora no hay instalador ni descarga oficial. La idea es enseñar el proyecto antes de su primera versión pública y mantener el estado claro en todo momento.</p>
+      <h2>Ya hay una interfaz real que probar y seguir mejorando</h2>
+      <p>La captura de desarrollo muestra AutoMiner leyendo hardware y organizando el control de la minería desde una interfaz local. En esta fase ya aparecen perfiles como <strong>OFF, ECO, BALANCED y AWAY</strong>, telemetría de GPU y CPU, estado del minero, configuración del ejecutable y una zona específica de seguridad y avisos.</p>
 
-      <h2>La prioridad es el equipo, no exprimir el hashrate</h2>
-      <p>El enfoque de AutoMiner es diferente al de un lanzador que simplemente mantiene la minería al máximo. El objetivo principal es <strong>proteger temperaturas, estabilidad y vida útil del hardware</strong>, adaptando la carga cuando el PC está haciendo otras cosas.</p>
+      <div class="news-callout"><strong>Aún no está publicado</strong><p>Que podamos enseñar la interfaz no significa que exista una release pública. AutoMiner sigue en desarrollo y todavía no hemos publicado un instalador ni una build pública de Windows.</p></div>
+
+      <h2>La idea: adaptarse al uso real del PC</h2>
+      <p>El objetivo no es mantener el minero al máximo constantemente. AutoMiner se está diseñando para observar el margen disponible y reducir intensidad cuando otras aplicaciones necesitan GPU, CPU, VRAM o margen térmico. Esto está especialmente pensado para poder convivir con cargas como edición de vídeo, herramientas de IA u otros trabajos pesados.</p>
+
+      <h2>La vida útil del equipo va primero</h2>
+      <p>La filosofía del proyecto es conservadora: temperaturas, estabilidad y salud del hardware tienen prioridad sobre exprimir el rendimiento. El sistema debe poder bajar intensidad y detener la minería cuando las condiciones lo requieran.</p>
 
       <h2>Qué estamos preparando</h2>
       <ul>
-        <li>Modos <strong>OFF, ECO, BALANCED y AWAY</strong>.</li>
-        <li>Regulación adaptativa de la intensidad según temperatura y recursos disponibles.</li>
-        <li>Reducción automática de la carga cuando otras aplicaciones necesitan GPU, CPU o memoria.</li>
-        <li>Convivencia con tareas pesadas como edición de vídeo o herramientas de IA, reduciendo intensidad cuando haya margen en lugar de detenerse siempre.</li>
-        <li>Parada de seguridad cuando las condiciones térmicas o del sistema lo requieran.</li>
-        <li>Supervisión del proceso de minería, recuperación ante fallos y comportamiento conservador ante problemas de sensores.</li>
-        <li>Flujo previsto de trabajo: <strong>GPU → minero → pool → wallet</strong>.</li>
+        <li>Perfiles <strong>OFF, ECO, BALANCED y AWAY</strong>, además de control manual.</li>
+        <li>Regulación adaptativa según carga y margen térmico.</li>
+        <li>Supervisión de GPU, CPU, VRAM, temperatura y estado del proceso.</li>
+        <li>Reducción automática cuando otras aplicaciones necesitan recursos.</li>
+        <li>Parada de seguridad cuando continuar no sea conveniente para el equipo.</li>
+        <li>Recuperación y avisos cuando el proceso de minería falle o termine de forma inesperada.</li>
+        <li>Flujo de trabajo previsto: <strong>GPU → minero → pool → wallet</strong>.</li>
       </ul>
 
-      <div class="news-callout"><strong>Sin promesas de rentabilidad</strong><p>AutoMiner automatiza y protege el proceso, pero no vamos a anunciar ganancias garantizadas. La rentabilidad depende de demasiados factores externos y puede cambiar.</p></div>
+      <figure class="news-inline-media"><img src="/assets/autominer/autominer-promo.jpg" alt="Presentación de la interfaz de AutoMiner" loading="lazy"><figcaption>Material visual de AutoMiner preparado para presentar el proyecto mientras continúa el desarrollo.</figcaption></figure>
 
-
-      <h2>También seguimos con Project Trucker / Logistic Trucker</h2>
-      <p>En paralelo continúa la evolución del simulador logístico. El trabajo actual consiste en <strong>portar y reconstruir el sistema anterior 2D sobre una nueva base 3D</strong>, manteniendo la lógica de gestión, progresión y transporte que ya existía, pero trasladándola a un entorno preparado para carreteras, ciudades, carga, vehículos y navegación tridimensional.</p>
-      <p>La migración todavía está en desarrollo. Conservamos material visual de las pruebas del sistema anterior y lo iremos usando para enseñar la diferencia entre aquella etapa 2D y la nueva versión 3D a medida que el nuevo entorno esté listo para mostrarse.</p>
+      <div class="news-callout"><strong>Sin promesas de rentabilidad</strong><p>AutoMiner automatiza y protege el proceso, pero no anuncia ganancias garantizadas. La rentabilidad depende de factores externos y puede cambiar.</p></div>
 
       <h2>Qué viene ahora</h2>
-      <p>Seguiremos validando el funcionamiento real, la regulación de carga y las protecciones antes de considerar una primera publicación para Windows. Cuando exista una build pública lista para probar, lo anunciaremos en A 90 Files y en el hilo oficial del foro.</p>
+      <p>Seguiremos validando la telemetría, el control del proceso, la regulación de carga y las protecciones antes de considerar una primera publicación para Windows. Cuando exista una build pública realmente preparada para probar, la anunciaremos en A 90 Files y en el hilo oficial del foro.</p>
 
-      <div class="news-actions"><a class="button primary" href="/foro/?t=33">Ver el hilo de AutoMiner →</a></div>
+      <div class="news-actions"><a class="button primary" href="/software/autominer/">Ver AutoMiner →</a><a class="button secondary" href="/foro/?t=33">Ver el hilo oficial</a></div>
     </article>
   </main>
 
-  <footer class="footer shell"><span>© <span id="year"></span> A 90 Files</span><nav aria-label="Enlaces secundarios"><a href="/novedades/">Novedades</a><a href="/foro/?t=33">AutoMiner en el foro</a></nav></footer>
-  <script src="/assets/app.js?v=20260916-social-5" defer></script>
+  <footer class="footer shell"><span>© <span id="year"></span> A 90 Files</span><nav aria-label="Enlaces secundarios"><a href="/novedades/">Novedades</a><a href="/software/autominer/">AutoMiner</a><a href="/foro/?t=33">Foro</a></nav></footer>
+  <script src="/assets/app.js?v=20261001-news-2" defer></script>
 </body>
 </html>
