@@ -3,10 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="AutoMiner — aplicación local para Windows con minería adaptativa y prioridad a la protección del hardware.">
+  <meta name="description" content="AutoMiner — aplicación local para Windows con minería adaptativa, control térmico y prioridad a la protección del hardware.">
+  <meta name="theme-color" content="#07151d">
   <title>AutoMiner — A 90 Files</title>
+  <link rel="icon" href="/assets/autominer/autominer-icon.webp">
   <link rel="stylesheet" href="/assets/styles.css">
-  <link rel="stylesheet" href="/assets/software-menu.css">
+  <link rel="stylesheet" href="/assets/software-menu.css?v=20261001-visual-3">
 </head>
 <body class="project-detail-page autominer-detail">
   <header class="topbar">
@@ -19,33 +21,33 @@
   <nav id="mobile-nav" class="mobile-nav" hidden aria-label="Navegación móvil"><a href="/">Inicio</a><a href="/software/">Software</a><a href="/juegos/">Juegos</a><a href="/canal/">Canal</a><a href="/novedades/">Novedades</a><a href="/soporte/">Soporte</a><a href="/foro/">Foro</a></nav>
 
   <main class="project-detail-main shell">
-    <section class="project-detail-hero">
-      <div class="project-detail-topline">
-        <div class="eyebrow"><span></span>SOFTWARE A 90</div>
-        <span class="project-detail-status">Próximamente · En desarrollo</span>
+    <section class="autominer-hero-grid">
+      <div class="autominer-hero-copy">
+        <div class="project-detail-topline"><div class="eyebrow"><span></span>SOFTWARE A 90</div><span class="project-detail-status">Próximamente · En desarrollo</span></div>
+        <img class="autominer-brand-logo" src="/assets/autominer/autominer-logo.webp" alt="AutoMiner">
+        <h1>Minería adaptativa.<br><em>El hardware va primero.</em></h1>
+        <p class="project-detail-copy">AutoMiner es una aplicación local para Windows diseñada para supervisar un minero externo y adaptar su intensidad según temperatura, carga y recursos disponibles. La prioridad del proyecto es la estabilidad y la vida útil del equipo, no mantener la minería al máximo a cualquier precio.</p>
+        <div class="project-detail-tags"><span>Windows</span><span>Local</span><span>Adaptativo</span><span>Control térmico</span><span>Próximamente</span></div>
+        <div class="project-detail-actions"><a class="button secondary" href="/software/">← Volver a Software</a><a class="button primary" href="/foro/?t=33">Seguir AutoMiner en el foro →</a></div>
       </div>
-      <h1>AutoMiner.<br><em>Minería adaptativa, con margen para tu PC.</em></h1>
-      <p class="project-detail-copy">AutoMiner es una aplicación local para Windows diseñada para supervisar un minero externo y adaptar su intensidad según temperatura, carga y recursos disponibles. La prioridad del proyecto es la estabilidad y la vida útil del equipo, no exprimirlo al máximo.</p>
-      <div class="project-detail-tags"><span>Windows</span><span>Local</span><span>Adaptativo</span><span>Control térmico</span><span>Próximamente</span></div>
-      <div class="project-detail-actions">
-        <a class="button secondary" href="/software/">← Volver a Software</a>
-        <a class="button primary" href="/foro/?t=33">Seguir AutoMiner en el foro →</a>
-      </div>
+      <figure class="autominer-hero-media"><img src="/assets/autominer/autominer-cover.jpg" alt="Presentación visual de AutoMiner con su interfaz en desarrollo" loading="eager" decoding="async"></figure>
     </section>
 
     <section class="project-detail-grid" aria-label="Información de AutoMiner">
-      <article class="project-info-card"><small>ESTADO</small><h2>Aún sin build pública</h2><p>AutoMiner sigue en desarrollo. Todavía no hemos publicado una versión para Windows ni existe una descarga oficial.</p></article>
-      <article class="project-info-card"><small>PRIORIDAD</small><h2>Cuidar el hardware</h2><p>La regulación de carga y las paradas de seguridad están planteadas para mantener temperaturas, estabilidad y margen de recursos bajo control.</p></article>
+      <article class="project-info-card"><small>ESTADO ACTUAL</small><h2>Interfaz real en pruebas</h2><p>El proyecto ya dispone de una interfaz funcional de desarrollo con perfiles de carga, telemetría de hardware, estado del minero y avisos de seguridad. Todavía no existe una build pública para descargar.</p></article>
+      <article class="project-info-card"><small>PRIORIDAD</small><h2>Cuidar el hardware</h2><p>La regulación de carga y las paradas de seguridad están diseñadas para conservar margen térmico y recursos cuando el PC está trabajando en otras tareas.</p></article>
     </section>
 
-    <section class="project-feature-list" aria-label="Funciones previstas de AutoMiner">
-      <article class="project-feature"><b>Modos de trabajo</b><p>OFF, ECO, BALANCED y AWAY para distintos niveles de actividad y disponibilidad del equipo.</p></article>
-      <article class="project-feature"><b>Carga adaptativa</b><p>Ajuste de intensidad según GPU, CPU, VRAM, temperaturas y carga real del sistema.</p></article>
-      <article class="project-feature"><b>Convivencia</b><p>Reducción de intensidad cuando Premiere, herramientas de IA u otras aplicaciones necesitan recursos.</p></article>
-      <article class="project-feature"><b>Seguridad</b><p>Parada cuando las condiciones térmicas o del sistema hagan necesario proteger el equipo.</p></article>
+    <section class="project-feature-list" aria-label="Objetivos de AutoMiner">
+      <article class="project-feature"><b>Perfiles</b><p>OFF, ECO, BALANCED, AWAY y opciones manuales para distintos niveles de actividad.</p></article>
+      <article class="project-feature"><b>Carga adaptativa</b><p>Ajuste progresivo según GPU, CPU, VRAM, temperaturas y margen disponible.</p></article>
+      <article class="project-feature"><b>Convivencia</b><p>La idea es reducir intensidad si Premiere, herramientas de IA u otras aplicaciones necesitan recursos, sin detenerse siempre por sistema.</p></article>
+      <article class="project-feature"><b>Seguridad</b><p>Parada cuando la situación térmica o los sensores indiquen que continuar no es conveniente.</p></article>
     </section>
 
-    <div class="project-note"><strong>AutoMiner se anunciará como disponible solo cuando exista una build pública realmente preparada para probar.</strong> Hasta entonces, su estado seguirá marcado como “Próximamente”.</div>
+    <figure class="autominer-showcase"><img src="/assets/autominer/autominer-promo.jpg" alt="AutoMiner: interfaz y entorno de minería en una imagen promocional" loading="lazy"></figure>
+
+    <div class="project-note"><strong>AutoMiner sigue marcado como “Próximamente”.</strong> No hay instalador ni descarga pública todavía. Cuando exista una build de Windows suficientemente validada, se anunciará aquí y en el foro.</div>
   </main>
   <script src="/assets/app.js?v=software-menu-2" defer></script>
 </body>
