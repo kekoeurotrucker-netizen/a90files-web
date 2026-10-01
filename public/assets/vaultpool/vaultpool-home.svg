@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-label="VaultPool Storage">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#10323b"/>
+      <stop offset=".55" stop-color="#0b2026"/>
+      <stop offset="1" stop-color="#071316"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3e8d99"/>
+      <stop offset="1" stop-color="#e7a22a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="700" rx="34" fill="url(#bg)"/>
+  <circle cx="1040" cy="100" r="210" fill="#2f7681" opacity=".13"/>
+  <circle cx="130" cy="620" r="220" fill="#e7a22a" opacity=".05"/>
+  <g transform="translate(96 110)">
+    <rect width="270" height="270" rx="44" fill="#102d35" stroke="#34707a" stroke-width="3"/>
+    <path d="M84 164c-23 0-42-18-42-41 0-21 16-38 37-41 8-30 35-52 67-52 35 0 64 26 69 60 24 2 43 22 43 46 0 26-21 47-47 47H84Z" fill="#d7e7e9" opacity=".92"/>
+    <path d="M104 182h104" stroke="url(#line)" stroke-width="12" stroke-linecap="round"/>
+    <text x="135" y="234" text-anchor="middle" fill="#eaf1f2" font-family="Arial, sans-serif" font-size="50" font-weight="700">VP</text>
+  </g>
+  <g transform="translate(452 108)">
+    <rect width="620" height="410" rx="28" fill="#0b1b20" stroke="#2a5962" stroke-width="2"/>
+    <rect x="30" y="28" width="560" height="48" rx="14" fill="#102830"/>
+    <circle cx="60" cy="52" r="7" fill="#e7a22a"/>
+    <rect x="84" y="44" width="160" height="15" rx="7.5" fill="#d9e6e8" opacity=".8"/>
+    <rect x="30" y="104" width="180" height="256" rx="18" fill="#0f262d"/>
+    <rect x="234" y="104" width="356" height="112" rx="18" fill="#10252b"/>
+    <rect x="234" y="238" width="170" height="122" rx="18" fill="#10252b"/>
+    <rect x="420" y="238" width="170" height="122" rx="18" fill="#10252b"/>
+    <rect x="54" y="132" width="132" height="12" rx="6" fill="#76989f" opacity=".46"/>
+    <rect x="54" y="165" width="106" height="12" rx="6" fill="#76989f" opacity=".32"/>
+    <rect x="54" y="198" width="122" height="12" rx="6" fill="#76989f" opacity=".32"/>
+    <rect x="260" y="132" width="178" height="13" rx="6.5" fill="#d7e4e6" opacity=".65"/>
+    <rect x="260" y="166" width="288" height="10" rx="5" fill="#78999f" opacity=".30"/>
+    <rect x="260" y="190" width="232" height="10" rx="5" fill="#78999f" opacity=".26"/>
+    <path d="M260 322 C300 268 330 336 370 284 C410 233 450 321 492 270 C523 233 548 252 566 230" fill="none" stroke="url(#line)" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <rect x="452" y="552" width="620" height="5" rx="2.5" fill="url(#line)" opacity=".72"/>
+</svg>
