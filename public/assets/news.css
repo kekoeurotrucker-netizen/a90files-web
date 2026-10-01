@@ -13,3 +13,10 @@
 .news-page .footer{padding-top:5px}.news-page .footer nav{display:flex;flex-wrap:wrap;gap:14px}
 @media(max-width:900px){.news-section-hero{align-items:flex-start;flex-direction:column}.news-section-note{max-width:none}.news-featured,.news-article-hero{grid-template-columns:1fr}.news-featured-media{min-height:360px}.news-article-media{min-height:380px}.news-grid{grid-template-columns:1fr}}
 @media(max-width:620px){.news-main{padding-top:18px}.news-section-hero,.news-featured-copy,.news-article-copy,.news-article-body{padding:22px}.news-section-hero h1{font-size:44px}.news-featured-media{min-height:300px}.news-card{grid-template-columns:115px minmax(0,1fr)}.news-card-copy{padding:15px}.news-card h3{font-size:18px}.news-article-media{min-height:300px}.news-actions .button{flex:1;min-width:140px}}
+
+/* NEWS VISUAL MEDIA 20261001 */
+.news-brand-logo{display:block;width:min(430px,74%);height:auto;margin:0 0 18px;filter:drop-shadow(0 10px 24px rgba(0,0,0,.28))}
+.news-inline-media{margin:24px 0 8px;overflow:hidden;border:1px solid rgba(94,126,132,.2);border-radius:18px;background:#071014}
+.news-inline-media img{display:block;width:100%;height:auto}
+.news-inline-media figcaption{padding:10px 13px;color:#82969b;font-size:9px;background:#101d21}
+@media(max-width:620px){.news-brand-logo{width:min(360px,90%)}}
