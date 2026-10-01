@@ -237,3 +237,52 @@ html,body{background:#080d0f;color:var(--text)}
 }
 .area-card--support:hover{background-size:106%;background-position:center}
 .area-card--support .area-icon{background:rgba(245,158,11,.10);border-color:rgba(245,158,11,.24);color:#f2b95e}
+
+
+/* VAULTPOOL SAFE VISUAL 20261001 — backgrounds fail gracefully and never show a broken-image icon. */
+.hero-mini-art{
+  display:grid;
+  place-items:center;
+  width:54px;
+  height:54px;
+  border-radius:10px;
+  border:1px solid rgba(123,164,170,.18);
+  background:
+    linear-gradient(145deg,rgba(14,47,56,.86),rgba(7,22,27,.94)),
+    url("/assets/vaultpool/vaultpool-home.svg") center/cover no-repeat;
+  color:#dcebed;
+  font-weight:850;
+  font-size:15px;
+  letter-spacing:-.04em;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
+}
+.project-preview-art{
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(180deg,rgba(6,14,17,.06),rgba(6,14,17,.22)),
+    url("/assets/vaultpool/vaultpool-home.svg") center/cover no-repeat;
+  transition:transform .35s ease,filter .35s ease;
+  filter:saturate(.86) brightness(.74);
+}
+.project-visual-preview--vault:hover .project-preview-art{
+  transform:scale(1.02);
+  filter:saturate(.95) brightness(.82);
+}
+.project-visual-preview--vault:after{
+  background:
+    linear-gradient(180deg,rgba(5,12,14,.03) 34%,rgba(5,12,14,.88) 100%),
+    linear-gradient(90deg,rgba(5,12,14,.30),transparent 70%);
+}
+
+
+/* SUPPORT VISUAL BOOST 20261001 */
+.area-card--support{
+  background-image:
+    linear-gradient(150deg,rgba(20,32,35,.64),rgba(11,23,27,.90)),
+    url("/assets/support/support-visual.svg");
+  background-size:cover;
+  background-position:center;
+}
+.area-card--support:hover{background-size:106%}
+.area-card--support:before{opacity:.86}
