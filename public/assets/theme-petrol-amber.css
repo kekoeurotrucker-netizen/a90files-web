@@ -127,3 +127,19 @@ html,body{background:#080d0f;color:var(--text)}
 .area-card--news:hover .home-news-item span,.area-card--news:focus-within .home-news-item span{animation-play-state:paused}
 @keyframes a90-module-news-scroll{from{transform:translateX(0)}to{transform:translateX(calc(-100% - 100%))}}
 @media(prefers-reduced-motion:reduce){.home-news-item span{padding-left:0;animation:none}.home-news-marquee{mask-image:none}}
+
+
+/* HOME VISUAL ACCENTS 20261001 — imagery stays secondary to the card system. */
+.area-card{isolation:isolate}
+.area-card:after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(180deg,rgba(8,13,15,.08),rgba(8,13,15,.56) 48%,rgba(8,13,15,.91) 100%),linear-gradient(90deg,rgba(8,13,15,.16),rgba(8,13,15,.04))}
+.area-card>*,.area-card>div{position:relative;z-index:1}
+.area-card--software,.area-card--games,.area-card--news-visual{background-size:cover;background-position:center}
+.area-card--software{background-image:linear-gradient(150deg,rgba(20,32,35,.68),rgba(11,23,27,.92)),url("/assets/autominer/autominer-promo.jpg")}
+.area-card--games{background-image:linear-gradient(150deg,rgba(20,32,35,.66),rgba(11,23,27,.94)),url("/assets/project-trucker/logistic-trucker-ui-2d-small.jpg")}
+.area-card--news-visual{background-image:linear-gradient(150deg,rgba(20,32,35,.68),rgba(11,23,27,.92)),url("/assets/autominer/autominer-cover.jpg")}
+.area-card--software:hover,.area-card--games:hover,.area-card--news-visual:hover{background-size:106%;background-position:center}
+.area-card--software,.area-card--games,.area-card--news-visual{transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease,background-size .35s ease}
+.area-card--support{background:linear-gradient(150deg,#16262b 0%,#142023 55%,#12242a 100%)}
+.project-panel--visual:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(11,26,31,.97) 0%,rgba(11,26,31,.88) 48%,rgba(11,26,31,.28) 100%),url("/assets/vaultpool/clouds.jpg") right center/58% auto no-repeat;opacity:.58}
+.project-panel--visual>*{position:relative;z-index:1}
+@media(max-width:620px){.project-panel--visual:after{background:linear-gradient(180deg,rgba(11,26,31,.96),rgba(11,26,31,.78)),url("/assets/vaultpool/clouds.jpg") center/cover no-repeat}.area-card--software,.area-card--games,.area-card--news-visual{background-size:cover}}
