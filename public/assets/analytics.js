@@ -21,7 +21,14 @@ function referrerHost(entry){
 }
 function send(event_type,target=null,entry=false){
   const payload={event_type,path:location.pathname,target,referrer_host:referrerHost(entry),session_id:sessionId(),is_entry:entry};
-  fetch('/api/analytics/event',{method:'POST',credentials:'same-origin',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(()=>{});
+  const body=JSON.stringify(payload);
+  try{
+    if(navigator.sendBeacon){
+      const ok=navigator.sendBeacon('/api/analytics/event',new Blob([body],{type:'application/json'}));
+      if(ok)return;
+    }
+  }catch{}
+  fetch('/api/analytics/event',{method:'POST',credentials:'same-origin',keepalive:true,headers:{'Content-Type':'application/json'},body}).catch(()=>{});
 }
 function targetFor(a,u){
   const path=u.pathname;
