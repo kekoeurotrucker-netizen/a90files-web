@@ -484,3 +484,49 @@ html,body{background:#080d0f;color:var(--text)}
   .area-icon{width:44px;min-width:44px;height:44px}
   .area-icon img{width:44px;height:44px;border-radius:13px}
 }
+
+
+/* PREMIUM MODULE ICON SIZE FIX 20261001 — icon-only */
+.section-grid .area-card .area-top .area-icon{
+  width:42px!important;
+  min-width:42px!important;
+  max-width:42px!important;
+  height:42px!important;
+  min-height:42px!important;
+  max-height:42px!important;
+  padding:0!important;
+  margin:0!important;
+  overflow:hidden!important;
+  border-radius:12px!important;
+  line-height:0!important;
+  flex:0 0 42px!important;
+}
+.section-grid .area-card .area-top .area-icon img{
+  display:block!important;
+  width:42px!important;
+  min-width:42px!important;
+  max-width:42px!important;
+  height:42px!important;
+  min-height:42px!important;
+  max-height:42px!important;
+  object-fit:contain!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:12px!important;
+}
+.section-grid .area-card:hover .area-top .area-icon img,
+.section-grid .area-card:focus-within .area-top .area-icon img{
+  transform:scale(1.04)!important;
+}
+@media(max-width:620px){
+  .section-grid .area-card .area-top .area-icon{
+    width:40px!important;min-width:40px!important;max-width:40px!important;
+    height:40px!important;min-height:40px!important;max-height:40px!important;
+    flex-basis:40px!important;
+  }
+  .section-grid .area-card .area-top .area-icon img{
+    width:40px!important;min-width:40px!important;max-width:40px!important;
+    height:40px!important;min-height:40px!important;max-height:40px!important;
+  }
+}
