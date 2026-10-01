@@ -109,3 +109,21 @@ html,body{background:#080d0f;color:var(--text)}
 @media(prefers-reduced-motion:reduce){.news-ticker-track{animation:none}.news-ticker-window{overflow-x:auto;mask-image:none}}
 @media(max-width:900px){.news-ticker{width:min(52vw,440px)}}
 @media(max-width:620px){.news-ticker{width:100%;max-width:none;margin-left:0}.news-ticker-label{padding:0 9px}.news-ticker-track{min-height:36px}}
+
+
+/* Homepage Novedades module: automatic carousel with manual controls. */
+.area-card--news{--accent:#4c8b96;cursor:default}
+.area-card--news .area-arrow{display:inline-flex;align-items:center;justify-content:center;min-width:26px;min-height:26px;border-radius:7px}
+.area-card--news .area-arrow:hover{background:color-mix(in srgb,var(--accent) 12%,transparent);color:#fff}
+.home-news-head{margin-top:5px}.home-news-head small{display:block;margin-bottom:3px;color:color-mix(in srgb,var(--accent) 64%,#7b8f94);font-size:8px;letter-spacing:.11em}.home-news-head h2{margin:0;font-size:20px;letter-spacing:-.025em}
+.home-news-window{min-width:0;overflow:hidden;margin-top:6px}
+.home-news-track{display:flex;transition:transform .45s cubic-bezier(.22,.61,.36,1);will-change:transform}
+.home-news-slide{flex:0 0 100%;min-width:0;display:flex;flex-direction:column;gap:3px;padding-right:5px}
+.home-news-slide b{color:#e7ecee;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.home-news-slide span{color:#8b9ca1;font-size:9.5px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.home-news-slide:hover b{color:#fff}.home-news-slide:hover span{color:#aebcc0}
+.home-news-controls{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:7px}
+.home-news-controls button{display:grid;place-items:center;width:24px;height:22px;padding:0;border:1px solid rgba(94,126,132,.2);border-radius:7px;background:rgba(255,255,255,.025);color:#9bacb0;cursor:pointer}
+.home-news-controls button:hover{border-color:rgba(245,158,11,.26);background:rgba(245,158,11,.055);color:#f0bd62}
+.home-news-controls span{min-width:34px;text-align:center;color:#718489;font-size:8px;font-variant-numeric:tabular-nums}
+@media(prefers-reduced-motion:reduce){.home-news-track{transition:none}}
