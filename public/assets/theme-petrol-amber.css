@@ -385,3 +385,64 @@ html,body{background:#080d0f;color:var(--text)}
   .area-icon{width:36px;min-width:36px;height:36px;border-radius:11px}
   .area-icon svg{width:18px;height:18px}
 }
+
+
+/* VAULTPOOL FEATURED RESTORE 20261001
+   Return the top-right panel to the earlier composition: preview first, brand below. */
+.project-panel--visual .project-visual-preview{
+  height:166px;
+  margin:18px 0 16px;
+  border-radius:15px;
+}
+.project-panel--visual .project-visual-preview>img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  object-position:center;
+  filter:saturate(.86) brightness(.72);
+  transition:transform .35s ease,filter .35s ease;
+}
+.project-panel--visual .project-visual-preview:after{
+  background:linear-gradient(180deg,rgba(5,12,14,.02) 40%,rgba(5,12,14,.72) 100%);
+}
+.project-panel--visual .project-visual-preview>span{
+  position:absolute;
+  left:11px;
+  bottom:9px;
+  z-index:2;
+  padding:4px 7px;
+  border-radius:7px;
+  background:rgba(5,12,14,.62);
+  border:1px solid rgba(255,255,255,.08);
+  color:#9fb0b4;
+  font-size:8px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  backdrop-filter:blur(7px);
+}
+.project-panel--visual .project-visual-preview:hover>img{
+  transform:scale(1.025);
+  filter:saturate(.96) brightness(.80);
+}
+.project-panel--visual .project-brand{
+  margin:0 0 10px;
+}
+.project-panel--visual .project-copy{margin:0 0 11px}
+
+/* Make the new module icons visibly distinct from the old placeholder symbols. */
+.area-icon{
+  width:42px;
+  min-width:42px;
+  height:42px;
+  border-radius:13px;
+}
+.area-icon svg{
+  width:22px;
+  height:22px;
+  stroke-width:1.85;
+}
+@media(max-width:620px){
+  .area-icon{width:39px;min-width:39px;height:39px;border-radius:12px}
+  .area-icon svg{width:20px;height:20px}
+}
