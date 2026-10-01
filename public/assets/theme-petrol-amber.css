@@ -446,3 +446,41 @@ html,body{background:#080d0f;color:var(--text)}
   .area-icon{width:39px;min-width:39px;height:39px;border-radius:12px}
   .area-icon svg{width:20px;height:20px}
 }
+
+
+/* PREMIUM MODULE ICON ASSETS 20261001 — icon-only override */
+.area-icon{
+  width:48px;
+  min-width:48px;
+  height:48px;
+  padding:0;
+  border:0;
+  border-radius:14px;
+  background:transparent!important;
+  box-shadow:none!important;
+  backdrop-filter:none;
+  overflow:visible;
+}
+.area-icon img{
+  display:block;
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  border-radius:14px;
+  filter:drop-shadow(0 8px 16px rgba(0,0,0,.26));
+  transition:transform .22s ease,filter .22s ease;
+}
+.area-card:hover .area-icon,
+.area-card:focus-within .area-icon{
+  transform:none;
+  box-shadow:none!important;
+}
+.area-card:hover .area-icon img,
+.area-card:focus-within .area-icon img{
+  transform:translateY(-2px) scale(1.06);
+  filter:drop-shadow(0 11px 20px rgba(0,0,0,.34));
+}
+@media(max-width:620px){
+  .area-icon{width:44px;min-width:44px;height:44px}
+  .area-icon img{width:44px;height:44px;border-radius:13px}
+}
