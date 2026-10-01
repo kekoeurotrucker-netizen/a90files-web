@@ -139,10 +139,29 @@ html,body{background:#080d0f;color:var(--text)}
 .area-card--news-visual{background-image:linear-gradient(150deg,rgba(20,32,35,.68),rgba(11,23,27,.92)),url("/assets/autominer/autominer-cover.jpg")}
 .area-card--software:hover,.area-card--games:hover,.area-card--news-visual:hover{background-size:106%;background-position:center}
 .area-card--software,.area-card--games,.area-card--news-visual{transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease,background-size .35s ease}
-.area-card--support{background:linear-gradient(150deg,#16262b 0%,#142023 55%,#12242a 100%)}
-.project-panel--visual:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(11,26,31,.97) 0%,rgba(11,26,31,.88) 48%,rgba(11,26,31,.28) 100%),url("/assets/vaultpool/clouds.jpg") right center/58% auto no-repeat;opacity:.58}
+.area-card--support{
+  background-image:
+    linear-gradient(150deg,rgba(20,32,35,.66),rgba(11,23,27,.91)),
+    url("/assets/support/support-visual.svg");
+  background-size:cover;
+  background-position:center;
+  transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease,background-size .35s ease;
+}
+.project-panel--visual:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 82% 18%,rgba(15,76,92,.14),transparent 34%),
+    linear-gradient(90deg,rgba(11,26,31,.96) 0%,rgba(11,26,31,.82) 52%,rgba(11,26,31,.62) 100%);
+  opacity:.58;
+}
 .project-panel--visual>*{position:relative;z-index:1}
-@media(max-width:620px){.project-panel--visual:after{background:linear-gradient(180deg,rgba(11,26,31,.96),rgba(11,26,31,.78)),url("/assets/vaultpool/clouds.jpg") center/cover no-repeat}.area-card--software,.area-card--games,.area-card--news-visual{background-size:cover}}
+@media(max-width:620px){
+  .project-panel--visual:after{background:linear-gradient(180deg,rgba(11,26,31,.96),rgba(11,26,31,.78))}
+  .area-card--software,.area-card--games,.area-card--news-visual,.area-card--support{background-size:cover}
+}
 
 
 /* HOME HERO VISUAL DENSITY 20261001 v2 — integrated project mosaic, no floating-card look. */
@@ -208,3 +227,13 @@ html,body{background:#080d0f;color:var(--text)}
   .hero-panel:before{display:none}
   .project-visual-preview{height:190px}
 }
+
+
+/* SUPPORT VISUAL PARITY 20261001 */
+.area-card--support:after{
+  background:
+    linear-gradient(180deg,rgba(8,13,15,.10),rgba(8,13,15,.52) 46%,rgba(8,13,15,.91) 100%),
+    linear-gradient(90deg,rgba(8,13,15,.10),rgba(8,13,15,.02));
+}
+.area-card--support:hover{background-size:106%;background-position:center}
+.area-card--support .area-icon{background:rgba(245,158,11,.10);border-color:rgba(245,158,11,.24);color:#f2b95e}
