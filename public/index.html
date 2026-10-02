@@ -8,6 +8,7 @@
   <title>A 90 Files</title>
   <link rel="stylesheet" href="/assets/styles.css">
   <link rel="stylesheet" href="/assets/theme-petrol-amber.css?v=20261001-icons-11">
+  <link rel="stylesheet" href="/assets/home-feature.css?v=20261002-1">
   <link rel="stylesheet" href="/assets/social-global.css?v=20260921-social-11">
 </head>
 <body class="home">
@@ -41,40 +42,83 @@
 
   <main class="home-main shell">
     <div class="home-grid">
-      <section class="panel hero-panel">
-        <div class="panel-glow" aria-hidden="true"></div>
-        <div class="eyebrow"><span></span>A 90 / HUB DIGITAL</div>
-        <div class="hero-content">
-          <h1>Todo A 90.<br><em>Un solo punto de entrada.</em></h1>
-          <p>Software, juegos, contenido y soporte organizados en un portal rápido, limpio y directo.</p>
+      <section class="panel hero-panel hero-panel--news" data-feature-news aria-label="Novedades destacadas">
+        <div class="feature-news-top">
+          <div class="feature-news-eyebrow">A 90 / EN PORTADA</div>
+          <a class="feature-news-all" href="/novedades/">TODAS LAS NOVEDADES <span aria-hidden="true">↗</span></a>
         </div>
-        <div class="hero-showcase" aria-label="Proyectos de A 90">
-          <a class="hero-feature-tile" href="/software/autominer/">
-            <img src="/assets/autominer/autominer-cover.jpg" alt="" aria-hidden="true">
-            <div class="hero-feature-overlay">
-              <span class="hero-feature-kicker">SOFTWARE · PRÓXIMAMENTE</span>
-              <strong>AutoMiner</strong>
-              <small>Minería adaptativa y control del hardware</small>
+        <div class="feature-news-stage">
+          <article class="feature-news-slide feature-news-slide--vaultpool is-active"
+            data-feature-slide data-headline="VaultPool para Android"
+            data-ticker="El proyecto da el salto al móvil para llegar a todos tus dispositivos. Android está en desarrollo."
+            data-link="/novedades/vaultpool-android/" aria-hidden="false">
+            <div class="feature-news-photo"><img src="/assets/vaultpool/vaultpool-android-concept.svg" alt="" aria-hidden="true" loading="eager" decoding="async"></div>
+            <div class="feature-news-copy">
+              <span class="feature-news-category">VaultPool · Multidispositivo</span>
+              <h1>VaultPool en Android.<br><em>Todos tus dispositivos.</em></h1>
+              <p>El almacenamiento que llevas contigo. Estamos desarrollando VaultPool para Android como siguiente paso de nuestra visión multidispositivo.</p>
+              <a class="feature-news-cta" href="/novedades/vaultpool-android/">Descubrir el proyecto <span aria-hidden="true">↗</span></a>
             </div>
-          </a>
-          <div class="hero-showcase-row">
-            <a class="hero-mini-tile hero-mini-tile--vault" href="/software/vaultpool/">
-              <span class="hero-mini-art hero-mini-art--vault" aria-hidden="true">VP</span>
-              <span><b>VaultPool</b><small>Multinube</small></span>
-            </a>
-            <a class="hero-mini-tile" href="/juegos/project-trucker/">
-              <img src="/assets/project-trucker/logistic-trucker-ui-2d-small.jpg" alt="" aria-hidden="true">
-              <span><b>Project Trucker</b><small>2D → 3D</small></span>
-            </a>
+          </article>
+          <article class="feature-news-slide feature-news-slide--autominer"
+            data-feature-slide data-headline="AutoMiner: primeras pruebas satisfactorias"
+            data-ticker="La aplicación ya funciona en los primeros ensayos; todavía no existe una descarga pública."
+            data-link="/novedades/autominer-proximamente/" aria-hidden="true" hidden>
+            <div class="feature-news-photo"><img src="/assets/autominer/autominer-cover.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>
+            <div class="feature-news-copy">
+              <span class="feature-news-category">AutoMiner · Primeras pruebas</span>
+              <h2>AutoMiner ya funciona.<br><em>Primeros resultados.</em></h2>
+              <p>Las pruebas iniciales han sido satisfactorias. Seguimos validando la minería adaptativa y la protección del hardware antes de publicar una versión.</p>
+              <a class="feature-news-cta" href="/novedades/autominer-proximamente/">Ver los avances <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+          <article class="feature-news-slide feature-news-slide--startwise"
+            data-feature-slide data-headline="StartWise: tu Windows, a tu manera"
+            data-ticker="Nuevo proyecto de optimización, personalización y control de Windows, todavía en desarrollo."
+            data-link="/novedades/startwise-en-desarrollo/" aria-hidden="true" hidden>
+            <div class="feature-news-photo"><img src="/assets/startwise/startwise-cover.svg" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>
+            <div class="feature-news-copy">
+              <span class="feature-news-category">StartWise · Nuevo proyecto</span>
+              <h2>Tu Windows.<br><em>A tu manera.</em></h2>
+              <p>StartWise busca reunir diagnóstico, optimización y personalización sin sacrificar la estabilidad ni quitarte el control. En desarrollo.</p>
+              <a class="feature-news-cta" href="/novedades/startwise-en-desarrollo/">Conocer StartWise <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+          <article class="feature-news-slide feature-news-slide--trucker"
+            data-feature-slide data-headline="Project Trucker: del sistema 2D al mundo 3D"
+            data-ticker="Seguimos trasladando y reconstruyendo el proyecto sobre su nuevo entorno tridimensional."
+            data-link="/foro/?t=34" aria-hidden="true" hidden>
+            <div class="feature-news-photo"><img src="/assets/project-trucker/logistic-trucker-ui-2d-small.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async"></div>
+            <div class="feature-news-copy">
+              <span class="feature-news-category">Project Trucker · En desarrollo</span>
+              <h2>De la carretera 2D<br><em>a un mundo 3D.</em></h2>
+              <p>Estamos llevando Project Trucker a un nuevo entorno 3D. Descubre cómo evoluciona el proyecto en su hilo del foro.</p>
+              <a class="feature-news-cta" href="/foro/?t=34">Seguir Project Trucker <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+          <div class="feature-news-dots" aria-label="Seleccionar novedad">
+            <button class="feature-news-dot" type="button" data-feature-dot aria-label="VaultPool Android" aria-current="true"></button>
+            <button class="feature-news-dot" type="button" data-feature-dot aria-label="AutoMiner" aria-current="false"></button>
+            <button class="feature-news-dot" type="button" data-feature-dot aria-label="StartWise" aria-current="false"></button>
+            <button class="feature-news-dot" type="button" data-feature-dot aria-label="Project Trucker" aria-current="false"></button>
+          </div>
+          <div class="feature-news-controls" aria-label="Controles del carrusel">
+            <button class="feature-news-control" type="button" data-feature-prev aria-label="Novedad anterior">←</button>
+            <span class="feature-news-count" data-feature-count aria-hidden="true">01 / 04</span>
+            <button class="feature-news-control" type="button" data-feature-next aria-label="Novedad siguiente">→</button>
           </div>
         </div>
-        <div class="hero-bottom">
-          <div class="hero-actions">
-            <a class="button primary" href="/software/">Explorar proyectos <span>→</span></a>
-            <a class="button secondary" href="/soporte/">Soporte</a>
-            <a class="button secondary" href="https://paypal.me/A90porHora" target="_blank" rel="noopener noreferrer">❤ Donaciones</a>
+        <div class="feature-news-bottom">
+          <div class="feature-news-ticker">
+            <span class="feature-news-ticker-label">ÚLTIMA HORA</span>
+            <div class="feature-news-ticker-window">
+              <a class="feature-news-ticker-link" href="/novedades/vaultpool-android/" data-feature-ticker-link aria-label="Leer: VaultPool para Android">
+                <span class="feature-news-ticker-run" data-feature-ticker-run>VaultPool para Android — El proyecto da el salto al móvil para llegar a todos tus dispositivos. Android está en desarrollo.</span>
+              </a>
+            </div>
           </div>
         </div>
+        <span class="feature-news-sr" aria-live="polite" aria-atomic="true" data-feature-announcement></span>
       </section>
 
       <aside class="panel project-panel project-panel--visual" aria-labelledby="vaultpool-title">
@@ -107,25 +151,10 @@
           <div class="area-top"><span class="area-icon area-icon--games" aria-hidden="true"><img src="/assets/module-icons/games.webp?v=2" alt=""></span><span class="area-arrow">↗</span></div>
           <div><small>02 · DESARROLLO</small><h2>Juegos</h2><p>Project Trucker 3D y futuros proyectos.</p></div>
         </a>
-        <article class="area-card area-card--news area-card--news-visual" data-news-slider aria-label="Últimas novedades">
-          <div class="area-top">
-            <span class="area-icon area-icon--news" aria-hidden="true"><img src="/assets/module-icons/news.webp?v=2" alt=""></span>
-            <a class="area-arrow" href="/novedades/" aria-label="Abrir todas las novedades">↗</a>
-          </div>
-          <div>
-            <small>03 · ACTUALIDAD</small>
-            <h2>Novedades</h2>
-            <div class="home-news-row">
-              <button type="button" class="home-news-nav" data-news-prev aria-label="Novedad anterior">‹</button>
-              <div class="home-news-marquee" data-news-marquee>
-                <a class="home-news-item is-active" href="/novedades/autominer-proximamente/"><span><b>AutoMiner</b> · Próximamente: minería adaptativa y protección del hardware.</span></a>
-                <a class="home-news-item" href="/foro/?t=34"><span><b>Project Trucker 3D</b> · El sistema 2D se está portando y reconstruyendo en 3D.</span></a>
-                <a class="home-news-item" href="/novedades/vaultpool-0-28-12-store/"><span><b>VaultPool</b> · Seguimiento de la nueva versión y su publicación.</span></a>
-              </div>
-              <button type="button" class="home-news-nav" data-news-next aria-label="Novedad siguiente">›</button>
-            </div>
-          </div>
-        </article>
+        <a class="area-card area-card--channel" href="/canal/">
+          <div class="area-top"><span class="area-icon area-icon--channel" aria-hidden="true"><img src="/assets/channel/channel-icon.svg" alt=""></span><span class="area-arrow">↗</span></div>
+          <div><small>03 · EN CARRETERA</small><h2>A 90 por Hora</h2><p>Vídeos, rutas y directos del canal.</p></div>
+        </a>
         <a class="area-card area-card--support" href="/soporte/">
           <div class="area-top"><span class="area-icon area-icon--support" aria-hidden="true"><img src="/assets/module-icons/support.webp?v=2" alt=""></span><span class="area-arrow">↗</span></div>
           <div><small>04 · AYUDA</small><h2>Soporte</h2><p>Documentación, incidencias y respuestas.</p></div>
@@ -147,5 +176,6 @@
   </nav>
 
   <script src="/assets/app.js?v=20261001-news-2" defer></script>
+  <script src="/assets/home-feature.js?v=20261002-1" defer></script>
 </body>
 </html>
