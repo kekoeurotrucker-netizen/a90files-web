@@ -10,12 +10,15 @@ const count=root.querySelector('[data-feature-count]');
 const run=root.querySelector('[data-feature-ticker-run]');
 const ticker=root.querySelector('[data-feature-ticker-link]');
 const announcement=root.querySelector('[data-feature-announcement]');
+const toggle=root.querySelector('[data-feature-toggle]');
+const AUTOPLAY_MS=7000;
 const reduce=window.matchMedia?.('(prefers-reduced-motion: reduce)');
-let current=0,timer=null,pointerInside=false,focusInside=false;
+let current=0,timer=null,userPaused=Boolean(reduce?.matches);
 
 function stop(){if(timer!==null){clearInterval(timer);timer=null}}
-function canAuto(){return slides.length>1&&!reduce?.matches&&!document.hidden&&!pointerInside&&!focusInside}
-function start(){stop();if(canAuto())timer=window.setInterval(()=>activate((current+1)%slides.length,false),9600)}
+function canAuto(){return slides.length>1&&!document.hidden&&!userPaused}
+function start(){stop();if(canAuto())timer=window.setTimeout(()=>activate((current+1)%slides.length,false),AUTOPLAY_MS)}
+function syncToggle(){if(!toggle)return;toggle.textContent=userPaused?'▶':'Ⅱ';toggle.setAttribute('aria-label',userPaused?'Reanudar reproducción automática':'Pausar reproducción automática');toggle.setAttribute('aria-pressed',String(userPaused));}
 function activate(index,manual){
   if(!slides.length)return;
   current=(index+slides.length)%slides.length;
@@ -39,19 +42,17 @@ function activate(index,manual){
 prev?.addEventListener('click',()=>activate(current-1,true));
 next?.addEventListener('click',()=>activate(current+1,true));
 dots.forEach((dot,i)=>dot.addEventListener('click',()=>activate(i,true)));
-root.addEventListener('mouseenter',()=>{pointerInside=true;stop()});
-root.addEventListener('mouseleave',()=>{pointerInside=false;start()});
-root.addEventListener('focusin',()=>{focusInside=true;stop()});
-root.addEventListener('focusout',e=>{if(!root.contains(e.relatedTarget)){focusInside=false;start()}});
+toggle?.addEventListener('click',()=>{userPaused=!userPaused;syncToggle();start()});
 root.addEventListener('keydown',e=>{
   if((e.key==='ArrowLeft'||e.key==='ArrowRight')&&root.contains(document.activeElement)&&document.activeElement?.closest('.feature-news-controls,.feature-news-dots')){
     e.preventDefault();activate(current+(e.key==='ArrowRight'?1:-1),true);
   }
 });
 document.addEventListener('visibilitychange',start);
-reduce?.addEventListener?.('change',start);
+reduce?.addEventListener?.('change',event=>{if(event.matches){userPaused=true;syncToggle()}start()});
 root.querySelectorAll('.feature-news-photo img').forEach(img=>{
   img.addEventListener('error',()=>{img.hidden=true;img.closest('.feature-news-photo')?.classList.add('image-unavailable')},{once:true});
 });
+syncToggle();
 activate(0,false);
 })();
