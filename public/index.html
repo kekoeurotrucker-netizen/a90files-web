@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="/assets/theme-petrol-amber.css?v=20261001-icons-11">
   <link rel="stylesheet" href="/assets/home-feature.css?v=20261002-1">
   <link rel="stylesheet" href="/assets/home-modules.css?v=20261004-1">
+  <link rel="stylesheet" href="/assets/vaultpool-spotlight.css?v=20261004-1">
   <link rel="stylesheet" href="/assets/social-global.css?v=20260921-social-11">
 </head>
 <body class="home">
@@ -136,23 +137,34 @@
         <span class="feature-news-sr" aria-live="polite" aria-atomic="true" data-feature-announcement></span>
       </section>
 
-      <aside class="panel project-panel project-panel--visual" aria-labelledby="vaultpool-title">
+      <aside class="panel project-panel project-panel--visual project-panel--spotlight" aria-labelledby="vaultpool-title">
         <div class="project-head">
-          <div class="project-label"><span class="live-dot"></span>PROYECTO DESTACADO</div>
+          <div class="project-label"><span class="live-dot" aria-hidden="true"></span>PROYECTO DESTACADO</div>
           <span class="project-state">EN DESARROLLO</span>
         </div>
-        <a class="project-visual-preview" href="/software/vaultpool/" aria-label="Abrir VaultPool Storage">
-          <img src="/assets/vaultpool/dashboard-dark.webp" alt="Interfaz de VaultPool Storage">
-          <span>Vista del proyecto</span>
+        <a class="project-visual-preview" href="/software/vaultpool/" aria-label="Ver VaultPool Storage">
+          <img src="/assets/vaultpool/dashboard-dark.webp" alt="Captura de la interfaz real de VaultPool Storage" loading="eager" decoding="async">
+          <span class="project-preview-caption">INTERFAZ REAL · WINDOWS</span>
+          <span class="project-preview-corner" aria-hidden="true">MULTINUBE</span>
         </a>
         <div class="project-brand">
-          <div class="vp-mark">VP</div>
+          <div class="vp-mark" aria-hidden="true">VP</div>
           <div><h2 id="vaultpool-title">VaultPool</h2><p>Storage</p></div>
         </div>
-        <p class="project-copy">Almacenamiento multinube local con seguridad, recuperación y control del usuario como prioridad.</p>
+        <p class="project-copy">Tus nubes bajo control. Almacenamiento multinube con cifrado local, seguridad y recuperación.</p>
         <div class="project-meta"><span>Windows</span><span>Multinube</span><span>Gratuito</span></div>
+        <nav class="project-milestones" aria-label="Próximos avances de VaultPool">
+          <a class="project-milestone" href="/novedades/vaultpool-control-nubes/">
+            <small>PRÓXIMA ACTUALIZACIÓN</small>
+            <strong>Control de tus nubes ↗</strong>
+          </a>
+          <a class="project-milestone" href="/novedades/vaultpool-android/">
+            <small>MULTIDISPOSITIVO</small>
+            <strong>VaultPool Android ↗</strong>
+          </a>
+        </nav>
         <div class="project-actions">
-          <a class="button project-main" href="/software/vaultpool/">Abrir VaultPool <span>↗</span></a>
+          <a class="button project-main" href="/software/vaultpool/">Descubrir VaultPool <span aria-hidden="true">↗</span></a>
           <a class="icon-button" href="/soporte/" aria-label="Soporte de VaultPool">?</a>
         </div>
       </aside>
