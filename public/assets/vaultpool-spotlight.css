@@ -176,3 +176,39 @@
   .home .project-panel--spotlight .project-visual-preview>img,
   .home .project-panel--spotlight .project-milestone{transition:none}
 }
+
+/* VaultPool campaign visual — conceptual promo instead of a dark UI screenshot.
+   Constrain to featured card; preserve the text, links, news carousel and four modules. */
+.home .project-panel--spotlight .project-visual-preview--concept{
+  border:1px solid rgba(95,219,233,.56);
+  background:#071921;
+  box-shadow:0 0 0 3px rgba(49,192,214,.075),0 12px 32px rgba(0,0,0,.4),0 0 26px rgba(70,203,229,.16);
+}
+.home .project-panel--spotlight .project-visual-preview--concept>img{
+  display:block;width:100%;height:100%;
+  object-fit:cover;object-position:50% 49%;
+  filter:saturate(1.05) contrast(1.04) brightness(1.02);
+  transition:transform .45s ease,filter .32s ease;
+}
+.home .project-panel--spotlight .project-visual-preview--concept::after{
+  background:linear-gradient(0deg,rgba(3,13,20,.44),transparent 23%,transparent 82%,rgba(4,17,24,.10));
+}
+.home .project-panel--spotlight .project-visual-preview--concept:hover>img{
+  transform:scale(1.035);
+  filter:saturate(1.11) contrast(1.04) brightness(1.07);
+}
+.home .project-panel--spotlight .project-visual-preview--concept .project-preview-caption{
+  position:absolute!important;left:9px!important;right:auto!important;top:auto!important;bottom:9px!important;
+  display:inline-flex!important;align-items:center;justify-content:flex-start;
+  width:max-content!important;max-width:calc(100% - 18px);min-height:0;
+  padding:5px 7px;font-size:7px;letter-spacing:.075em;
+  color:#dcf6fa;background:rgba(4,21,29,.79);border-color:rgba(111,217,232,.38);
+}
+.home .project-panel--spotlight .project-visual-preview--concept .project-preview-corner{
+  position:absolute!important;left:auto!important;bottom:auto!important;right:9px!important;top:9px!important;
+  display:inline-flex!important;width:auto!important;
+  background:rgba(5,25,30,.74);border-color:rgba(244,179,80,.58);
+}
+@media(prefers-reduced-motion:reduce){
+  .home .project-panel--spotlight .project-visual-preview--concept>img{transition:none}
+}
