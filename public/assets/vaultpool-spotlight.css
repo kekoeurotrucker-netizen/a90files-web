@@ -1,0 +1,178 @@
+/* VaultPool featured panel. Homepage only. The news carousel and the 4 lower modules are unchanged. */
+.home .project-panel--visual.project-panel--spotlight{
+  position:relative;
+  isolation:isolate;
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  overflow:hidden;
+  padding:17px 20px 17px;
+  border:1px solid rgba(87,180,198,.36);
+  border-radius:18px;
+  background:
+    linear-gradient(162deg,rgba(5,18,26,.90) 0%,rgba(4,15,21,.91) 57%,rgba(5,13,18,.98) 100%),
+    url("/assets/home-feature/vaultpool-update.webp") right 35% center/cover no-repeat;
+  box-shadow:inset 0 1px 0 rgba(195,239,242,.06),0 20px 43px rgba(0,0,0,.33),0 0 26px rgba(34,144,164,.065);
+}
+.home .project-panel--spotlight::before{
+  content:"";position:absolute;inset:0 0 auto;z-index:3;height:2px;
+  background:linear-gradient(90deg,#68d9e8 0%,#ebb04d 50%,transparent 92%);
+}
+.home .project-panel--spotlight::after{
+  content:"";position:absolute;inset:0;z-index:0;opacity:1;pointer-events:none;
+  background:
+    radial-gradient(ellipse at 92% 12%,rgba(58,185,212,.17),transparent 44%),
+    linear-gradient(180deg,rgba(8,23,30,.10) 0%,rgba(4,14,20,.35) 40%,rgba(4,12,17,.93) 100%);
+}
+.home .project-panel--spotlight>*{position:relative;z-index:1}
+.home .project-panel--spotlight .project-head{gap:8px}
+.home .project-panel--spotlight .project-label{
+  color:#a7cdd2;font-size:9px;letter-spacing:.135em;font-weight:850;
+}
+.home .project-panel--spotlight .project-label .live-dot{
+  width:7px;height:7px;background:#f4b248;box-shadow:0 0 13px rgba(244,178,72,.68);
+}
+.home .project-panel--spotlight .project-state{
+  flex-shrink:0;padding:6px 9px;border-radius:9px;
+  border:1px solid rgba(237,171,71,.46);
+  background:rgba(10,22,26,.70);
+  color:#f9c876;font-size:8px;font-weight:800;letter-spacing:.10em;
+}
+.home .project-panel--spotlight .project-visual-preview{
+  position:relative;
+  flex:0 0 auto;
+  height:clamp(149px,21svh,186px);
+  min-height:149px;
+  margin:13px 0 11px;
+  isolation:isolate;
+  overflow:hidden;
+  border-radius:12px;
+  border:1px solid rgba(91,198,220,.43);
+  background:#061b26;
+  box-shadow:0 0 0 3px rgba(44,150,176,.09),inset 0 1px 0 rgba(235,253,255,.07),
+    0 12px 30px rgba(0,0,0,.35),0 0 21px rgba(64,192,224,.09);
+}
+.home .project-panel--spotlight .project-visual-preview>img{
+  display:block;width:100%;height:100%;object-fit:cover;object-position:center 40%;
+  filter:saturate(.94) brightness(.82);
+  transition:filter .32s ease,transform .45s ease;
+}
+.home .project-panel--spotlight .project-visual-preview::after{
+  background:linear-gradient(0deg,rgba(3,13,19,.92),rgba(3,13,19,.1) 38%,rgba(3,13,19,.06) 68%,rgba(3,13,19,.19));
+}
+.home .project-panel--spotlight .project-visual-preview:hover>img{
+  transform:scale(1.045);filter:saturate(1) brightness(.91);
+}
+.home .project-panel--spotlight .project-visual-preview .project-preview-caption{
+  position:absolute;left:10px;bottom:9px;z-index:3;
+  display:flex;align-items:center;gap:6px;
+  padding:5px 8px;border-radius:6px;border:1px solid rgba(114,207,222,.23);
+  background:rgba(4,20,27,.70);backdrop-filter:blur(5px);
+  color:#d5eff2;font-size:8px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+}
+.home .project-panel--spotlight .project-visual-preview .project-preview-caption::before{
+  content:"";width:6px;height:6px;border-radius:50%;background:#61dcec;box-shadow:0 0 10px rgba(97,220,236,.6);
+}
+.home .project-panel--spotlight .project-visual-preview .project-preview-corner{
+  position:absolute;right:9px;top:9px;z-index:3;
+  padding:5px 7px;border:1px solid rgba(242,176,71,.39);border-radius:7px;
+  background:rgba(5,20,27,.76);color:#f6be68;backdrop-filter:blur(5px);
+  font-size:8px;letter-spacing:.09em;font-weight:850;
+}
+.home .project-panel--spotlight .project-brand{
+  display:flex;align-items:center;gap:10px;margin:0 0 8px;
+}
+.home .project-panel--spotlight .vp-mark{
+  position:relative;isolation:isolate;
+  flex:0 0 auto;display:grid;place-items:center;width:46px;height:46px;
+  border-radius:13px;border:1px solid rgba(91,216,233,.56);
+  background:linear-gradient(145deg,rgba(25,91,105,.92),rgba(8,29,40,.97));
+  color:#e5fdff;font-size:15px;font-weight:900;letter-spacing:-.03em;
+  text-shadow:0 0 10px rgba(90,228,241,.45);
+  box-shadow:0 0 0 3px rgba(88,211,227,.07),0 7px 20px rgba(0,0,0,.28),inset 0 1px 0 rgba(185,253,255,.11);
+}
+.home .project-panel--spotlight .vp-mark::after{
+  content:"";position:absolute;inset:6px;border:1px solid rgba(108,223,231,.20);
+  border-radius:7px;pointer-events:none;
+}
+.home .project-panel--spotlight .project-brand h2{
+  font-size:clamp(25px,2vw,30px);line-height:1;letter-spacing:-.045em;color:#f7fafa;
+}
+.home .project-panel--spotlight .project-brand p{
+  margin:4px 0 0;font-size:9px;letter-spacing:.23em;color:#80b9c2;font-weight:750;
+}
+.home .project-panel--spotlight .project-copy{
+  margin:0 0 9px;max-width:430px;color:#bdd0d4;font-size:11.5px;line-height:1.4;
+}
+.home .project-panel--spotlight .project-meta{
+  display:flex;gap:6px;margin:0 0 10px;
+}
+.home .project-panel--spotlight .project-meta span{
+  padding:4px 7px;border:1px solid rgba(84,174,186,.26);border-radius:6px;
+  background:rgba(8,38,47,.60);color:#a8d8df;font-size:8px;font-weight:650;
+}
+.home .project-panel--spotlight .project-milestones{
+  display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:0 0 11px;min-width:0;
+}
+.home .project-panel--spotlight .project-milestone{
+  display:flex;flex-direction:column;justify-content:center;gap:4px;
+  min-width:0;min-height:48px;padding:8px 10px;
+  border:1px solid rgba(90,160,172,.28);border-radius:10px;
+  background:linear-gradient(135deg,rgba(15,63,76,.45),rgba(6,29,40,.58));
+  box-shadow:inset 0 1px 0 rgba(184,250,255,.025);
+  transition:background .2s,border-color .2s,transform .2s;
+}
+.home .project-panel--spotlight .project-milestone:hover{
+  border-color:rgba(116,212,229,.55);background:rgba(18,78,92,.55);transform:translateY(-1px);
+}
+.home .project-panel--spotlight .project-milestone small{
+  display:flex;align-items:center;gap:5px;color:#f4b55b;font-size:7px;font-weight:800;
+  letter-spacing:.10em;text-transform:uppercase;
+}
+.home .project-panel--spotlight .project-milestone strong{
+  display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  color:#eaf5f6;font-size:10px;line-height:1.15;font-weight:800;
+}
+.home .project-panel--spotlight .project-milestone small::before{
+  content:"";width:5px;height:5px;border-radius:50%;background:#f4b55b;
+}
+.home .project-panel--spotlight .project-actions{display:flex;gap:8px;margin-top:auto;padding:0}
+.home .project-panel--spotlight .project-main{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  min-height:36px;padding:7px 9px;border:1px solid rgba(236,175,76,.65);
+  border-radius:9px;background:linear-gradient(115deg,rgba(31,86,96,.83),rgba(15,52,61,.80));
+  color:#f3fafb;font-size:11px;font-weight:850;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 4px 13px rgba(0,0,0,.22);
+  transition:background .2s,border-color .2s;
+}
+.home .project-panel--spotlight .project-main:hover{
+  border-color:#f4b352;background:linear-gradient(120deg,rgba(46,114,126,.94),rgba(25,77,85,.89));
+}
+.home .project-panel--spotlight .icon-button{
+  width:36px;height:36px;min-width:36px;border:1px solid rgba(101,201,217,.35);
+  border-radius:9px;background:rgba(8,35,44,.60);color:#bbe8ed;
+}
+.home .project-panel--spotlight a:focus-visible{outline:2px solid #f1bb68;outline-offset:3px}
+@media(min-width:901px) and (max-height:800px){
+  .home .project-panel--spotlight.project-panel--visual{padding:13px 17px}
+  .home .project-panel--spotlight .project-visual-preview{height:clamp(134px,19svh,158px);min-height:130px;margin:9px 0}
+  .home .project-panel--spotlight .project-brand{margin-bottom:5px}
+  .home .project-panel--spotlight .project-copy{font-size:11px;margin-bottom:6px;line-height:1.3}
+  .home .project-panel--spotlight .project-meta{margin-bottom:7px}
+  .home .project-panel--spotlight .project-milestones{margin-bottom:7px}
+  .home .project-panel--spotlight .project-milestone{min-height:43px}
+}
+@media(max-width:900px){
+  .home .project-panel--spotlight.project-panel--visual{min-height:0;padding:18px}
+  .home .project-panel--spotlight .project-visual-preview{height:clamp(155px,33vw,220px)}
+}
+@media(max-width:450px){
+  .home .project-panel--spotlight .project-visual-preview{height:170px;min-height:0}
+  .home .project-panel--spotlight .project-milestones{gap:6px}
+  .home .project-panel--spotlight .project-milestone{padding:7px 8px}
+  .home .project-panel--spotlight .project-milestone strong{font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){
+  .home .project-panel--spotlight .project-visual-preview>img,
+  .home .project-panel--spotlight .project-milestone{transition:none}
+}
