@@ -8,16 +8,22 @@ const prev=root.querySelector('[data-feature-prev]');
 const next=root.querySelector('[data-feature-next]');
 const count=root.querySelector('[data-feature-count]');
 const run=root.querySelector('[data-feature-ticker-run]');
+const tickerWindow=root.querySelector('.feature-news-ticker-window');
 const ticker=root.querySelector('[data-feature-ticker-link]');
 const announcement=root.querySelector('[data-feature-announcement]');
 const toggle=root.querySelector('[data-feature-toggle]');
-const AUTOPLAY_MS=7000;
+// Match each slide's reading time to its ticker length. Typical slide: ~12–18 seconds.
+const TICKER_PX_PER_SECOND=72;
+const MIN_TICKER_MS=10500;
+const MAX_TICKER_MS=16000;
+const FINISH_READING_MS=1700;
+let slideDelayMs=MIN_TICKER_MS+FINISH_READING_MS;
 const reduce=window.matchMedia?.('(prefers-reduced-motion: reduce)');
 let current=0,timer=null,userPaused=Boolean(reduce?.matches);
 
 function stop(){if(timer!==null){clearInterval(timer);timer=null}}
 function canAuto(){return slides.length>1&&!document.hidden&&!userPaused}
-function start(){stop();if(canAuto())timer=window.setTimeout(()=>activate((current+1)%slides.length,false),AUTOPLAY_MS)}
+function start(){stop();if(canAuto())timer=window.setTimeout(()=>activate((current+1)%slides.length,false),slideDelayMs)}
 function syncToggle(){if(!toggle)return;toggle.textContent=userPaused?'▶':'Ⅱ';toggle.setAttribute('aria-label',userPaused?'Reanudar reproducción automática':'Pausar reproducción automática');toggle.setAttribute('aria-pressed',String(userPaused));}
 function activate(index,manual){
   if(!slides.length)return;
@@ -34,7 +40,19 @@ function activate(index,manual){
   const title=selected.dataset.headline||'Novedades';
   const desc=selected.dataset.ticker||'';
   const link=selected.dataset.link||'/novedades/';
-  if(run){run.textContent=title+'  —  '+desc;run.style.animation='none';void run.offsetWidth;run.style.animation=''}
+  if(run){
+    run.textContent=title+'  —  '+desc;
+    run.style.animation='none';
+    void run.offsetWidth;
+    const windowWidth=tickerWindow?.clientWidth||500;
+    // The text begins just outside the right edge. Stop with its final words still visible.
+    const textWidth=Math.max(0,run.scrollWidth-windowWidth);
+    const tickerMs=Math.max(MIN_TICKER_MS,Math.min(MAX_TICKER_MS,Math.ceil(textWidth/TICKER_PX_PER_SECOND*1000)));
+    run.style.setProperty('--feature-ticker-window-width',windowWidth+'px');
+    run.style.setProperty('--feature-marquee-duration',tickerMs+'ms');
+    slideDelayMs=tickerMs+FINISH_READING_MS;
+    run.style.animation='';
+  }
   if(ticker){ticker.href=link;ticker.setAttribute('aria-label','Leer: '+title)}
   if(manual&&announcement)announcement.textContent='Novedad '+(current+1)+': '+title;
   start();
