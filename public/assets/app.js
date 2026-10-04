@@ -7,6 +7,7 @@ addStylesheet('/assets/auth-icons.css');
 addStylesheet('/assets/auth-extra.css');
 addStylesheet('/assets/software-menu.css');
 addStylesheet('/assets/social-global.css?v=20260916-social-3');
+addStylesheet('/assets/header-premium.css?v=20261004-1');
 
 const softwareProjects=[
   {href:'/software/vaultpool/',name:'VaultPool Storage',meta:'Multinube local · Windows',mark:'VP',key:'vaultpool'},
@@ -28,7 +29,7 @@ function ensureDownloadsNav(){
 ensureDownloadsNav();
 document.addEventListener('click',event=>{document.querySelectorAll('.software-nav[open]').forEach(item=>{if(!item.contains(event.target))item.removeAttribute('open')})});document.addEventListener('keydown',event=>{if(event.key==='Escape')document.querySelectorAll('.software-nav[open],.mobile-software-nav[open]').forEach(item=>item.removeAttribute('open'))});
 
-const topbarInner=document.querySelector('.topbar-inner');if(topbarInner&&!document.querySelector('[data-a90-account]')){const btn=document.createElement('button');btn.type='button';btn.className='a90-account-button';btn.setAttribute('data-a90-account','');btn.innerHTML='<span class="a90-account-dot" aria-hidden="true"></span><span class="a90-account-label">Entrar</span>';const menu=topbarInner.querySelector('.menu-button');topbarInner.insertBefore(btn,menu||null)}
+const topbarInner=document.querySelector('.topbar-inner');if(topbarInner&&!document.querySelector('[data-a90-account]')){const btn=document.createElement('button');btn.type='button';btn.className='a90-account-button';btn.setAttribute('data-a90-account','');btn.innerHTML='<span class="a90-account-avatar" aria-hidden="true"><span class="a90-account-monogram">↗</span><span class="a90-account-dot"></span></span><span class="a90-account-label">Entrar</span><span class="a90-account-chevron" aria-hidden="true"></span>';const menu=topbarInner.querySelector('.menu-button');topbarInner.insertBefore(btn,menu||null)}
 
 const providerGrid=document.querySelector('.provider-grid');if(providerGrid){const names=['google','facebook','x','discord','github','email'];providerGrid.querySelectorAll(':scope > span').forEach((item,index)=>{const name=names[index];if(!name)return;item.classList.add('provider-item',`provider-${name}`);if(name==='x'){item.textContent='';item.setAttribute('aria-label','X');}})}
 
