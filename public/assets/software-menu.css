@@ -25,3 +25,14 @@
 .autominer-showcase img{display:block;width:100%;height:auto}
 @media(max-width:900px){.autominer-hero-grid{grid-template-columns:1fr}.autominer-hero-media{min-height:320px}}
 @media(max-width:620px){.software-card-media{height:112px}.autominer-hero-copy{padding:24px}.autominer-brand-logo{width:min(360px,88%)}}
+
+.software-card--marea{--card-accent:#6fd4df}
+@media(min-width:1100px){.software-page .software-catalog{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.marea-hero-grid{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(360px,.98fr);gap:18px;align-items:stretch}
+.marea-hero-copy,.marea-hero-media{position:relative;overflow:hidden;border:1px solid rgba(111,212,223,.24);border-radius:24px;background:linear-gradient(150deg,rgba(14,58,71,.60),rgba(9,31,39,.97) 48%,rgba(7,27,36,.99));box-shadow:0 18px 48px rgba(0,0,0,.25)}
+.marea-hero-copy{padding:34px}.marea-detail .project-detail-status{border-color:rgba(111,212,223,.31);background:rgba(111,212,223,.075);color:#bdebf0}.marea-detail .project-info-card small{color:#7bd5df}.marea-detail .project-note{border-left-color:#6fd4df;background:rgba(111,212,223,.055)}
+.marea-wordmark{display:flex;align-items:center;gap:13px;margin:17px 0 15px}.marea-wordmark img{width:54px;height:54px}.marea-wordmark strong{display:block;color:#f0fbfc;font-size:26px;line-height:1;letter-spacing:-.035em}.marea-wordmark small{display:block;margin-top:6px;color:#82cbd4;font:760 8px ui-monospace,Consolas,monospace;letter-spacing:.16em}
+.marea-hero-copy h1{margin:12px 0 16px;font-size:clamp(42px,5.4vw,72px);line-height:.98;letter-spacing:-.055em}.marea-hero-copy h1 em{font-style:normal;color:#a9cbd0;font-weight:500}
+.marea-hero-media{min-height:470px;margin:0}.marea-hero-media img{display:block;width:100%;height:100%;object-fit:cover}.marea-hero-media figcaption{position:absolute;left:16px;right:16px;bottom:16px;padding:9px 11px;border:1px solid rgba(118,207,220,.25);border-radius:8px;background:rgba(3,20,27,.82);color:#b9d9de;font:750 8px ui-monospace,Consolas,monospace;letter-spacing:.055em}
+.marea-quality{margin-top:18px;padding:23px;border:1px solid rgba(111,212,223,.18);border-radius:18px;background:linear-gradient(120deg,rgba(13,52,63,.78),rgba(8,28,36,.92))}.marea-quality span{display:block;color:#e5b768;font:820 9px ui-monospace,Consolas,monospace;letter-spacing:.12em}.marea-quality strong{display:block;margin:9px 0 7px;color:#edf9fa;font-size:22px;letter-spacing:-.03em}.marea-quality p{margin:0;max-width:880px;color:#a3bcc2;font-size:12px;line-height:1.72}
+@media(max-width:900px){.marea-hero-grid{grid-template-columns:1fr}.marea-hero-media{min-height:330px}}@media(max-width:620px){.marea-hero-copy{padding:24px}.marea-hero-media{min-height:260px}.marea-wordmark strong{font-size:22px}}
