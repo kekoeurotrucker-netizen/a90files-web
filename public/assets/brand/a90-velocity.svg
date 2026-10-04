@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80" role="img" aria-label="A 90">
+<defs><linearGradient id="drive" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#cafaff"/><stop offset=".52" stop-color="#79ddeb"/><stop offset="1" stop-color="#4298ac"/></linearGradient><linearGradient id="gold" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#fbd898"/><stop offset="1" stop-color="#e6a74c"/></linearGradient></defs>
+<!-- Clean road-inspired monogram, deliberately no enclosing hexagon or badge. -->
+<g fill="none" stroke-linecap="square" stroke-linejoin="miter">
+<path d="M7 27H21M2 38H16M8 49H18" stroke="#4eb7c8" stroke-width="2.5" opacity=".67"/>
+<path d="M21 61 42 13 62 61" stroke="url(#drive)" stroke-width="8"/>
+<path d="M34 40H51" stroke="url(#gold)" stroke-width="5"/>
+<path d="M43 19 39 32 35 43" stroke="#092732" stroke-width="1.6" stroke-dasharray="3 4" opacity=".82"/>
+<path d="M21 68H51" stroke="#68d9e8" stroke-width="2.6"/>
+<path d="M56 68H73" stroke="url(#gold)" stroke-width="2.6"/>
+<path d="M67 50H76M71 43H77" stroke="url(#gold)" stroke-width="2.2" opacity=".9"/>
+</g></svg>

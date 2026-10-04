@@ -7,7 +7,7 @@ addStylesheet('/assets/auth-icons.css');
 addStylesheet('/assets/auth-extra.css');
 addStylesheet('/assets/software-menu.css');
 addStylesheet('/assets/social-global.css?v=20260916-social-3');
-addStylesheet('/assets/header-signature.css?v=20261004-v2');
+addStylesheet('/assets/header-velocity.css?v=20261004-v3');
 
 const softwareProjects=[
   {href:'/software/vaultpool/',name:'VaultPool Storage',meta:'Multinube local · Windows',mark:'VP',key:'vaultpool'},
