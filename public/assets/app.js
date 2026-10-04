@@ -7,7 +7,7 @@ addStylesheet('/assets/auth-icons.css');
 addStylesheet('/assets/auth-extra.css');
 addStylesheet('/assets/software-menu.css');
 addStylesheet('/assets/social-global.css?v=20260916-social-3');
-addStylesheet('/assets/header-premium.css?v=20261004-1');
+addStylesheet('/assets/header-signature.css?v=20261004-v2');
 
 const softwareProjects=[
   {href:'/software/vaultpool/',name:'VaultPool Storage',meta:'Multinube local · Windows',mark:'VP',key:'vaultpool'},
@@ -59,7 +59,7 @@ const vaultPoolAssetObserver=new MutationObserver(mutations=>{for(const mutation
 vaultPoolAssetObserver.observe(document.documentElement,{childList:true,subtree:true});
 
 addScript('/assets/social-global.js?v=20260916-social-3');
-addScript('/assets/auth.js');
+addScript('/assets/auth.js?v=signature-20261004-v2');
 addScript('/assets/auth-extra.js');
 
 
