@@ -13,6 +13,8 @@ export async function handleForumApi(request,env,url){
     if(url.pathname==='/api/forum/reply'&&request.method==='POST') return createReply(request,env);
     if(url.pathname==='/api/forum/reaction'&&request.method==='POST') return toggleReaction(request,env);
     if(url.pathname==='/api/forum/report'&&request.method==='POST') return createReport(request,env);
+    if(url.pathname==='/api/forum/staff-notifications'&&request.method==='GET') return staffNotifications(request,env);
+    if(url.pathname==='/api/forum/staff-notifications/read'&&request.method==='POST') return markStaffNotificationsRead(request,env);
     if(url.pathname==='/api/forum/users'&&request.method==='GET') return publicUsers(request,env);
     if(url.pathname==='/api/forum/presence'&&request.method==='POST') return presencePing(request,env);
     if(url.pathname==='/api/forum/recent'&&request.method==='GET') return recentActivity(request,env);
@@ -221,6 +223,51 @@ async function requireSession(request,env){
   const s=await session(request,env);
   if(!s.user)return {error:respond({error:'Inicia sesión para participar.'},401,s.refreshed)};
   return s;
+}
+
+async function roleOf(env,access,userId){
+  const r=await db(env,`/rest/v1/user_roles?user_id=eq.${encodeURIComponent(userId)}&select=role&limit=1`,access);
+  if(!r.res.ok||!Array.isArray(r.body)||!r.body[0]?.role)return 'user';
+  return r.body[0].role;
+}
+
+async function requireStaff(request,env){
+  const s=await requireSession(request,env);
+  if(s.error)return s;
+  const role=await roleOf(env,s.access,s.user.id);
+  if(!['moderator','admin','super_admin'].includes(role))return {error:respond({error:'Acceso reservado al equipo de moderación.'},403,s.refreshed)};
+  return {...s,role};
+}
+
+async function staffNotifications(request,env){
+  const s=await requireStaff(request,env);if(s.error)return s.error;
+  const userId=encodeURIComponent(s.user.id);
+  const [listRes,unreadRes]=await Promise.all([
+    db(env,`/rest/v1/forum_staff_notifications?recipient_user_id=eq.${userId}&select=id,kind,title,body,href,topic_id,post_id,report_id,created_at,read_at&order=created_at.desc&limit=40`,s.access),
+    db(env,`/rest/v1/forum_staff_notifications?recipient_user_id=eq.${userId}&read_at=is.null&select=id&limit=1000`,s.access)
+  ]);
+  if(!listRes.res.ok||!unreadRes.res.ok)return respond({error:'No se pudieron cargar las notificaciones.'},502,s.refreshed);
+  const notifications=Array.isArray(listRes.body)?listRes.body:[];
+  const unread=Array.isArray(unreadRes.body)?unreadRes.body.length:0;
+  return respond({ok:true,role:s.role,unread,notifications},200,s.refreshed);
+}
+
+async function markStaffNotificationsRead(request,env){
+  const s=await requireStaff(request,env);if(s.error)return s.error;
+  let data;try{data=await readJson(request)}catch{return respond({error:'Datos no válidos.'},400,s.refreshed)}
+  const all=data?.all===true;
+  const id=all?null:integer(data?.id);
+  if(!all&&!id)return respond({error:'Notificación no válida.'},400,s.refreshed);
+  const filter=all
+    ?`recipient_user_id=eq.${encodeURIComponent(s.user.id)}&read_at=is.null`
+    :`id=eq.${id}&recipient_user_id=eq.${encodeURIComponent(s.user.id)}`;
+  const r=await db(env,`/rest/v1/forum_staff_notifications?${filter}`,s.access,{
+    method:'PATCH',
+    headers:{'Prefer':'return=minimal'},
+    body:JSON.stringify({read_at:new Date().toISOString()})
+  });
+  if(!r.res.ok)return respond({error:'No se pudo actualizar la notificación.'},400,s.refreshed);
+  return respond({ok:true},200,s.refreshed);
 }
 
 async function rpc(env,access,name,payload){

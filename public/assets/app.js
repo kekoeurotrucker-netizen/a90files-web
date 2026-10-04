@@ -8,6 +8,7 @@ addStylesheet('/assets/auth-extra.css');
 addStylesheet('/assets/software-menu.css');
 addStylesheet('/assets/social-global.css?v=20260916-social-3');
 addStylesheet('/assets/header-velocity.css?v=20261004-v3');
+addStylesheet('/assets/staff-notifications.css?v=20261005-1');
 
 const softwareProjects=[
   {href:'/software/vaultpool/',name:'VaultPool Storage',meta:'Multinube local · Windows',mark:'VP',key:'vaultpool'},
@@ -62,6 +63,7 @@ vaultPoolAssetObserver.observe(document.documentElement,{childList:true,subtree:
 addScript('/assets/social-global.js?v=20260916-social-3');
 addScript('/assets/auth.js?v=session-fix-20261005-1');
 addScript('/assets/auth-extra.js');
+addScript('/assets/staff-notifications.js?v=20261005-1');
 
 
 function initHomeNewsSlider(){
