@@ -1,4 +1,5 @@
 const menuButton=document.querySelector('.menu-button');const mobileNav=document.getElementById('mobile-nav');if(menuButton&&mobileNav){menuButton.addEventListener('click',()=>{const open=menuButton.getAttribute('aria-expanded')==='true';menuButton.setAttribute('aria-expanded',String(!open));mobileNav.hidden=open;});}const year=document.getElementById('year');if(year)year.textContent=new Date().getFullYear();
+{let fav=document.querySelector('link[rel~="icon"]');if(!fav){fav=document.createElement('link');fav.rel='icon';document.head.appendChild(fav)}fav.type='image/svg+xml';fav.href='/assets/brand/a90-velocity.svg?v=20261005-favicon-2'}
 if(!document.querySelector('link[rel~="icon"]')){const fav=document.createElement('link');fav.rel='icon';fav.href='/favicon.ico?v=20261005-a90';document.head.appendChild(fav)}
 
 function addStylesheet(href){if(document.querySelector(`link[href="${href}"]`))return;const l=document.createElement('link');l.rel='stylesheet';l.href=href;document.head.appendChild(l)}
