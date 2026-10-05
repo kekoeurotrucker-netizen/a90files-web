@@ -212,3 +212,8 @@
 @media(prefers-reduced-motion:reduce){
   .home .project-panel--spotlight .project-visual-preview--concept>img{transition:none}
 }
+
+/* VaultPool approved brand icon · 2026-10-05 */
+.home .project-panel--spotlight .vp-mark.vp-mark--image{overflow:visible;padding:0;border:0;background:transparent;box-shadow:none;text-shadow:none}
+.home .project-panel--spotlight .vp-mark.vp-mark--image::after{content:none}
+.home .project-panel--spotlight .vp-mark.vp-mark--image img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 7px 14px rgba(0,0,0,.32))}

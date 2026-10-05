@@ -42,3 +42,7 @@
 .marea-wordmark--logo img{display:block;width:min(390px,84%);height:auto;max-height:104px;object-fit:contain;object-position:left center;filter:drop-shadow(0 10px 24px rgba(51,192,220,.12))}
 .software-nav-icon img{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit}
 @media(max-width:620px){.marea-wordmark--logo img{width:min(330px,92%);max-height:88px}}
+
+/* VaultPool approved brand icon · 2026-10-05 */
+.software-card--vault .software-card-mark--vault{overflow:visible;padding:0;border:0;background:transparent;box-shadow:none}
+.software-card--vault .software-card-mark--vault img{display:block;width:100%;height:100%;object-fit:contain;border-radius:0;filter:drop-shadow(0 7px 14px rgba(0,0,0,.28))}
