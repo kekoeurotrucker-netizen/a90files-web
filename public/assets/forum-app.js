@@ -51,6 +51,8 @@ function renderBody(source){
   const line=lines[i];
   if(line.startsWith('```')){const lang=line.slice(3).trim().replace(/[^A-Za-z0-9_+#.-]/g,'').slice(0,24);i++;const code=[];while(i<lines.length&&!lines[i].startsWith('```')){code.push(lines[i]);i++}if(i<lines.length)i++;const box=el('div','code-block');box.append(el('div','code-head',lang||'código'));const pre=el('pre');const c=el('code');c.textContent=code.join('\n');pre.append(c);box.append(pre);wrap.append(box);continue}
   if(!line.trim()){wrap.append(el('div','forum-live-break'));i++;continue}
+  const audioMatch=line.match(/^\[audio:([^\]\\n]{1,120})\]\(([^\\s)]+)\)$/i);
+  if(audioMatch){const href=safeUrl(audioMatch[2]);if(href&&new URL(href).origin===location.origin&&/\\.mp3(?:$|[?#])/i.test(href)){const card=el('section','forum-audio-card');const top=el('div','forum-audio-head');top.append(el('span','forum-audio-kicker','MAREA STUDIO · AUDIO'),el('strong','',audioMatch[1]));const player=document.createElement('audio');player.controls=true;player.preload='metadata';player.src=href;const dl=el('a','forum-audio-download','Descargar MP3 ↓');dl.href=href;dl.download='Mi-proxima-marea-Marea-Studio.mp3';card.append(top,player,dl);wrap.append(card);i++;continue}}
   if(line.startsWith('> ')){const q=el('blockquote');renderInline(q,line.slice(2));wrap.append(q);i++;continue}
   if(line.startsWith('- ')){const ul=el('ul');while(i<lines.length&&lines[i].startsWith('- ')){const li=el('li');renderInline(li,lines[i].slice(2));ul.append(li);i++}wrap.append(ul);continue}
   const p=el('p');renderInline(p,line);wrap.append(p);i++;
