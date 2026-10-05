@@ -6,7 +6,7 @@ import {handleHealth} from './health.js';
 import {handleSecurityAuth} from './security-auth-api.js';
 import {handleAnalyticsApi} from './analytics-api.js';
 
-const FORUM_BUILD='20260921-users-privacy-2';
+const FORUM_BUILD='20261005-marea-audio-1';
 const GLOBAL_BUILD='20260921-social-11';
 const ANALYTICS_BUILD='20261001-analytics-2';
 const SOCIAL_RAIL=`<nav class="a90-social-rail" aria-label="Redes sociales de A 90 por Hora">
