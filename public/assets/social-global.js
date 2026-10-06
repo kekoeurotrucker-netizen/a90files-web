@@ -17,8 +17,8 @@
       gradient.setAttribute('y2','100%');
 
       [
-        ['0%','#67d9ea'],
-        ['48%','#8beaf2'],
+        ['0%','#49d7e6'],
+        ['46%','#b7f6ff'],
         ['100%','#f2b35b']
       ].forEach(([offset,color])=>{
         const stop=document.createElementNS(NS,'stop');
