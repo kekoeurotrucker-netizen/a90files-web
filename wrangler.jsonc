@@ -8,7 +8,7 @@
     "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_uKO4AToaql7kJiCiPGK1Ww_FfP36ghz",
     "SUPABASE_NATIVE_CAPTCHA": "false",
     "EMAIL_OTP_ENABLED": "true",
-    "TURNSTILE_REQUIRED": "false"
+    "TURNSTILE_REQUIRED": "true"
   },
   "assets": {
     "directory": "./public",
