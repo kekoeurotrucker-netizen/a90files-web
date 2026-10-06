@@ -74,7 +74,7 @@ async function submitSignup(){
  if(!token){message('Completa la verificación anti-bot.','error');return}
  message('Creando cuenta…');
  const email=$('#a90-reg-email')?.value.trim()||'';
- try{const d=await call('/api/auth/signup',{method:'POST',body:{email,password:$('#a90-reg-password')?.value||'',display_name:$('#a90-reg-name')?.value.trim()||'',turnstile_token:token}});if(d.requires_confirmation){reset('signup');showEmailVerify(email)}else location.reload()}
+ try{const d=await call('/api/auth/signup',{method:'POST',body:{email,password:$('#a90-reg-password')?.value||'',display_name:$('#a90-reg-name')?.value.trim()||'',turnstile_token:token}});if(d.requires_confirmation){reset('signup');if(d.confirmation_method==='otp')showEmailVerify(email);else message('Cuenta creada. Revisa tu correo y abre el enlace de confirmación; después podrás iniciar sesión.','ok')}else location.reload()}
  catch(e){message(e.message,'error');reset('signup')}
 }
 
