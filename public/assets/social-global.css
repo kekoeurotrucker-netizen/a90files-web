@@ -90,7 +90,7 @@
   vertical-align:middle!important;
   filter:
     drop-shadow(0 0 5px rgba(73,215,230,.18))
-    drop-shadow(0 0 3px rgba(242,179,91,.10))!important;
+    drop-shadow(0 0 4px rgba(242,179,91,.16))!important;
 }
 .a90-social-link:hover{
   z-index:1!important;
