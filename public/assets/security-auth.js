@@ -1,4 +1,5 @@
 const SITE_KEY='0x4AAAAAAEyoSaRze-QyG4-4';
+const TURNSTILE_ENABLED=false;
 const tokens={login:'',signup:'',resend:''};
 const widgets={login:null,signup:null,resend:null};
 let pendingEmail='';
@@ -18,10 +19,10 @@ async function call(path,{method='GET',body}={}){
 function addCss(){if(document.querySelector('link[data-a90-security-auth]'))return;const l=document.createElement('link');l.rel='stylesheet';l.href='/assets/security-auth.css?v=20261006-email-avatar-1';l.dataset.a90SecurityAuth='1';document.head.appendChild(l)}
 function loadTurnstile(){if(window.turnstile)return Promise.resolve(window.turnstile);if(turnstilePromise)return turnstilePromise;turnstilePromise=new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';s.async=true;s.defer=true;s.onload=()=>window.turnstile?resolve(window.turnstile):reject(new Error('Turnstile no disponible'));s.onerror=()=>reject(new Error('No se pudo cargar Turnstile'));document.head.appendChild(s)});return turnstilePromise}
 function ensureBox(kind){if(kind==='resend')return $('#a90-turnstile-resend');const form=$(kind==='login'?'#a90-login-form':'#a90-register-form');if(!form)return null;let box=$(`#a90-turnstile-${kind}`);if(!box){box=document.createElement('div');box.id=`a90-turnstile-${kind}`;box.className='a90-turnstile';box.setAttribute('aria-label','Verificación anti-bot');form.insertBefore(box,form.querySelector('button[type="submit"]'))}return box}
-async function renderTurnstile(kind){const box=ensureBox(kind);if(!box||widgets[kind]!==null)return;try{const t=await loadTurnstile();widgets[kind]=t.render(box,{sitekey:SITE_KEY,action:kind,theme:'auto',callback:v=>{tokens[kind]=v},'expired-callback':()=>{tokens[kind]=''},'error-callback':()=>{tokens[kind]='';message('No se pudo completar la verificación anti-bot.','error')}})}catch{message('No se pudo cargar la verificación anti-bot.','error')}}
+async function renderTurnstile(kind){if(!TURNSTILE_ENABLED)return;const box=ensureBox(kind);if(!box||widgets[kind]!==null)return;try{const t=await loadTurnstile();widgets[kind]=t.render(box,{sitekey:SITE_KEY,action:kind,theme:'auto',callback:v=>{tokens[kind]=v},'expired-callback':()=>{tokens[kind]=''},'error-callback':()=>{tokens[kind]='';message('No se pudo completar la verificación anti-bot.','error')}})}catch{message('No se pudo cargar la verificación anti-bot.','error')}}
 function reset(kind){tokens[kind]='';if(window.turnstile&&widgets[kind]!==null){try{window.turnstile.reset(widgets[kind])}catch{}}}
 
-async function submitLogin(){const token=tokens.login;if(!token){message('Completa la verificación anti-bot.','error');return}message('Iniciando sesión…');try{await call('/api/auth/login',{method:'POST',body:{email:$('#a90-email')?.value.trim()||'',password:$('#a90-password')?.value||'',turnstile_token:token}});location.reload()}catch(e){message(e.message,'error');reset('login')}}
+async function submitLogin(){const token=TURNSTILE_ENABLED?tokens.login:'';message('Iniciando sesión…');try{await call('/api/auth/login',{method:'POST',body:{email:$('#a90-email')?.value.trim()||'',password:$('#a90-password')?.value||'',turnstile_token:token}});location.reload()}catch(e){message(e.message,'error');if(TURNSTILE_ENABLED)reset('login')}}
 function showEmailVerify(email){
  pendingEmail=String(email||'').trim().toLowerCase();
  const panel=$('#a90-email-verify'),form=$('#a90-register-form');
@@ -48,12 +49,11 @@ async function verifyEmailCode(){
  catch(e){message(e.message,'error')}
 }
 async function resendEmailCode(){
- const token=tokens.resend;
+ const token=TURNSTILE_ENABLED?tokens.resend:'';
  if(!pendingEmail){hideEmailVerify();return}
- if(!token){message('Completa la verificación anti-bot para reenviar el código.','error');return}
  message('Reenviando código…');
- try{await call('/api/auth/email/resend',{method:'POST',body:{email:pendingEmail,turnstile_token:token}});message('Código reenviado. Revisa tu correo.','ok');reset('resend')}
- catch(e){message(e.message,'error');reset('resend')}
+ try{await call('/api/auth/email/resend',{method:'POST',body:{email:pendingEmail,turnstile_token:token}});message('Código reenviado. Revisa tu correo.','ok');if(TURNSTILE_ENABLED)reset('resend')}
+ catch(e){message(e.message,'error');if(TURNSTILE_ENABLED)reset('resend')}
 }
 async function uploadAvatar(file){
  if(!file)return;
@@ -70,12 +70,11 @@ async function removeAvatar(){
  catch(e){message(e.message,'error')}
 }
 async function submitSignup(){
- const token=tokens.signup;
- if(!token){message('Completa la verificación anti-bot.','error');return}
+ const token=TURNSTILE_ENABLED?tokens.signup:'';
  message('Creando cuenta…');
  const email=$('#a90-reg-email')?.value.trim()||'';
- try{const d=await call('/api/auth/signup',{method:'POST',body:{email,password:$('#a90-reg-password')?.value||'',display_name:$('#a90-reg-name')?.value.trim()||'',turnstile_token:token}});if(d.requires_confirmation){reset('signup');if(d.confirmation_method==='otp')showEmailVerify(email);else message('Cuenta creada. Revisa tu correo y abre el enlace de confirmación; después podrás iniciar sesión.','ok')}else location.reload()}
- catch(e){message(e.message,'error');reset('signup')}
+ try{const d=await call('/api/auth/signup',{method:'POST',body:{email,password:$('#a90-reg-password')?.value||'',display_name:$('#a90-reg-name')?.value.trim()||'',turnstile_token:token}});if(d.requires_confirmation){if(TURNSTILE_ENABLED)reset('signup');if(d.confirmation_method==='otp')showEmailVerify(email);else message('Cuenta creada. Revisa tu correo y abre el enlace de confirmación; después podrás iniciar sesión.','ok')}else location.reload()}
+ catch(e){message(e.message,'error');if(TURNSTILE_ENABLED)reset('signup')}
 }
 
 document.addEventListener('submit',e=>{
@@ -111,5 +110,5 @@ document.addEventListener('paste',e=>{
 },true);
 
 addCss();
-const ready=()=>void renderTurnstile('login');
+const ready=()=>{document.documentElement.classList.toggle('a90-no-turnstile',!TURNSTILE_ENABLED);if(TURNSTILE_ENABLED)void renderTurnstile('login')};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready,{once:true});else ready();
