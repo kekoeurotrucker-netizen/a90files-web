@@ -76,7 +76,7 @@ async function nativeEmailAuth(env,url,data,mode,token){
   const r=await supabase(env,path,null,{method:'POST',body:JSON.stringify({email,password,data:{full_name:displayName},gotrue_meta_security:security})});
   if(!r.res.ok)return json({error:authError(r.body,r.res.status)},r.res.status);
   if(r.body?.access_token)return new Response(JSON.stringify({ok:true,requires_confirmation:false}),{status:200,headers:tokenHeaders(r.body)});
-  return json({ok:true,requires_confirmation:true},200);
+  return json({ok:true,requires_confirmation:true,confirmation_method:String(env.EMAIL_OTP_ENABLED||'false').toLowerCase()==='true'?'otp':'link'},200);
 }
 
 function authError(body,status){const raw=String(body?.msg||body?.message||body?.error_description||body?.error||'').toLowerCase();if(status===429)return 'Demasiados intentos. Espera un poco y vuelve a probar.';if(raw.includes('captcha'))return 'La verificación anti-bot ha caducado o no es válida.';if(raw.includes('invalid login credentials'))return 'Correo o contraseña incorrectos.';if(raw.includes('email not confirmed'))return 'Confirma primero el correo.';if(raw.includes('already registered')||raw.includes('user already registered'))return 'Ese correo ya tiene una cuenta.';if(raw.includes('password'))return 'La contraseña no cumple los requisitos de seguridad.';return 'No se pudo completar la autenticación.'}
