@@ -9,8 +9,6 @@ export async function handleSecurityAuth(request,env,url,authWorker){
     let data;try{data=await request.clone().json()}catch{return json({error:'Datos no válidos.'},400)}
     const expected=url.pathname.endsWith('/signup')?'signup':'login';
     const token=data?.turnstile_token;
-    const turnstileRequired=String(env.TURNSTILE_REQUIRED||'false').toLowerCase()==='true';
-    if(!turnstileRequired)return authWorker.fetch(request,env);
     if(!validTurnstileToken(token))return json({error:'Completa la verificación anti-bot.'},400);
 
     if(String(env.SUPABASE_NATIVE_CAPTCHA||'false').toLowerCase()==='true'){
@@ -103,12 +101,9 @@ async function resendEmailCode(request,env,url){
   const email=String(data?.email||'').trim().toLowerCase();
   const token=String(data?.turnstile_token||'');
   if(!validEmail(email))return json({error:'Introduce un correo válido.'},400);
-  const turnstileRequired=String(env.TURNSTILE_REQUIRED||'false').toLowerCase()==='true';
-  if(turnstileRequired){
-    if(!validTurnstileToken(token))return json({error:'Completa la verificación anti-bot para reenviar el código.'},400);
-    const check=await verifyTurnstile(request,env,url,token,'resend');
-    if(check)return check;
-  }
+  if(!validTurnstileToken(token))return json({error:'Completa la verificación anti-bot para reenviar el código.'},400);
+  const check=await verifyTurnstile(request,env,url,token,'resend');
+  if(check)return check;
   const r=await supabase(env,'/auth/v1/resend',null,{method:'POST',body:JSON.stringify({type:'signup',email})});
   if(!r.res.ok)return json({error:authError(r.body,r.res.status)},r.res.status);
   return json({ok:true},200);
