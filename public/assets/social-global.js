@@ -18,7 +18,8 @@
 
       [
         ['0%','#49d7e6'],
-        ['46%','#b7f6ff'],
+        ['34%','#9aebf4'],
+        ['62%','#f0c77f'],
         ['100%','#f2b35b']
       ].forEach(([offset,color])=>{
         const stop=document.createElementNS(NS,'stop');
