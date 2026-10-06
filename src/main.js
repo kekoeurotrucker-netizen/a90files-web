@@ -27,7 +27,7 @@ export default {
       const headers=new Headers(original.headers);
       headers.set('Content-Type','application/javascript; charset=utf-8');
       headers.set('Cache-Control','no-cache, no-store, must-revalidate');
-      return new Response(text+"\n;import('/assets/security-auth.js?v=20261006-no-turnstile-1');\n",{status:original.status,headers});
+      return new Response(text+"\n;import('/assets/security-auth.js?v=20261006-no-turnstile-2');\n",{status:original.status,headers});
     }
 
     if(url.pathname==='/foro/'||url.pathname.startsWith('/foro/')){
