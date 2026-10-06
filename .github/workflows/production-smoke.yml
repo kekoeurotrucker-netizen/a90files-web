@@ -61,19 +61,20 @@ jobs:
           request board "$BASE_URL/api/forum/board"
           grep -q '"categories"' "$tmp/board.body"
 
-          echo '4/8 Email auth ships with the broken Turnstile gate disabled'
+          echo '4/8 Turnstile frontend is deployed'
           request turnstile "$BASE_URL/assets/security-auth.js"
-          grep -q 'TURNSTILE_ENABLED=false' "$tmp/turnstile.body"
+          grep -q 'challenges.cloudflare.com/turnstile/v0/api.js' "$tmp/turnstile.body"
           grep -q 'turnstile_token' "$tmp/turnstile.body"
+          grep -q 'action:kind' "$tmp/turnstile.body"
 
-          echo '5/8 Login no longer requires a Turnstile token'
+          echo '5/8 Login rejects missing Turnstile token'
           code="$(status_request no_turnstile \
             -X POST "$BASE_URL/api/auth/login" \
             -H "Origin: $BASE_URL" \
             -H 'Content-Type: application/json' \
             --data '{"email":"smoke-test@example.invalid","password":"SmokeTestPassword123!"}')"
-          test "$code" = '401' || { cat "$tmp/no_turnstile.body"; echo "Expected 401, got $code"; exit 1; }
-          grep -qi 'correo o contraseña incorrectos' "$tmp/no_turnstile.body"
+          test "$code" = '400' || { cat "$tmp/no_turnstile.body"; echo "Expected 400, got $code"; exit 1; }
+          grep -qi 'anti-bot' "$tmp/no_turnstile.body"
 
           echo '6/8 Cross-origin POST is rejected'
           code="$(status_request csrf \
