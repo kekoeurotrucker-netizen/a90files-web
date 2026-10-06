@@ -266,7 +266,7 @@ async function signup(request,env,url){
   const {res,body}=await supabase(env,path,{method:'POST',headers:authHeaders(env),body:JSON.stringify({email,password,data:{full_name:displayName}})});
   if(!res.ok) return json({error:authError(body,res.status)},res.status);
   if(body?.access_token) return new Response(JSON.stringify({ok:true,requires_confirmation:false}),{status:200,headers:headersWithCookies(body)});
-  return json({ok:true,requires_confirmation:true},200);
+  return json({ok:true,requires_confirmation:true,confirmation_method:String(env.EMAIL_OTP_ENABLED||'false').toLowerCase()==='true'?'otp':'link'},200);
 }
 
 async function getUser(env,accessToken){
