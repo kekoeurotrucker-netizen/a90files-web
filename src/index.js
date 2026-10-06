@@ -122,9 +122,9 @@ function authError(body,status){
   const raw=String(body?.msg||body?.message||body?.error_description||body?.error||'').toLowerCase();
   if(status===429) return 'Demasiados intentos. Espera un poco y vuelve a probar.';
   if(raw.includes('invalid login credentials')) return 'Correo o contraseña incorrectos.';
-  if(raw.includes('email not confirmed')) return 'Confirma primero el correo desde el mensaje de Supabase.';
+  if(raw.includes('email not confirmed')) return 'Confirma primero tu correo con el código de 6 dígitos que te enviamos.';
   if(raw.includes('already registered')||raw.includes('user already registered')) return 'Ese correo ya tiene una cuenta.';
-  if(raw.includes('email address not authorized')) return 'Supabase no puede enviar todavía correos a esa dirección. Para abrir el registro al público habrá que configurar SMTP propio.';
+  if(raw.includes('email address not authorized')) return 'No se pudo enviar el código a ese correo porque el servidor de correo todavía no está habilitado para destinatarios externos.';
   if(raw.includes('password')) return 'La contraseña no cumple los requisitos de seguridad.';
   return 'No se pudo completar la autenticación.';
 }
