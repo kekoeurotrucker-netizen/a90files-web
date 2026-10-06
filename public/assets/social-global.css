@@ -88,6 +88,9 @@
   transform:none!important;
   transform-origin:center!important;
   vertical-align:middle!important;
+  filter:
+    drop-shadow(0 0 5px rgba(73,215,230,.18))
+    drop-shadow(0 0 3px rgba(242,179,91,.10))!important;
 }
 .a90-social-link:hover{
   z-index:1!important;
@@ -97,7 +100,8 @@
   background:linear-gradient(145deg,rgba(73,215,230,.12),rgba(242,179,91,.12))!important;
   box-shadow:
     0 7px 16px rgba(0,0,0,.20),
-    0 0 16px rgba(73,215,230,.08)!important;
+    0 0 18px rgba(73,215,230,.12),
+    0 0 10px rgba(242,179,91,.07)!important;
 }
 .a90-social-link:focus-visible{
   z-index:1!important;
