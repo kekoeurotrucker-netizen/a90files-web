@@ -6,7 +6,8 @@
   "vars": {
     "SUPABASE_URL": "https://ugwdxcmmxeqzoxgdofkd.supabase.co",
     "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_uKO4AToaql7kJiCiPGK1Ww_FfP36ghz",
-    "SUPABASE_NATIVE_CAPTCHA": "false"
+    "SUPABASE_NATIVE_CAPTCHA": "false",
+    "EMAIL_OTP_ENABLED": "false"
   },
   "assets": {
     "directory": "./public",
