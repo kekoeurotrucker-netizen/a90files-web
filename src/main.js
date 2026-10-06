@@ -6,7 +6,7 @@ import {handleHealth} from './health.js';
 import {handleSecurityAuth} from './security-auth-api.js';
 import {handleAnalyticsApi} from './analytics-api.js';
 
-const FORUM_BUILD='20261005-marea-audio-1';
+const FORUM_BUILD='20261006-avatar-1';
 const GLOBAL_BUILD='20260921-social-11';
 const ANALYTICS_BUILD='20261001-analytics-2';
 const SOCIAL_RAIL=`<nav class="a90-social-rail" aria-label="Redes sociales de A 90 por Hora">
@@ -27,7 +27,7 @@ export default {
       const headers=new Headers(original.headers);
       headers.set('Content-Type','application/javascript; charset=utf-8');
       headers.set('Cache-Control','no-cache, no-store, must-revalidate');
-      return new Response(text+"\n;import('/assets/security-auth.js');\n",{status:original.status,headers});
+      return new Response(text+"\n;import('/assets/security-auth.js?v=20261006-email-avatar-1');\n",{status:original.status,headers});
     }
 
     if(url.pathname==='/foro/'||url.pathname.startsWith('/foro/')){
