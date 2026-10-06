@@ -1,4 +1,5 @@
 const ACCESS_COOKIE='a90_access';
+const REFRESH_COOKIE='a90_refresh';
 const ACCESS_MAX_AGE=60*60;
 const REFRESH_MAX_AGE=60*60*24*30;
 
@@ -17,6 +18,22 @@ export async function handleSecurityAuth(request,env,url,authWorker){
     const check=await verifyTurnstile(request,env,url,token,expected);
     if(check)return check;
     return authWorker.fetch(request,env);
+  }
+  if(url.pathname==='/api/auth/email/verify'&&request.method==='POST'){
+    if(!sameOrigin(request,url))return json({error:'Solicitud rechazada.'},403);
+    return verifyEmailCode(request,env);
+  }
+  if(url.pathname==='/api/auth/email/resend'&&request.method==='POST'){
+    if(!sameOrigin(request,url))return json({error:'Solicitud rechazada.'},403);
+    return resendEmailCode(request,env,url);
+  }
+  if(url.pathname==='/api/auth/avatar'&&request.method==='POST'){
+    if(!sameOrigin(request,url))return json({error:'Solicitud rechazada.'},403);
+    return uploadAvatar(request,env);
+  }
+  if(url.pathname==='/api/auth/avatar/remove'&&request.method==='POST'){
+    if(!sameOrigin(request,url))return json({error:'Solicitud rechazada.'},403);
+    return removeAvatar(request,env);
   }
   if(url.pathname==='/api/auth/mfa/status'&&request.method==='GET')return mfaStatus(request,env);
   if(url.pathname==='/api/auth/mfa/enroll'&&request.method==='POST'){
@@ -66,6 +83,75 @@ function authError(body,status){const raw=String(body?.msg||body?.message||body?
 function validEmail(v){return typeof v==='string'&&v.length<=254&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)}
 function validPassword(v){return typeof v==='string'&&v.length>=10&&v.length<=128}
 function cleanName(v){return typeof v==='string'?v.trim().replace(/[\u0000-\u001f\u007f]/g,'').slice(0,80):''}
+
+
+async function verifyEmailCode(request,env){
+  let data;try{data=await request.json()}catch{return json({error:'Datos de verificación no válidos.'},400)}
+  const email=String(data?.email||'').trim().toLowerCase();
+  const token=String(data?.token||'').replace(/\D/g,'');
+  if(!validEmail(email)||!/^[0-9]{6}$/.test(token))return json({error:'Introduce el código de 6 dígitos enviado a tu correo.'},400);
+  const r=await supabase(env,'/auth/v1/verify',null,{method:'POST',body:JSON.stringify({email,token,type:'email'})});
+  if(!r.res.ok)return json({error:emailVerifyError(r.body,r.res.status)},r.res.status===400?401:r.res.status);
+  if(!r.body?.access_token)return json({error:'El correo se verificó, pero no se pudo iniciar la sesión. Prueba a entrar con tu contraseña.'},502);
+  return new Response(JSON.stringify({ok:true,verified:true}),{status:200,headers:tokenHeaders(r.body)});
+}
+
+async function resendEmailCode(request,env,url){
+  let data;try{data=await request.json()}catch{return json({error:'Datos no válidos.'},400)}
+  const email=String(data?.email||'').trim().toLowerCase();
+  const token=String(data?.turnstile_token||'');
+  if(!validEmail(email))return json({error:'Introduce un correo válido.'},400);
+  if(!validTurnstileToken(token))return json({error:'Completa la verificación anti-bot para reenviar el código.'},400);
+  const check=await verifyTurnstile(request,env,url,token,'resend');
+  if(check)return check;
+  const r=await supabase(env,'/auth/v1/resend',null,{method:'POST',body:JSON.stringify({type:'signup',email})});
+  if(!r.res.ok)return json({error:authError(r.body,r.res.status)},r.res.status);
+  return json({ok:true},200);
+}
+
+function emailVerifyError(body,status){
+  const raw=String(body?.msg||body?.message||body?.error_description||body?.error||'').toLowerCase();
+  if(status===429)return 'Demasiados intentos. Espera un poco y vuelve a probar.';
+  if(raw.includes('expired')||raw.includes('invalid')||raw.includes('token'))return 'El código es incorrecto o ha caducado. Pide uno nuevo.';
+  return 'No se pudo verificar el código.';
+}
+
+async function uploadAvatar(request,env){
+  const s=await session(request,env);
+  if(!s.user)return json({error:'Inicia sesión primero.'},401);
+  const len=Number(request.headers.get('Content-Length')||0);
+  if(len>3670016)return json({error:'La foto es demasiado grande. Máximo 3 MB.'},413);
+  let form;try{form=await request.formData()}catch{return json({error:'No se pudo leer la imagen.'},400)}
+  const file=form.get('avatar');
+  if(!file||typeof file.arrayBuffer!=='function')return json({error:'Selecciona una imagen.'},400);
+  const allowed=new Set(['image/jpeg','image/png','image/webp','image/gif']);
+  if(!allowed.has(String(file.type||'').toLowerCase()))return json({error:'Usa JPG, PNG, WEBP o GIF.'},400);
+  if(!file.size||file.size>3145728)return json({error:'La foto debe ocupar como máximo 3 MB.'},400);
+  const objectPath=`${s.user.id}/avatar`;
+  let up;
+  try{
+    up=await fetch(`${env.SUPABASE_URL}/storage/v1/object/a90-avatars/${objectPath}`,{
+      method:'POST',
+      headers:{'apikey':env.SUPABASE_PUBLISHABLE_KEY,'Authorization':`Bearer ${s.access}`,'Content-Type':file.type,'x-upsert':'true','Cache-Control':'3600'},
+      body:file
+    });
+  }catch{return json({error:'No se pudo subir la foto.'},503)}
+  if(!up.ok){const detail=await up.text().catch(()=> '');console.error('avatar upload failed',up.status,detail.slice(0,300));return json({error:'No se pudo guardar la foto de perfil.'},502)}
+  const avatarUrl=`${env.SUPABASE_URL}/storage/v1/object/public/a90-avatars/${objectPath}?v=${Date.now()}`;
+  const patch=await supabase(env,`/rest/v1/profiles?id=eq.${encodeURIComponent(s.user.id)}`,s.access,{method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify({avatar_url:avatarUrl})});
+  if(!patch.res.ok)return json({error:'La imagen se subió, pero no se pudo actualizar el perfil.'},502);
+  return json({ok:true,avatar_url:avatarUrl},200);
+}
+
+async function removeAvatar(request,env){
+  const s=await session(request,env);
+  if(!s.user)return json({error:'Inicia sesión primero.'},401);
+  const objectPath=`${s.user.id}/avatar`;
+  try{await fetch(`${env.SUPABASE_URL}/storage/v1/object/a90-avatars/${objectPath}`,{method:'DELETE',headers:{'apikey':env.SUPABASE_PUBLISHABLE_KEY,'Authorization':`Bearer ${s.access}`}})}catch{}
+  const patch=await supabase(env,`/rest/v1/profiles?id=eq.${encodeURIComponent(s.user.id)}`,s.access,{method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify({avatar_url:null})});
+  if(!patch.res.ok)return json({error:'No se pudo quitar la foto del perfil.'},502);
+  return json({ok:true},200);
+}
 
 async function mfaStatus(request,env){
   const s=await session(request,env);if(!s.user)return json({error:'Inicia sesión primero.'},401);
