@@ -7,7 +7,7 @@ import {handleSecurityAuth} from './security-auth-api.js';
 import {handleAnalyticsApi} from './analytics-api.js';
 
 const FORUM_BUILD='20261006-avatar-1';
-const GLOBAL_BUILD='20261006-social-unified-2';
+const GLOBAL_BUILD='20261006-social-gradient-1';
 const ANALYTICS_BUILD='20261001-analytics-2';
 const SOCIAL_RAIL=`<nav class="a90-social-rail" aria-label="Redes sociales de A 90 por Hora">
 <a class="a90-social-link" href="https://www.facebook.com/a90porhorafb/?locale=es_ES" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.414c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.97H15.83c-1.491 0-1.956.931-1.956 1.887v2.264h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg></a>
@@ -93,6 +93,8 @@ async function injectGlobalUi(response,force=false){
   if(/<link[^>]+href=["']\/assets\/social-global\.css(?:\?[^"']*)?["'][^>]*>/i.test(html))html=html.replace(/<link[^>]+href=["']\/assets\/social-global\.css(?:\?[^"']*)?["'][^>]*>/i,stylesheet);
   else html=html.replace('</head>',`${stylesheet}\n</head>`);
   if(!html.includes('class="a90-social-rail"'))html=html.replace('</body>',`${SOCIAL_RAIL}\n</body>`);
+  const socialScript=`<script src="/assets/social-global.js?v=${GLOBAL_BUILD}" defer></script>`;
+  if(!html.includes('/assets/social-global.js'))html=html.replace('</body>',`${socialScript}\n</body>`);
   const analyticsScript=`<script src="/assets/analytics.js?v=${ANALYTICS_BUILD}" defer></script>`;
   if(!html.includes('/assets/analytics.js'))html=html.replace('</body>',`${analyticsScript}\n</body>`);
   const headers=new Headers(response.headers);
