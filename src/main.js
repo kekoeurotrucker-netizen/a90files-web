@@ -7,8 +7,9 @@ import {handleSecurityAuth} from './security-auth-api.js';
 import {handleAnalyticsApi} from './analytics-api.js';
 
 const FORUM_BUILD='20261006-avatar-1';
-const GLOBAL_BUILD='20261007-social-gradient-3';
+const GLOBAL_BUILD='20261007-legal-1';
 const ANALYTICS_BUILD='20261001-analytics-2';
+const LEGAL_LINKS='<a class="a90-legal-link" data-a90-legal-link href="/aviso-legal/">Aviso legal</a><a class="a90-legal-link" data-a90-legal-link href="/privacidad/">Privacidad</a><a class="a90-legal-link" data-a90-legal-link href="/cookies/">Cookies</a><a class="a90-legal-link" data-a90-legal-link href="/licencias/">Licencias</a>';
 const SOCIAL_RAIL=`<nav class="a90-social-rail" aria-label="Redes sociales de A 90 por Hora">
 <a class="a90-social-link" href="https://www.facebook.com/a90porhorafb/?locale=es_ES" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.414c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.97H15.83c-1.491 0-1.956.931-1.956 1.887v2.264h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg></a>
 <a class="a90-social-link" href="https://www.instagram.com/a90porhora/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.849.07 1.17.053 1.805.249 2.227.413a4.412 4.412 0 0 1 1.608 1.045 4.412 4.412 0 0 1 1.045 1.608c.164.422.36 1.057.413 2.227.058 1.265.07 1.645.07 4.849s-.012 3.584-.07 4.849c-.053 1.17-.249 1.805-.413 2.227a4.412 4.412 0 0 1-1.045 1.608 4.412 4.412 0 0 1-1.608 1.045c-.422.164-1.057.36-2.227.413-1.265.058-1.645.07-4.849.07s-3.584-.012-4.849-.07c-1.17-.053-1.805-.249-2.227-.413a4.412 4.412 0 0 1-1.608-1.045 4.412 4.412 0 0 1-1.045-1.608c-.164-.422-.36-1.057-.413-2.227-.058-1.265-.07-1.645-.07-4.849s.012-3.584.07-4.849c.053-1.17.249-1.805.413-2.227A4.412 4.412 0 0 1 3.691 3.316 4.412 4.412 0 0 1 5.299 2.271c.422-.164 1.057-.36 2.227-.413C8.416 2.175 8.796 2.163 12 2.163zm0 3.675A6.162 6.162 0 1 0 12 18.162 6.162 6.162 0 0 0 12 5.838zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-10.605a1.44 1.44 0 1 1 0 2.88 1.44 1.44 0 0 1 0-2.88z"/></svg></a>
@@ -84,11 +85,26 @@ export default {
   }
 };
 
+function injectLegalFooter(html){
+  html=html.replace(/©\s*<span id=["']year["']><\/span>\s*A 90 Files(?:\s*·\s*Todos los derechos reservados\.)?/g,'© <span id="year"></span> A 90 Files · Todos los derechos reservados.');
+  if(html.includes('data-a90-legal-link'))return html;
+  const start=html.indexOf('<footer class="footer');
+  if(start<0)return html;
+  const end=html.indexOf('</footer>',start);
+  if(end<0)return html;
+  let footer=html.slice(start,end);
+  const navEnd=footer.lastIndexOf('</nav>');
+  if(navEnd>=0)footer=footer.slice(0,navEnd)+LEGAL_LINKS+footer.slice(navEnd);
+  else footer+=`<nav class="a90-legal-links" aria-label="Información legal">${LEGAL_LINKS}</nav>`;
+  return html.slice(0,start)+footer+html.slice(end);
+}
+
 async function injectGlobalUi(response,force=false){
   const type=response.headers.get('Content-Type')||'';
   if(!force&&!type.includes('text/html'))return response;
   let html=await response.text();
   if(!html.includes('</body>')&&!html.includes('</head>'))return response;
+  html=injectLegalFooter(html);
   const stylesheet=`<link rel="stylesheet" href="/assets/social-global.css?v=${GLOBAL_BUILD}">`;
   if(/<link[^>]+href=["']\/assets\/social-global\.css(?:\?[^"']*)?["'][^>]*>/i.test(html))html=html.replace(/<link[^>]+href=["']\/assets\/social-global\.css(?:\?[^"']*)?["'][^>]*>/i,stylesheet);
   else html=html.replace('</head>',`${stylesheet}\n</head>`);
