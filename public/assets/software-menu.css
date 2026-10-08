@@ -52,3 +52,75 @@
 /* VaultPool approved brand icon · 2026-10-05 */
 .software-card--vault .software-card-mark--vault{overflow:visible;padding:0;border:0;background:transparent;box-shadow:none}
 .software-card--vault .software-card-mark--vault img{display:block;width:100%;height:100%;object-fit:contain;border-radius:0;filter:drop-shadow(0 7px 14px rgba(0,0,0,.28))}
+
+/* Elegant software dropdown icons · 2026-10-09 */
+.nav .software-nav-menu a{
+  grid-template-columns:44px 1fr;
+  gap:11px;
+  padding:9px 10px;
+  border-radius:11px;
+}
+.nav .software-nav-menu a:hover{
+  background:rgba(255,255,255,.025);
+}
+.software-nav-icon{
+  position:relative;
+  box-sizing:border-box;
+  display:grid;
+  place-items:center;
+  width:44px;
+  height:44px;
+  padding:5px;
+  overflow:hidden;
+  border:1px solid transparent;
+  border-radius:12px;
+  background:
+    linear-gradient(145deg,rgba(8,31,40,.98),rgba(5,22,29,.98)) padding-box,
+    linear-gradient(135deg,rgba(79,224,239,.72),rgba(93,145,157,.34) 52%,rgba(232,177,88,.62)) border-box;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 6px 16px rgba(0,0,0,.18);
+  transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease,filter .18s ease;
+}
+.software-nav-icon::after{
+  content:"";
+  position:absolute;
+  inset:3px;
+  border:1px solid rgba(255,255,255,.035);
+  border-radius:9px;
+  pointer-events:none;
+}
+.software-nav-icon img{
+  position:relative;
+  z-index:1;
+  display:block;
+  width:100%;
+  height:100%;
+  padding:1px;
+  object-fit:contain;
+  object-position:center;
+  border-radius:7px;
+  filter:drop-shadow(0 3px 7px rgba(0,0,0,.28)) saturate(.96) contrast(1.03);
+}
+.nav .software-nav-menu a:hover .software-nav-icon{
+  transform:translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05),
+    0 8px 18px rgba(0,0,0,.22);
+  filter:brightness(1.04);
+}
+.software-nav-menu a[data-project="vaultpool"] .software-nav-icon img{padding:2px}
+.software-nav-menu a[data-project="autominer"] .software-nav-icon img{padding:3px}
+.software-nav-menu a[data-project="startwise"] .software-nav-icon img{padding:4px}
+.software-nav-menu a[data-project="marea"] .software-nav-icon img{padding:2px}
+.software-nav-item-copy strong{
+  font-size:12px;
+  line-height:1.15;
+  letter-spacing:-.01em;
+}
+.software-nav-item-copy small{
+  margin-top:3px;
+  color:#78939d;
+  font-size:8.5px;
+  letter-spacing:.02em;
+}
