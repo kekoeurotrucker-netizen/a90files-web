@@ -13,6 +13,8 @@ export async function handleForumApi(request,env,url){
     if(url.pathname==='/api/forum/reply'&&request.method==='POST') return createReply(request,env);
     if(url.pathname==='/api/forum/reaction'&&request.method==='POST') return toggleReaction(request,env);
     if(url.pathname==='/api/forum/report'&&request.method==='POST') return createReport(request,env);
+    if(url.pathname==='/api/forum/notifications'&&request.method==='GET') return userNotifications(request,env);
+    if(url.pathname==='/api/forum/notifications/read'&&request.method==='POST') return markUserNotificationsRead(request,env);
     if(url.pathname==='/api/forum/staff-notifications'&&request.method==='GET') return staffNotifications(request,env);
     if(url.pathname==='/api/forum/staff-notifications/read'&&request.method==='POST') return markStaffNotificationsRead(request,env);
     if(url.pathname==='/api/forum/users'&&request.method==='GET') return publicUsers(request,env);
@@ -188,7 +190,7 @@ async function topic(request,env,url){
   const item=tr.body[0];
   const [cat,postsRes]=await Promise.all([
     db(env,`/rest/v1/forum_categories?id=eq.${item.category_id}&select=id,slug,name,description,min_role_to_post,is_locked&limit=1`,s.token),
-    db(env,`/rest/v1/forum_posts?topic_id=eq.${id}&select=id,topic_id,author_id,body,edited_at,created_at,updated_at&deleted_at=is.null&is_hidden=eq.false&order=created_at.asc&limit=500`,s.token)
+    db(env,`/rest/v1/forum_posts?topic_id=eq.${id}&select=id,topic_id,author_id,body,reply_to_post_id,edited_at,created_at,updated_at&deleted_at=is.null&is_hidden=eq.false&order=created_at.asc&limit=500`,s.token)
   ]);
   const posts=postsRes.res.ok&&Array.isArray(postsRes.body)?postsRes.body:[];
   const authors=await profilesFor(env,s.token,[item.author_id,...posts.map(p=>p.author_id)]);
@@ -202,7 +204,16 @@ async function topic(request,env,url){
       if(s.user&&r.user_id===s.user.id)bucket.mine.push(r.reaction);
     }
   }
-  const enriched=posts.map(p=>({...p,author:authors[p.author_id]||null,reactions:reactions[p.id]||{counts:{},mine:[]}}));
+  const postMap=new Map(posts.map(p=>[Number(p.id),p]));
+  const enriched=posts.map(p=>{
+    const parent=p.reply_to_post_id?postMap.get(Number(p.reply_to_post_id)):null;
+    const replyTo=parent?{
+      id:Number(parent.id),
+      author:authors[parent.author_id]||null,
+      excerpt:String(parent.body||'').replace(/\s+/g,' ').trim().slice(0,180)
+    }:null;
+    return {...p,author:authors[p.author_id]||null,reactions:reactions[p.id]||{counts:{},mine:[]},reply_to:replyTo};
+  });
   return respond({topic:{...item,author:authors[item.author_id]||null},category:cat.res.ok&&Array.isArray(cat.body)?cat.body[0]||null:null,posts:enriched,authenticated:Boolean(s.user)},200,s.refreshed);
 }
 
@@ -237,6 +248,41 @@ async function requireStaff(request,env){
   const role=await roleOf(env,s.access,s.user.id);
   if(!['moderator','admin','super_admin'].includes(role))return {error:respond({error:'Acceso reservado al equipo de moderación.'},403,s.refreshed)};
   return {...s,role};
+}
+
+async function userNotifications(request,env){
+  const s=await requireSession(request,env);if(s.error)return s.error;
+  const userId=encodeURIComponent(s.user.id);
+  const [listRes,unreadRes]=await Promise.all([
+    db(env,`/rest/v1/forum_user_notifications?recipient_user_id=eq.${userId}&select=id,kind,title,body,href,topic_id,post_id,source_post_id,actor_user_id,created_at,read_at&order=created_at.desc&limit=40`,s.access),
+    db(env,`/rest/v1/forum_user_notifications?recipient_user_id=eq.${userId}&read_at=is.null&select=id&limit=1000`,s.access)
+  ]);
+  if(!listRes.res.ok||!unreadRes.res.ok)return respond({error:'No se pudieron cargar las notificaciones.'},502,s.refreshed);
+  const notifications=Array.isArray(listRes.body)?listRes.body:[];
+  const actors=await profilesFor(env,s.access,notifications.map(n=>n.actor_user_id).filter(Boolean));
+  return respond({
+    ok:true,
+    unread:Array.isArray(unreadRes.body)?unreadRes.body.length:0,
+    notifications:notifications.map(n=>({...n,actor:n.actor_user_id?actors[n.actor_user_id]||null:null}))
+  },200,s.refreshed);
+}
+
+async function markUserNotificationsRead(request,env){
+  const s=await requireSession(request,env);if(s.error)return s.error;
+  let data;try{data=await readJson(request)}catch{return respond({error:'Datos no válidos.'},400,s.refreshed)}
+  const all=data?.all===true;
+  const id=all?null:integer(data?.id);
+  if(!all&&!id)return respond({error:'Notificación no válida.'},400,s.refreshed);
+  const filter=all
+    ?`recipient_user_id=eq.${encodeURIComponent(s.user.id)}&read_at=is.null`
+    :`id=eq.${id}&recipient_user_id=eq.${encodeURIComponent(s.user.id)}`;
+  const r=await db(env,`/rest/v1/forum_user_notifications?${filter}`,s.access,{
+    method:'PATCH',
+    headers:{'Prefer':'return=minimal'},
+    body:JSON.stringify({read_at:new Date().toISOString()})
+  });
+  if(!r.res.ok)return respond({error:'No se pudo actualizar la notificación.'},400,s.refreshed);
+  return respond({ok:true},200,s.refreshed);
 }
 
 async function staffNotifications(request,env){
@@ -411,11 +457,12 @@ async function createReply(request,env){
   const s=await requireSession(request,env);if(s.error)return s.error;
   let data;try{data=await readJson(request)}catch{return respond({error:'Datos no válidos.'},400,s.refreshed)}
   const topicId=integer(data?.topic_id);
+  const replyTo=integer(data?.reply_to_post_id);
   const body=cleanText(data?.body,20000);
   if(!topicId||!body)return respond({error:'Escribe una respuesta.'},400,s.refreshed);
-  const r=await rpc(env,s.access,'forum_create_reply',{p_topic_id:topicId,p_body:body});
+  const r=await rpc(env,s.access,'forum_create_reply',{p_topic_id:topicId,p_body:body,p_reply_to_post_id:replyTo||null});
   if(!r.res.ok)return respond({error:forumError(r.body,r.res.status)},r.res.status===403?403:400,s.refreshed);
-  return respond({ok:true,post_id:Number(r.body)||r.body},201,s.refreshed);
+  return respond({ok:true,post_id:Number(r.body)||r.body,reply_to_post_id:replyTo||null},201,s.refreshed);
 }
 
 async function toggleReaction(request,env){
