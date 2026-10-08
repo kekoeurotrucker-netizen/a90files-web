@@ -212,14 +212,38 @@ function renderConversation(items,topic,mode='oldest'){
    return cur;
  };
 
- const roots=ordered.filter(p=>!directParent.has(Number(p.id)));
- const groups=new Map(roots.map(p=>[Number(p.id),[]]));
+ const opener=ordered[0]||null;
+ const roots=ordered.filter(p=>!directParent.has(Number(p.id))&&(!opener||Number(p.id)!==Number(opener.id)));
+ const groupRoots=opener?[opener,...roots]:roots;
+ const groups=new Map(groupRoots.map(p=>[Number(p.id),[]]));
  for(const post of ordered){
    const id=Number(post.id);
    if(!directParent.has(id))continue;
    const root=rootOf(id);
    if(!groups.has(root))groups.set(root,[]);
    groups.get(root).push(post);
+ }
+
+ if(opener){
+   const intro=el('section','forum-topic-opener');
+   intro.append(renderPost(opener,topic,{nested:false}));
+   const openerReplies=[...(groups.get(Number(opener.id))||[])].sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
+   if(openerReplies.length){
+     const controls=el('div','forum-comment-replies-head');
+     const toggle=button(`${openerReplies.length} respuesta${openerReplies.length===1?'':'s'} al mensaje inicial`,'forum-comment-replies-toggle');
+     const branch=el('div','forum-comment-replies');
+     const initiallyCollapsed=openerReplies.length>3;
+     branch.hidden=initiallyCollapsed;
+     toggle.setAttribute('aria-expanded',String(!initiallyCollapsed));
+     toggle.addEventListener('click',()=>{
+       branch.hidden=!branch.hidden;
+       toggle.setAttribute('aria-expanded',String(!branch.hidden));
+       toggle.textContent=branch.hidden?`${openerReplies.length} respuesta${openerReplies.length===1?'':'s'} al mensaje inicial`:'Ocultar respuestas';
+     });
+     controls.append(toggle);intro.append(controls,branch);
+     for(const reply of openerReplies)branch.append(renderPost(reply,topic,{nested:true}));
+   }
+   list.append(intro);
  }
 
  let sortedRoots=[...roots];
