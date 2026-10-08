@@ -6,7 +6,7 @@ import {handleHealth} from './health.js';
 import {handleSecurityAuth} from './security-auth-api.js';
 import {handleAnalyticsApi} from './analytics-api.js';
 
-const FORUM_BUILD='20261009-youtube-comments-1';
+const FORUM_BUILD='20261009-newest-comments-1';
 const APP_BUILD='20261009-account-icons-fix-4';
 const GLOBAL_BUILD='20261007-legal-1';
 const ANALYTICS_BUILD='20261001-analytics-2';
