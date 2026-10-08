@@ -254,8 +254,9 @@ function renderConversation(items,topic,mode='oldest'){
      const directReplies=replies.length;
      const citations=replies.reduce((count,item)=>{
        const body=String(item.body||'');
-       const re=new RegExp('\\\\[quote="[^"]{1,80}" post="'+Number(post.id)+'"\\\\]','g');
-       return count+(body.match(re)?.length||0);
+       const hits=[...body.matchAll(/\[quote="[^"]{1,80}" post="(\d+)"\]/g)]
+         .filter(match=>Number(match[1])===Number(post.id)).length;
+       return count+hits;
      },0);
      const reactions=reactionScore(post);
      return {score:reactions+directReplies+citations,reactions,directReplies,citations};
