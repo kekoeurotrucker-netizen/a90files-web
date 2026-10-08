@@ -7,6 +7,7 @@ if(!board)return;
 const palette=['cyan','blue','violet','amber','coral','cyan','blue','offtopic'];
 const reactions=['👍','❤️','😂','😮','😢','👏'];
 let currentUser=null;
+let activeReplyTarget=null;
 
 const el=(tag,className,text)=>{const n=document.createElement(tag);if(className)n.className=className;if(text!==undefined)n.textContent=text;return n};
 const api=async(path,opts={})=>{const res=await fetch(path,{credentials:'same-origin',...opts,headers:{...(opts.body?{'Content-Type':'application/json'}:{}),...(opts.headers||{})}});const data=await res.json().catch(()=>({}));if(!res.ok)throw new Error(data?.error||'No se pudo completar la operación.');return data};
@@ -116,6 +117,7 @@ async function renderTopics(slug,page=1){
 }
 
 async function renderTopic(id){
+ activeReplyTarget=null;
  const target=showFocus();loading('Cargando conversación…',target);
  const data=await api(`/api/forum/topic?id=${id}`);setTitle(data.topic?.title||'Tema');await authState();
  target.replaceChildren();const view=el('section','forum-live-view');const head=el('header','forum-live-view-head');const titleWrap=el('div');titleWrap.append(linkButton(`← ${data.category?.name||'Foro'}`,`/foro/?c=${encodeURIComponent(data.category?.slug||'')}`));const badges=el('div','forum-topic-title');badges.append(el('h1','',data.topic.title));if(data.topic.is_pinned)badges.append(el('span','forum-chip','FIJADO'));if(data.topic.is_locked)badges.append(el('span','forum-chip','CERRADO'));titleWrap.append(badges,el('small','',`${nameOf(data.topic.author)} · ${fmtDate(data.topic.created_at)}`));head.append(titleWrap);view.append(head);
@@ -124,15 +126,94 @@ async function renderTopic(id){
  view.append(posts);
  const reply=el('section','forum-reply-box');
  if(data.topic.is_locked)reply.append(status('Este tema está cerrado y no admite nuevas respuestas.','empty'));
- else if(!currentUser)reply.append(el('h2','','Responder'),status('Inicia sesión con tu Cuenta A 90 para responder.','empty'),button('Entrar','forum-live-primary',openLogin));
- else{reply.append(el('h2','','Responder'));const ta=el('textarea','forum-live-textarea');ta.maxLength=20000;ta.placeholder='Escribe tu respuesta…';const tools=makeMiniToolbar(ta);const preview=el('div','forum-live-preview');ta.addEventListener('input',()=>preview.replaceChildren(renderBody(ta.value)));const send=button('Publicar respuesta','forum-live-primary',async()=>{const body=ta.value.trim();if(!body)return;send.disabled=true;send.textContent='Publicando…';try{await api('/api/forum/reply',{method:'POST',body:JSON.stringify({topic_id:data.topic.id,body})});await renderTopic(data.topic.id)}catch(e){reply.append(status(e.message,'error'));send.disabled=false;send.textContent='Publicar respuesta'}});reply.append(tools,ta,preview,send)}
+ else if(!currentUser)reply.append(el('h2','','Responder al hilo'),status('Inicia sesión con tu Cuenta A 90 para responder.','empty'),button('Entrar','forum-live-primary',openLogin));
+ else{
+  const replyTitle=el('h2','','Responder al hilo');
+  const context=el('div','forum-reply-context');context.hidden=true;
+  const contextCopy=el('div','forum-reply-context-copy');
+  const contextCancel=button('Cancelar','forum-reply-context-cancel',()=>setReplyTarget(null));
+  context.append(contextCopy,contextCancel);
+  const ta=el('textarea','forum-live-textarea');ta.maxLength=20000;ta.placeholder='Escribe una respuesta general al hilo…';
+  const tools=makeMiniToolbar(ta);
+  const preview=el('div','forum-live-preview');
+  ta.addEventListener('input',()=>preview.replaceChildren(renderBody(ta.value)));
+  const send=button('Publicar respuesta','forum-live-primary',async()=>{
+    const body=ta.value.trim();if(!body)return;
+    send.disabled=true;send.textContent='Publicando…';
+    try{
+      await api('/api/forum/reply',{method:'POST',body:JSON.stringify({
+        topic_id:data.topic.id,
+        body,
+        reply_to_post_id:activeReplyTarget?.id||null
+      })});
+      await renderTopic(data.topic.id)
+    }catch(e){reply.append(status(e.message,'error'));send.disabled=false;send.textContent='Publicar respuesta'}
+  });
+  reply.append(replyTitle,context,tools,ta,preview,send)
+ }
  view.append(reply);target.append(view);
  await renderBoard({setPageTitle:false});
  target.scrollIntoView({block:'start',behavior:'auto'});
 }
 
 function renderPost(post,topic){
- const card=el('article','forum-post');card.dataset.postId=String(post.id);card.id='post-'+String(post.id);const side=el('aside','forum-post-user');side.append(avatarNode(post.author),el('strong','',nameOf(post.author)),el('small','',roleName(post.author?.role)));const main=el('div','forum-post-content');const meta=el('header','forum-post-meta');meta.append(el('span','',fmtDate(post.created_at)));if(post.edited_at)meta.append(el('small','','editado'));const actions=el('div','forum-post-actions');actions.append(button('Citar','forum-post-action forum-post-quote',()=>quotePost(post,card)));actions.append(button('Reportar','forum-post-action',()=>reportPost(post.id)));meta.append(actions);main.append(meta,renderBody(post.body));const react=el('div','forum-reactions');for(const r of reactions){const count=post.reactions?.counts?.[r]||0;const b=button(`${r} ${count}`,'forum-reaction'+(post.reactions?.mine?.includes(r)?' active':''),()=>reactPost(post.id,r,topic.id));b.setAttribute('aria-pressed',String(post.reactions?.mine?.includes(r)||false));react.append(b)}main.append(react);card.append(side,main);return card;
+ const card=el('article','forum-post');card.dataset.postId=String(post.id);card.id='post-'+String(post.id);
+ const side=el('aside','forum-post-user');side.append(avatarNode(post.author),el('strong','',nameOf(post.author)),el('small','',roleName(post.author?.role)));
+ const main=el('div','forum-post-content');
+ const meta=el('header','forum-post-meta');meta.append(el('span','',fmtDate(post.created_at)));if(post.edited_at)meta.append(el('small','','editado'));
+ const actions=el('div','forum-post-actions');
+ actions.append(button('Responder','forum-post-action forum-post-reply',()=>replyPost(post)));
+ actions.append(button('Citar','forum-post-action forum-post-quote',()=>quotePost(post,card)));
+ actions.append(button('Reportar','forum-post-action forum-post-report',()=>reportPost(post.id)));
+ meta.append(actions);main.append(meta);
+ if(post.reply_to){
+   const direct=el('a','forum-direct-reply');
+   direct.href='#post-'+post.reply_to.id;
+   const label=el('span','forum-direct-reply-label','↳ En respuesta a ');
+   label.append(el('strong','',nameOf(post.reply_to.author)));
+   const excerpt=el('span','forum-direct-reply-excerpt',post.reply_to.excerpt||'Abrir mensaje original');
+   direct.append(label,excerpt);
+   main.append(direct);
+ }
+ main.append(renderBody(post.body));
+ const react=el('div','forum-reactions');
+ for(const r of reactions){const count=post.reactions?.counts?.[r]||0;const b=button(`${r} ${count}`,'forum-reaction'+(post.reactions?.mine?.includes(r)?' active':''),()=>reactPost(post.id,r,topic.id));b.setAttribute('aria-pressed',String(post.reactions?.mine?.includes(r)||false));react.append(b)}
+ main.append(react);card.append(side,main);return card;
+}
+
+async function replyPost(post){
+ const auth=await authState();if(!auth){openLogin();return}
+ activeReplyTarget={
+   id:Number(post.id),
+   author:nameOf(post.author),
+   excerpt:String(post.body||'').replace(/\s+/g,' ').trim().slice(0,180)
+ };
+ setReplyTarget(activeReplyTarget);
+ const ta=document.querySelector('.forum-reply-box .forum-live-textarea');
+ ta?.focus();
+ ta?.scrollIntoView({block:'center',behavior:'smooth'});
+}
+
+function setReplyTarget(target){
+ activeReplyTarget=target||null;
+ const box=document.querySelector('.forum-reply-box');if(!box)return;
+ const context=box.querySelector('.forum-reply-context');
+ const copy=box.querySelector('.forum-reply-context-copy');
+ const title=box.querySelector('h2');
+ const ta=box.querySelector('.forum-live-textarea');
+ if(!context||!copy||!title||!ta)return;
+ if(!activeReplyTarget){
+   context.hidden=true;copy.replaceChildren();
+   title.textContent='Responder al hilo';
+   ta.placeholder='Escribe una respuesta general al hilo…';
+   return;
+ }
+ context.hidden=false;copy.replaceChildren();
+ const top=el('div','forum-reply-context-title','Respondiendo a ');
+ top.append(el('strong','',activeReplyTarget.author));
+ copy.append(top,el('p','',activeReplyTarget.excerpt||'Mensaje seleccionado'));
+ title.textContent='Responder a '+activeReplyTarget.author;
+ ta.placeholder='Escribe tu respuesta para '+activeReplyTarget.author+'…';
 }
 
 async function quotePost(post,card){
