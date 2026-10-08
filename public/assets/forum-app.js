@@ -235,7 +235,7 @@ function renderConversation(items,topic,mode='oldest'){
 
  for(const root of sortedRoots){
    const group=el('section','forum-comment-group');
-   group.append(renderPost(root,topic));
+   group.append(renderPost(root,topic,{nested:false}));
    const replies=[...(groups.get(Number(root.id))||[])].sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
    if(replies.length){
      const controls=el('div','forum-comment-replies-head');
@@ -251,14 +251,14 @@ function renderConversation(items,topic,mode='oldest'){
      });
      controls.append(toggle);
      group.append(controls,branch);
-     for(const reply of replies)branch.append(renderPost(reply,topic));
+     for(const reply of replies)branch.append(renderPost(reply,topic,{nested:true}));
    }
    list.append(group);
  }
  return list;
 }
 
-function renderPost(post,topic){
+function renderPost(post,topic,{nested=false}={}){
  const card=el('article','forum-post');card.dataset.postId=String(post.id);card.id='post-'+String(post.id);
  const side=el('aside','forum-post-user');side.append(avatarNode(post.author),el('strong','',nameOf(post.author)),el('small','',roleName(post.author?.role)));
  const main=el('div','forum-post-content');
@@ -287,7 +287,18 @@ function renderPost(post,topic){
    }
    main.append(direct);
  }
- main.append(renderBody(post.body));
+ const renderedBody=renderBody(post.body);
+ if(nested&&(String(post.body||'').length>700||String(post.body||'').split(/\r?\n/).length>8)){
+   const holder=el('div','forum-post-body-collapse is-collapsed');
+   holder.append(renderedBody);
+   const bodyToggle=button('Ver más','forum-post-body-toggle',()=>{
+     const expanded=holder.classList.toggle('is-expanded');
+     holder.classList.toggle('is-collapsed',!expanded);
+     bodyToggle.textContent=expanded?'Ver menos':'Ver más';
+   });
+   holder.append(bodyToggle);
+   main.append(holder);
+ }else main.append(renderedBody);
  const react=el('div','forum-reactions');
  for(const r of reactions){const count=post.reactions?.counts?.[r]||0;const b=button(`${r} ${count}`,'forum-reaction'+(post.reactions?.mine?.includes(r)?' active':''),()=>reactPost(post.id,r,topic.id));b.setAttribute('aria-pressed',String(post.reactions?.mine?.includes(r)||false));react.append(b)}
  main.append(react);card.append(side,main);return card;
