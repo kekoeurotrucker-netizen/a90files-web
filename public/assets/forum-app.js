@@ -55,6 +55,19 @@ function renderBody(source){
   if(!line.trim()){wrap.append(el('div','forum-live-break'));i++;continue}
   const audioMatch=line.match(/^\[audio:([^\]\\n]{1,120})\]\(([^\\s)]+)\)$/i);
   if(audioMatch){const href=safeUrl(audioMatch[2]);if(href&&new URL(href).origin===location.origin&&/\\.mp3(?:$|[?#])/i.test(href)){const card=el('section','forum-audio-card');const top=el('div','forum-audio-head');top.append(el('span','forum-audio-kicker','MAREA STUDIO · AUDIO'),el('strong','',audioMatch[1]));const player=document.createElement('audio');player.controls=true;player.preload='metadata';player.src=href;const dl=el('a','forum-audio-download','Descargar MP3 ↓');dl.href=href;dl.download='Mi-proxima-marea-Marea-Studio.mp3';card.append(top,player,dl);wrap.append(card);i++;continue}}
+  const quoteStart=line.match(/^\[quote="([^"]{1,80})"(?: post="(\d+)")?\]$/);
+  if(quoteStart){
+    const quoteLines=[];i++;
+    while(i<lines.length&&lines[i]!=='[/quote]'){quoteLines.push(lines[i]);i++}
+    if(i<lines.length&&lines[i]==='[/quote]')i++;
+    const q=el('blockquote','forum-quote');
+    const qh=el('div','forum-quote-author');
+    qh.append(el('strong','',quoteStart[1]));
+    if(quoteStart[2]){const a=el('a','','#'+quoteStart[2]);a.href='#post-'+quoteStart[2];a.textContent='mensaje #'+quoteStart[2];qh.append(a)}
+    const qb=el('div','forum-quote-body');
+    quoteLines.forEach((ql,qi)=>{if(qi)qb.append(document.createElement('br'));renderInline(qb,ql)});
+    q.append(qh,qb);wrap.append(q);continue;
+  }
   if(line.startsWith('> ')){const q=el('blockquote');renderInline(q,line.slice(2));wrap.append(q);i++;continue}
   if(line.startsWith('- ')){const ul=el('ul');while(i<lines.length&&lines[i].startsWith('- ')){const li=el('li');renderInline(li,lines[i].slice(2));ul.append(li);i++}wrap.append(ul);continue}
   const p=el('p');renderInline(p,line);wrap.append(p);i++;
@@ -119,7 +132,30 @@ async function renderTopic(id){
 }
 
 function renderPost(post,topic){
- const card=el('article','forum-post');card.dataset.postId=String(post.id);card.id='post-'+String(post.id);const side=el('aside','forum-post-user');side.append(avatarNode(post.author),el('strong','',nameOf(post.author)),el('small','',roleName(post.author?.role)));const main=el('div','forum-post-content');const meta=el('header','forum-post-meta');meta.append(el('span','',fmtDate(post.created_at)));if(post.edited_at)meta.append(el('small','','editado'));const actions=el('div','forum-post-actions');actions.append(button('Reportar','forum-post-action',()=>reportPost(post.id)));meta.append(actions);main.append(meta,renderBody(post.body));const react=el('div','forum-reactions');for(const r of reactions){const count=post.reactions?.counts?.[r]||0;const b=button(`${r} ${count}`,'forum-reaction'+(post.reactions?.mine?.includes(r)?' active':''),()=>reactPost(post.id,r,topic.id));b.setAttribute('aria-pressed',String(post.reactions?.mine?.includes(r)||false));react.append(b)}main.append(react);card.append(side,main);return card;
+ const card=el('article','forum-post');card.dataset.postId=String(post.id);card.id='post-'+String(post.id);const side=el('aside','forum-post-user');side.append(avatarNode(post.author),el('strong','',nameOf(post.author)),el('small','',roleName(post.author?.role)));const main=el('div','forum-post-content');const meta=el('header','forum-post-meta');meta.append(el('span','',fmtDate(post.created_at)));if(post.edited_at)meta.append(el('small','','editado'));const actions=el('div','forum-post-actions');actions.append(button('Citar','forum-post-action forum-post-quote',()=>quotePost(post,card)));actions.append(button('Reportar','forum-post-action',()=>reportPost(post.id)));meta.append(actions);main.append(meta,renderBody(post.body));const react=el('div','forum-reactions');for(const r of reactions){const count=post.reactions?.counts?.[r]||0;const b=button(`${r} ${count}`,'forum-reaction'+(post.reactions?.mine?.includes(r)?' active':''),()=>reactPost(post.id,r,topic.id));b.setAttribute('aria-pressed',String(post.reactions?.mine?.includes(r)||false));react.append(b)}main.append(react);card.append(side,main);return card;
+}
+
+async function quotePost(post,card){
+ const auth=await authState();if(!auth){openLogin();return}
+ const bodyNode=card.querySelector('.forum-live-body');
+ const selection=window.getSelection?.();
+ let quoted='';
+ if(selection&&selection.rangeCount&&bodyNode&&selection.toString().trim()){
+   const range=selection.getRangeAt(0);
+   if(bodyNode.contains(range.commonAncestorContainer))quoted=selection.toString().trim();
+ }
+ if(!quoted)quoted=String(post.body||'').trim();
+ quoted=quoted.replace(/\[\/quote\]/gi,'[ /quote ]');
+ const ta=document.querySelector('.forum-reply-box .forum-live-textarea');
+ if(!ta)return;
+ const author=nameOf(post.author).replace(/"/g,'”');
+ const block=`[quote="${author}" post="${post.id}"]\n${quoted}\n[/quote]\n\n`;
+ const start=ta.selectionStart??ta.value.length,end=ta.selectionEnd??start;
+ ta.setRangeText(block,start,end,'end');
+ ta.dispatchEvent(new Event('input',{bubbles:true}));
+ ta.focus();
+ ta.scrollIntoView({block:'center',behavior:'smooth'});
+ selection?.removeAllRanges?.();
 }
 
 async function reactPost(postId,reaction,topicId){const auth=await authState();if(!auth){openLogin();return}try{await api('/api/forum/reaction',{method:'POST',body:JSON.stringify({post_id:postId,reaction})});await renderTopic(topicId)}catch(e){alert(e.message)}}
