@@ -139,7 +139,7 @@ async function renderTopic(id){
  [
    ['oldest','Más antiguos'],
    ['newest','Más recientes'],
-   ['popular','Más populares']
+   ['popular','Más populares · respuestas + citas + reacciones']
  ].forEach(([value,label])=>{const o=document.createElement('option');o.value=value;o.textContent=label;sort.append(o)});
  const postsHost=el('div','forum-conversation-host');
  const paintConversation=()=>{postsHost.replaceChildren(renderConversation(data.posts||[],data.topic,sort.value))};
@@ -251,15 +251,16 @@ function renderConversation(items,topic,mode='oldest'){
  else if(mode==='popular')sortedRoots.sort((a,b)=>{
    const metrics=post=>{
      const replies=groups.get(Number(post.id))||[];
+     const groupIds=new Set([Number(post.id),...replies.map(item=>Number(item.id))]);
      let responseCount=0;
      let citationCount=0;
      for(const item of replies){
-       if(Number(item?.reply_to?.id)===Number(post.id))responseCount++;
+       if(item?.reply_to?.id)responseCount++;
        const body=String(item.body||'');
        citationCount += [...body.matchAll(/\[quote="[^"]{1,80}" post="(\d+)"\]/g)]
-         .filter(match=>Number(match[1])===Number(post.id)).length;
+         .filter(match=>groupIds.has(Number(match[1]))).length;
      }
-     const reactions=reactionScore(post);
+     const reactions=[post,...replies].reduce((sum,item)=>sum+reactionScore(item),0);
      const score=responseCount+citationCount+(reactions*0.25);
      return {score,reactions,responseCount,citationCount};
    };
