@@ -210,7 +210,7 @@ async function topic(request,env,url){
     const replyTo=parent?{
       id:Number(parent.id),
       author:authors[parent.author_id]||null,
-      excerpt:String(parent.body||'').replace(/\s+/g,' ').trim().slice(0,180)
+      excerpt:String(parent.body||'').replace(/\s+/g,' ').trim().slice(0,1200)
     }:null;
     return {...p,author:authors[p.author_id]||null,reactions:reactions[p.id]||{counts:{},mine:[]},reply_to:replyTo};
   });
