@@ -2,8 +2,13 @@
 (()=>{'use strict';
 const root=document.querySelector('[data-feature-news]');
 if(!root)return;
-const slides=[...root.querySelectorAll('[data-feature-slide]')];
-const dots=[...root.querySelectorAll('[data-feature-dot]')];
+const MAX_SLIDES=10;
+const allSlides=[...root.querySelectorAll('[data-feature-slide]')];
+const allDots=[...root.querySelectorAll('[data-feature-dot]')];
+allSlides.slice(MAX_SLIDES).forEach(slide=>slide.remove());
+allDots.slice(MAX_SLIDES).forEach(dot=>dot.remove());
+const slides=allSlides.slice(0,MAX_SLIDES);
+const dots=allDots.slice(0,MAX_SLIDES);
 const prev=root.querySelector('[data-feature-prev]');
 const next=root.querySelector('[data-feature-next]');
 const count=root.querySelector('[data-feature-count]');
@@ -12,6 +17,7 @@ const tickerWindow=root.querySelector('.feature-news-ticker-window');
 const ticker=root.querySelector('[data-feature-ticker-link]');
 const announcement=root.querySelector('[data-feature-announcement]');
 const toggle=root.querySelector('[data-feature-toggle]');
+const more=root.querySelector('[data-feature-more]');
 // Match each slide's reading time to its ticker length. Typical slide: ~12–18 seconds.
 const TICKER_PX_PER_SECOND=72;
 const MIN_TICKER_MS=10500;
@@ -21,7 +27,9 @@ let slideDelayMs=MIN_TICKER_MS+FINISH_READING_MS;
 const reduce=window.matchMedia?.('(prefers-reduced-motion: reduce)');
 let current=0,timer=null,userPaused=Boolean(reduce?.matches);
 
-function stop(){if(timer!==null){clearInterval(timer);timer=null}}
+function stop(){if(timer!==null){clearTimeout(timer);timer=null}}
+function setMoreState(enabled){if(!more)return;more.classList.toggle('is-disabled',!enabled);more.setAttribute('aria-disabled',String(!enabled));if(enabled){more.href='/novedades/#historico';more.title='Continuar desde la noticia 11'}else{more.removeAttribute('href');more.title='Se activará cuando haya más de 10 noticias'}}
+async function syncMoreNews(){setMoreState(false);try{const response=await fetch('/novedades/',{credentials:'same-origin',cache:'no-store'});if(!response.ok)return;const doc=new DOMParser().parseFromString(await response.text(),'text/html');const total=(doc.querySelector('.news-featured')?1:0)+doc.querySelectorAll('.news-grid > .news-card').length;setMoreState(total>MAX_SLIDES)}catch{}}
 function canAuto(){return slides.length>1&&!document.hidden&&!userPaused}
 function start(){stop();if(canAuto())timer=window.setTimeout(()=>activate((current+1)%slides.length,false),slideDelayMs)}
 function syncToggle(){if(!toggle)return;toggle.textContent=userPaused?'▶':'Ⅱ';toggle.setAttribute('aria-label',userPaused?'Reanudar reproducción automática':'Pausar reproducción automática');toggle.setAttribute('aria-pressed',String(userPaused));}
@@ -72,5 +80,6 @@ root.querySelectorAll('.feature-news-photo img').forEach(img=>{
   img.addEventListener('error',()=>{img.hidden=true;img.closest('.feature-news-photo')?.classList.add('image-unavailable')},{once:true});
 });
 syncToggle();
+syncMoreNews();
 activate(0,false);
 })();
