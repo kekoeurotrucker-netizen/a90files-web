@@ -64,6 +64,8 @@
       </div>
     </section>
 
+    <section id="forum-live-focus" class="forum-live-focus" aria-label="Contenido abierto del foro" hidden></section>
+
     <section class="forum-recent-grid" id="forum-recent-activity" aria-label="Actividad reciente del foro">
       <p class="forum-recent-empty">Cargando actividad reciente…</p>
     </section>
@@ -139,63 +141,6 @@
       </article>
     </section>
 
-    <section class="composer-demo" aria-labelledby="editor-title">
-      <header class="composer-head">
-        <div><small>EDITOR DEL FORO</small><h2 id="editor-title">Escribe como en un foro moderno</h2><p>Emojis, formato, menciones, spoilers, enlaces y bloques de código con vista previa segura.</p></div>
-        <span class="editor-badge">ACTIVO</span>
-      </header>
-
-      <div class="composer-grid">
-        <div class="editor-card">
-          <div class="editor-toolbar" role="toolbar" aria-label="Formato del mensaje">
-            <button type="button" data-wrap="**" title="Negrita"><b>B</b></button>
-            <button type="button" data-wrap="*" title="Cursiva"><i>I</i></button>
-            <button type="button" data-wrap="~~" title="Tachado"><s>S</s></button>
-            <button type="button" data-prefix="> " title="Cita">❝</button>
-            <button type="button" data-wrap="`" title="Código en línea">&lt;/&gt;</button>
-            <button type="button" data-block="code" title="Bloque de código">{ }</button>
-            <button type="button" data-prefix="- " title="Lista">•</button>
-            <button type="button" data-link title="Enlace">🔗</button>
-            <button type="button" data-wrap="||" title="Spoiler">Spoiler</button>
-            <button type="button" data-mention title="Mención">@</button>
-            <button type="button" class="emoji-toggle" aria-expanded="false" aria-controls="emoji-picker" title="Emojis">😊</button>
-          </div>
-
-          <div id="emoji-picker" class="emoji-picker" hidden aria-label="Selector de emojis">
-            <button type="button">😀</button><button type="button">😂</button><button type="button">😍</button><button type="button">😎</button><button type="button">🤔</button><button type="button">😅</button><button type="button">😡</button><button type="button">🥳</button>
-            <button type="button">👍</button><button type="button">👎</button><button type="button">❤️</button><button type="button">🔥</button><button type="button">💯</button><button type="button">🚛</button><button type="button">☁️</button><button type="button">💾</button>
-            <button type="button">🐛</button><button type="button">⚙️</button><button type="button">🚀</button><button type="button">✅</button><button type="button">❌</button><button type="button">⚠️</button><button type="button">🎮</button><button type="button">🎥</button>
-          </div>
-
-          <label class="editor-label" for="forum-message">Mensaje</label>
-          <textarea id="forum-message" spellcheck="true" maxlength="12000" placeholder="Escribe aquí…\n\nEjemplo de código:\n```go\nfmt.Println(\"VaultPool\")\n```"></textarea>
-          <div class="editor-meta"><span><b id="char-count">0</b> / 12000</span><span>El borrador se guarda en este navegador</span></div>
-          <div class="editor-actions">
-            <button type="button" class="editor-secondary" id="clear-draft">Limpiar</button>
-            <button type="button" class="editor-secondary" id="save-draft">Guardar borrador</button>
-            <button type="button" class="editor-primary" id="publish-demo">Probar publicación</button>
-          </div>
-          <p class="editor-help">El foro real está conectado a usuarios y base de datos. Abre un subforo para crear temas y responder.</p>
-        </div>
-
-        <aside class="preview-card" aria-live="polite">
-          <div class="preview-head"><span>VISTA PREVIA</span><span class="safe-label">HTML BLOQUEADO</span></div>
-          <div id="forum-preview" class="forum-preview"><p class="preview-empty">Empieza a escribir para ver aquí el mensaje.</p></div>
-          <div class="reaction-bar" aria-label="Reacciones de demostración">
-            <button type="button" data-reaction="👍">👍 <span>0</span></button>
-            <button type="button" data-reaction="❤️">❤️ <span>0</span></button>
-            <button type="button" data-reaction="😂">😂 <span>0</span></button>
-            <button type="button" data-reaction="🔥">🔥 <span>0</span></button>
-            <button type="button" data-reaction="🚛">🚛 <span>0</span></button>
-          </div>
-        </aside>
-      </div>
-
-      <div class="editor-features" aria-label="Funciones del editor">
-        <span>😊 Emojis</span><span>👍 Reacciones</span><span><b>B</b> Formato</span><span>&lt;/&gt; Código</span><span>@ Menciones</span><span>🔗 Enlaces</span><span>◼ Spoilers</span><span>👁 Vista previa</span>
-      </div>
-    </section>
-
     <section class="forum-roadmap">
       <div><small>ESTRUCTURA</small><strong>Categorías y subforos ya definidos</strong></div>
       <div><small>EDITOR</small><strong>Emojis, código, formato y vista previa activos</strong></div>
@@ -209,6 +154,5 @@
   </footer>
 
   <script src="/assets/app.js?v=velocity-20261004-v3" defer></script>
-  <script src="/assets/forum-editor.js" defer></script>
 </body>
 </html>
