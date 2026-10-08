@@ -202,3 +202,34 @@
     -2px 0 12px rgba(73,214,229,.06),
     2px 0 12px rgba(226,168,73,.045)!important;
 }
+
+/* A90 signature frames for software modules */
+.software-card{
+  border:1px solid transparent!important;
+  background:
+    linear-gradient(155deg,rgba(12,49,62,.97),rgba(7,30,40,.97)) padding-box,
+    linear-gradient(122deg,
+      rgba(78,224,237,.72) 0%,
+      rgba(47,159,180,.46) 34%,
+      rgba(112,132,128,.28) 58%,
+      rgba(226,168,73,.64) 100%) border-box!important;
+}
+.software-card:hover{
+  border-color:transparent!important;
+  background:
+    linear-gradient(155deg,rgba(13,52,65,.985),rgba(7,31,41,.985)) padding-box,
+    linear-gradient(122deg,
+      rgba(82,231,243,.88) 0%,
+      rgba(47,167,189,.60) 34%,
+      rgba(121,137,130,.36) 58%,
+      rgba(232,174,78,.82) 100%) border-box!important;
+}
+.software-card-media{
+  border:1px solid transparent!important;
+  background:
+    linear-gradient(#071014,#071014) padding-box,
+    linear-gradient(120deg,
+      rgba(74,213,226,.46),
+      rgba(103,126,124,.20) 56%,
+      rgba(220,164,73,.40)) border-box!important;
+}
