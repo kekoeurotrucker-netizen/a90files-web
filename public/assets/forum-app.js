@@ -1,6 +1,7 @@
 (()=>{
 'use strict';
 const board=document.querySelector('.board');
+const focus=document.getElementById('forum-live-focus');
 if(!board)return;
 
 const palette=['cyan','blue','violet','amber','coral','cyan','blue','offtopic'];
@@ -61,11 +62,13 @@ function renderBody(source){
  return wrap;
 }
 
-function loading(text='Cargando foro…'){board.replaceChildren(status(text,'loading'))}
-function fail(err){board.replaceChildren(status(err?.message||'No se pudo cargar el foro.','error'),button('Reintentar','forum-live-primary',route))}
+function loading(text='Cargando foro…',target=board){target.replaceChildren(status(text,'loading'))}
+function fail(err,target=board){target.replaceChildren(status(err?.message||'No se pudo cargar el foro.','error'),button('Reintentar','forum-live-primary',route))}
+function showFocus(){if(!focus)return board;focus.hidden=false;return focus}
+function hideFocus(){if(focus){focus.hidden=true;focus.replaceChildren()}}
 
-async function renderBoard(){
- loading();setTitle('');
+async function renderBoard({setPageTitle=true}={}){
+ loading();if(setPageTitle)setTitle('');
  const data=await api('/api/forum/board');
  const categories=data.categories||[];const stats=data.stats||{};
  const parents=categories.filter(c=>c.parent_id==null);const children=new Map();
@@ -85,22 +88,24 @@ async function renderBoard(){
 }
 
 async function renderTopics(slug,page=1){
- loading('Cargando temas…');
+ const target=showFocus();loading('Cargando temas…',target);
  const data=await api(`/api/forum/topics?category=${encodeURIComponent(slug)}&page=${page}`);setTitle(data.category?.name||'Foro');
- board.replaceChildren();
+ target.replaceChildren();
  const view=el('section','forum-live-view');const head=el('header','forum-live-view-head');const titleWrap=el('div');titleWrap.append(linkButton('← Todos los foros','/foro/'),el('small','',data.category?.description||''),el('h1','',data.category?.name||'Foro'));
  const actions=el('div','forum-live-actions');actions.append(button('Nuevo tema','forum-live-primary',async()=>{const auth=await authState();if(!auth){openLogin();return}openComposer({mode:'topic',category:data.category})}));head.append(titleWrap,actions);view.append(head);
  const list=el('div','forum-topic-list');
  if(!data.topics?.length)list.append(status('Todavía no hay temas. Puedes abrir el primero cuando hayas iniciado sesión.','empty'));
  for(const t of data.topics||[]){const a=el('a','forum-topic-row');a.href=`/foro/?t=${t.id}`;const icon=el('span','forum-topic-icon',t.is_pinned?'📌':t.is_locked?'🔒':'#');const main=el('div','forum-topic-main');const top=el('div','forum-topic-title');top.append(el('strong','',t.title));if(t.is_pinned)top.append(el('span','forum-chip','FIJADO'));if(t.is_locked)top.append(el('span','forum-chip','CERRADO'));main.append(top,el('small','',`${nameOf(t.author)} · ${roleName(t.author?.role)} · ${fmtDate(t.created_at)}`));const meta=el('div','forum-topic-meta');meta.append(el('b','',String(t.replies||0)),el('span','',` respuesta${t.replies===1?'':'s'}`),el('small','',fmtDate(t.last_post_at)));a.append(icon,main,meta);list.append(a)}
  view.append(list);
- const pager=el('nav','forum-live-pager');if(page>1)pager.append(linkButton('← Anterior',`/foro/?c=${encodeURIComponent(slug)}&p=${page-1}`,'forum-live-secondary'));if(data.has_more)pager.append(linkButton('Siguiente →',`/foro/?c=${encodeURIComponent(slug)}&p=${page+1}`,'forum-live-secondary'));view.append(pager);board.append(view);
+ const pager=el('nav','forum-live-pager');if(page>1)pager.append(linkButton('← Anterior',`/foro/?c=${encodeURIComponent(slug)}&p=${page-1}`,'forum-live-secondary'));if(data.has_more)pager.append(linkButton('Siguiente →',`/foro/?c=${encodeURIComponent(slug)}&p=${page+1}`,'forum-live-secondary'));view.append(pager);target.append(view);
+ await renderBoard({setPageTitle:false});
+ target.scrollIntoView({block:'start',behavior:'auto'});
 }
 
 async function renderTopic(id){
- loading('Cargando conversación…');
+ const target=showFocus();loading('Cargando conversación…',target);
  const data=await api(`/api/forum/topic?id=${id}`);setTitle(data.topic?.title||'Tema');await authState();
- board.replaceChildren();const view=el('section','forum-live-view');const head=el('header','forum-live-view-head');const titleWrap=el('div');titleWrap.append(linkButton(`← ${data.category?.name||'Foro'}`,`/foro/?c=${encodeURIComponent(data.category?.slug||'')}`));const badges=el('div','forum-topic-title');badges.append(el('h1','',data.topic.title));if(data.topic.is_pinned)badges.append(el('span','forum-chip','FIJADO'));if(data.topic.is_locked)badges.append(el('span','forum-chip','CERRADO'));titleWrap.append(badges,el('small','',`${nameOf(data.topic.author)} · ${fmtDate(data.topic.created_at)}`));head.append(titleWrap);view.append(head);
+ target.replaceChildren();const view=el('section','forum-live-view');const head=el('header','forum-live-view-head');const titleWrap=el('div');titleWrap.append(linkButton(`← ${data.category?.name||'Foro'}`,`/foro/?c=${encodeURIComponent(data.category?.slug||'')}`));const badges=el('div','forum-topic-title');badges.append(el('h1','',data.topic.title));if(data.topic.is_pinned)badges.append(el('span','forum-chip','FIJADO'));if(data.topic.is_locked)badges.append(el('span','forum-chip','CERRADO'));titleWrap.append(badges,el('small','',`${nameOf(data.topic.author)} · ${fmtDate(data.topic.created_at)}`));head.append(titleWrap);view.append(head);
  const posts=el('div','forum-post-list');
  for(const p of data.posts||[])posts.append(renderPost(p,data.topic));
  view.append(posts);
@@ -108,7 +113,9 @@ async function renderTopic(id){
  if(data.topic.is_locked)reply.append(status('Este tema está cerrado y no admite nuevas respuestas.','empty'));
  else if(!currentUser)reply.append(el('h2','','Responder'),status('Inicia sesión con tu Cuenta A 90 para responder.','empty'),button('Entrar','forum-live-primary',openLogin));
  else{reply.append(el('h2','','Responder'));const ta=el('textarea','forum-live-textarea');ta.maxLength=20000;ta.placeholder='Escribe tu respuesta…';const tools=makeMiniToolbar(ta);const preview=el('div','forum-live-preview');ta.addEventListener('input',()=>preview.replaceChildren(renderBody(ta.value)));const send=button('Publicar respuesta','forum-live-primary',async()=>{const body=ta.value.trim();if(!body)return;send.disabled=true;send.textContent='Publicando…';try{await api('/api/forum/reply',{method:'POST',body:JSON.stringify({topic_id:data.topic.id,body})});await renderTopic(data.topic.id)}catch(e){reply.append(status(e.message,'error'));send.disabled=false;send.textContent='Publicar respuesta'}});reply.append(tools,ta,preview,send)}
- view.append(reply);board.append(view);
+ view.append(reply);target.append(view);
+ await renderBoard({setPageTitle:false});
+ target.scrollIntoView({block:'start',behavior:'auto'});
 }
 
 function renderPost(post,topic){
@@ -135,7 +142,7 @@ async function route(){
   const q=new URLSearchParams(location.search);const topicId=Number(q.get('t'));const category=q.get('c');const page=pageNumber(q.get('p'));
   if(Number.isSafeInteger(topicId)&&topicId>0)return renderTopic(topicId);
   if(category&&/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(category))return renderTopics(category,page);
-  return renderBoard();
+  hideFocus();return renderBoard();
  }catch(e){fail(e)}
 }
 function pageNumber(value){const n=Number(value);return Number.isSafeInteger(n)&&n>0&&n<10000?n:1}
