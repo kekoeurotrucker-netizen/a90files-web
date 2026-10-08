@@ -249,11 +249,23 @@ function renderConversation(items,topic,mode='oldest'){
  let sortedRoots=[...roots];
  if(mode==='newest')sortedRoots.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
  else if(mode==='popular')sortedRoots.sort((a,b)=>{
-   const aReplies=groups.get(Number(a.id))?.length||0;
-   const bReplies=groups.get(Number(b.id))?.length||0;
-   const aScore=reactionScore(a)+(aReplies*.25);
-   const bScore=reactionScore(b)+(bReplies*.25);
-   return bScore-aScore||new Date(a.created_at)-new Date(b.created_at);
+   const metrics=post=>{
+     const replies=groups.get(Number(post.id))||[];
+     const directReplies=replies.length;
+     const citations=replies.reduce((count,item)=>{
+       const body=String(item.body||'');
+       const re=new RegExp('\\\\[quote="[^"]{1,80}" post="'+Number(post.id)+'"\\\\]','g');
+       return count+(body.match(re)?.length||0);
+     },0);
+     const reactions=reactionScore(post);
+     return {score:reactions+directReplies+citations,reactions,directReplies,citations};
+   };
+   const am=metrics(a),bm=metrics(b);
+   return bm.score-am.score
+     || bm.citations-am.citations
+     || bm.directReplies-am.directReplies
+     || bm.reactions-am.reactions
+     || new Date(a.created_at)-new Date(b.created_at);
  });
  else sortedRoots.sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
 
