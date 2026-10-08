@@ -67,7 +67,18 @@ function renderBody(source){
     if(quoteStart[2]){const a=el('a','','#'+quoteStart[2]);a.href='#post-'+quoteStart[2];a.textContent='mensaje #'+quoteStart[2];qh.append(a)}
     const qb=el('div','forum-quote-body');
     quoteLines.forEach((ql,qi)=>{if(qi)qb.append(document.createElement('br'));renderInline(qb,ql)});
-    q.append(qh,qb);wrap.append(q);continue;
+    const quotePlain=quoteLines.join('\n').replace(/\s+/g,' ').trim();
+    const isLong=quotePlain.length>280||quoteLines.length>4;
+    if(isLong){
+      q.classList.add('is-collapsed');
+      const toggle=button('Ver más','forum-quote-toggle',()=>{
+        const expanded=q.classList.toggle('is-expanded');
+        q.classList.toggle('is-collapsed',!expanded);
+        toggle.textContent=expanded?'Ver menos':'Ver más';
+      });
+      q.append(qh,qb,toggle);
+    }else q.append(qh,qb);
+    wrap.append(q);continue;
   }
   if(line.startsWith('> ')){const q=el('blockquote');renderInline(q,line.slice(2));wrap.append(q);i++;continue}
   if(line.startsWith('- ')){const ul=el('ul');while(i<lines.length&&lines[i].startsWith('- ')){const li=el('li');renderInline(li,lines[i].slice(2));ul.append(li);i++}wrap.append(ul);continue}
@@ -121,8 +132,7 @@ async function renderTopic(id){
  const target=showFocus();loading('Cargando conversación…',target);
  const data=await api(`/api/forum/topic?id=${id}`);setTitle(data.topic?.title||'Tema');await authState();
  target.replaceChildren();const view=el('section','forum-live-view');const head=el('header','forum-live-view-head');const titleWrap=el('div');titleWrap.append(linkButton(`← ${data.category?.name||'Foro'}`,`/foro/?c=${encodeURIComponent(data.category?.slug||'')}`));const badges=el('div','forum-topic-title');badges.append(el('h1','',data.topic.title));if(data.topic.is_pinned)badges.append(el('span','forum-chip','FIJADO'));if(data.topic.is_locked)badges.append(el('span','forum-chip','CERRADO'));titleWrap.append(badges,el('small','',`${nameOf(data.topic.author)} · ${fmtDate(data.topic.created_at)}`));head.append(titleWrap);view.append(head);
- const posts=el('div','forum-post-list');
- for(const p of data.posts||[])posts.append(renderPost(p,data.topic));
+ const posts=renderConversation(data.posts||[],data.topic);
  view.append(posts);
  const reply=el('section','forum-reply-box');
  if(data.topic.is_locked)reply.append(status('Este tema está cerrado y no admite nuevas respuestas.','empty'));
@@ -156,6 +166,64 @@ async function renderTopic(id){
  target.scrollIntoView({block:'start',behavior:'auto'});
 }
 
+function quotedParentId(post){
+ if(post?.reply_to?.id)return Number(post.reply_to.id);
+ const body=String(post?.body||'');
+ const m=body.match(/\[quote="[^"]{1,80}" post="(\d+)"\]/);
+ return m?Number(m[1]):null;
+}
+
+function renderConversation(items,topic){
+ const list=el('div','forum-post-list forum-threaded-list');
+ const ordered=[...items];
+ const byId=new Map(ordered.map(p=>[Number(p.id),p]));
+ const children=new Map();
+ const roots=[];
+ for(const post of ordered){
+   const parentId=quotedParentId(post);
+   if(parentId&&parentId!==Number(post.id)&&byId.has(parentId)){
+     if(!children.has(parentId))children.set(parentId,[]);
+     children.get(parentId).push(post);
+   }else roots.push(post);
+ }
+ const visited=new Set();
+ const appendNode=(post,depth=0)=>{
+   const id=Number(post.id);
+   if(visited.has(id))return;
+   visited.add(id);
+   const node=el('div','forum-thread-node');
+   node.dataset.depth=String(Math.min(depth,2));
+   node.style.setProperty('--thread-depth',String(Math.min(depth,2)));
+   node.append(renderPost(post,topic));
+   const replies=children.get(id)||[];
+   if(replies.length){
+     const branch=el('div','forum-thread-children');
+     for(const child of replies)appendChildInto(branch,child,depth+1);
+     node.append(branch);
+   }
+   list.append(node);
+ };
+ const appendChildInto=(container,post,depth)=>{
+   const id=Number(post.id);
+   if(visited.has(id))return;
+   visited.add(id);
+   const node=el('div','forum-thread-node');
+   node.dataset.depth=String(Math.min(depth,2));
+   node.style.setProperty('--thread-depth',String(Math.min(depth,2)));
+   node.append(renderPost(post,topic));
+   const replies=children.get(id)||[];
+   if(replies.length){
+     const branch=el('div','forum-thread-children');
+     for(const child of replies)appendChildInto(branch,child,depth+1);
+     node.append(branch);
+   }
+   container.append(node);
+ };
+ for(const root of roots)appendNode(root,0);
+ for(const post of ordered)if(!visited.has(Number(post.id)))appendNode(post,0);
+ return list;
+}
+
 function renderPost(post,topic){
  const card=el('article','forum-post');card.dataset.postId=String(post.id);card.id='post-'+String(post.id);
  const side=el('aside','forum-post-user');side.append(avatarNode(post.author),el('strong','',nameOf(post.author)),el('small','',roleName(post.author?.role)));
@@ -167,12 +235,22 @@ function renderPost(post,topic){
  actions.append(button('Reportar','forum-post-action forum-post-report',()=>reportPost(post.id)));
  meta.append(actions);main.append(meta);
  if(post.reply_to){
-   const direct=el('a','forum-direct-reply');
-   direct.href='#post-'+post.reply_to.id;
-   const label=el('span','forum-direct-reply-label','↳ En respuesta a ');
-   label.append(el('strong','',nameOf(post.reply_to.author)));
-   const excerpt=el('span','forum-direct-reply-excerpt',post.reply_to.excerpt||'Abrir mensaje original');
-   direct.append(label,excerpt);
+   const direct=el('div','forum-direct-reply');
+   const jump=el('a','forum-direct-reply-label','↳ En respuesta a ');
+   jump.href='#post-'+post.reply_to.id;
+   jump.append(el('strong','',nameOf(post.reply_to.author)));
+   const full=String(post.reply_to.excerpt||'Abrir mensaje original');
+   const short=full.length>280?full.slice(0,280).trimEnd()+'…':full;
+   const excerpt=el('span','forum-direct-reply-excerpt',short);
+   direct.append(jump,excerpt);
+   if(full.length>280){
+     const more=button('Ver más','forum-direct-reply-toggle',()=>{
+       const expanded=direct.classList.toggle('is-expanded');
+       excerpt.textContent=expanded?full:short;
+       more.textContent=expanded?'Ver menos':'Ver más';
+     });
+     direct.append(more);
+   }
    main.append(direct);
  }
  main.append(renderBody(post.body));
