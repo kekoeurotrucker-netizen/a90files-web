@@ -40,7 +40,13 @@
 /* Marea Studio / approved 2026-10-05 brand pack */
 .marea-wordmark--logo{display:block;margin:17px 0 16px}
 .marea-wordmark--logo img{display:block;width:min(390px,84%);height:auto;max-height:104px;object-fit:contain;object-position:left center;filter:drop-shadow(0 10px 24px rgba(51,192,220,.12))}
-.software-nav-icon img{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit}
+.software-nav-icon{overflow:hidden;padding:3px;background:linear-gradient(145deg,rgba(12,46,58,.9),rgba(5,25,33,.96));box-shadow:inset 0 0 0 1px rgba(255,255,255,.025)}
+.software-nav-icon img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;border-radius:7px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.28))}
+.software-nav-menu a[data-project="vaultpool"] .software-nav-icon{border-color:rgba(73,215,230,.34);background:radial-gradient(circle at 50% 45%,rgba(28,118,149,.28),rgba(5,25,33,.96) 72%)}
+.software-nav-menu a[data-project="autominer"] .software-nav-icon{border-color:rgba(84,185,214,.30);background:linear-gradient(145deg,rgba(13,53,67,.88),rgba(5,24,32,.96))}
+.software-nav-menu a[data-project="startwise"] .software-nav-icon{border-color:rgba(99,168,189,.25);background:linear-gradient(145deg,rgba(18,51,60,.82),rgba(7,28,35,.96))}
+.software-nav-menu a[data-project="startwise"] .software-nav-icon img{width:88%;height:88%;margin:auto;filter:drop-shadow(0 4px 9px rgba(0,0,0,.34)) brightness(1.08)}
+.software-nav-menu a[data-project="marea"] .software-nav-icon{border-color:rgba(73,215,230,.30);background:linear-gradient(145deg,rgba(10,45,57,.86),rgba(5,23,31,.96))}
 @media(max-width:620px){.marea-wordmark--logo img{width:min(330px,92%);max-height:88px}}
 
 /* VaultPool approved brand icon · 2026-10-05 */
