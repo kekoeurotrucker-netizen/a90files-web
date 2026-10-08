@@ -15,7 +15,7 @@ addStylesheet('/assets/staff-notifications.css?v=20261005-1');
 const softwareProjects=[
   {href:'/software/vaultpool/',name:'VaultPool Storage',meta:'Multinube local · Windows',icon:'/assets/vaultpool/vaultpool-icon-20261005.png?v=1',key:'vaultpool'},
   {href:'/software/autominer/',name:'AutoMiner',meta:'Minería adaptativa · Próximamente',icon:'/assets/autominer/autominer-icon.webp',key:'autominer'},
-  {href:'/software/startwise/',name:'StartWise',meta:'Optimización de Windows · En desarrollo',icon:'/assets/startwise/startwise-icon.svg',key:'startwise'},
+  {href:'/novedades/startwise-en-desarrollo/',name:'StartWise',meta:'Optimización de Windows · En desarrollo',icon:'/assets/startwise/startwise-icon.svg',key:'startwise'},
   {href:'/software/marea-studio/',name:'Marea Studio',meta:'Generación musical local · En desarrollo',icon:'/assets/marea/marea-icon.webp?v=20261005-marea-fixed-2',key:'marea'}
 ];
 function makeProjectLink(project){const a=document.createElement('a');a.href=project.href;a.dataset.project=project.key;const icon=document.createElement('span');icon.className='software-nav-icon';if(project.icon){const img=document.createElement('img');img.src=project.icon;img.alt='';icon.append(img)}else{icon.textContent=project.mark};const copy=document.createElement('span');copy.className='software-nav-item-copy';const strong=document.createElement('strong');strong.textContent=project.name;const small=document.createElement('small');small.textContent=project.meta;copy.append(strong,small);a.append(icon,copy);return a}
