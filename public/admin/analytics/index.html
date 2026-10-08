@@ -4,53 +4,96 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
-  <title>Analítica privada — A 90 Files</title>
+  <meta name="theme-color" content="#071116">
+  <title>A90 Pulse · Analítica privada — A 90 Files</title>
   <link rel="stylesheet" href="/assets/styles.css">
-  <link rel="stylesheet" href="/assets/analytics-admin.css?v=20261001-1">
+  <link rel="stylesheet" href="/assets/analytics-admin.css?v=20261009-pulse-1">
 </head>
 <body class="a90-analytics-page">
   <header class="analytics-topbar">
     <div class="analytics-shell analytics-topbar-inner">
-      <a class="analytics-brand" href="/"><span>A90</span><div><strong>A 90 Files</strong><small>ANALÍTICA PRIVADA</small></div></a>
-      <a class="analytics-back" href="/">← Volver al sitio</a>
+      <a class="analytics-brand" href="/"><span class="analytics-mark">A90</span><span><strong>A 90 Files</strong><small>ESTUDIO DIGITAL / INSIGHTS</small></span></a>
+      <a class="analytics-back" href="/">← Volver a A90 Files</a>
     </div>
   </header>
-
   <main class="analytics-shell analytics-main">
     <section class="analytics-hero">
-      <div><small>SUPER ADMIN</small><h1>Analítica del sitio</h1><p>Visitas, páginas vistas, clics, descargas y procedencia. Sin guardar IP, agente de usuario ni identidad de la cuenta.</p></div>
-      <div class="analytics-range" role="group" aria-label="Rango">
-        <button data-days="7">7 días</button><button data-days="30" class="active">30 días</button><button data-days="90">90 días</button><button data-days="365">1 año</button>
+      <div>
+        <div class="analytics-eyebrow"><span class="eyebrow-line"></span> CENTRO DE CONTROL · SUPER ADMIN</div>
+        <h1>A90 <em>Pulse.</em></h1>
+        <p>Audiencia, actividad y alcance de A90 Files. Datos propios, sin seguimiento publicitario ni identificación de visitantes.</p>
+      </div>
+      <div class="analytics-actions">
+        <div class="analytics-range" role="group" aria-label="Periodo de estadísticas">
+          <button type="button" data-days="7">7 días</button>
+          <button type="button" data-days="30" class="active">30 días</button>
+          <button type="button" data-days="90">90 días</button>
+          <button type="button" data-days="365">1 año</button>
+        </div>
+        <button type="button" id="analytics-export" class="analytics-export" disabled>↓ Exportar CSV</button>
       </div>
     </section>
-
-    <div id="analytics-status" class="analytics-status">Cargando analítica…</div>
-
+    <div id="analytics-status" class="analytics-status" role="status">Cargando datos privados…</div>
     <section id="analytics-content" class="analytics-hidden">
-      <div class="analytics-kpis">
-        <article><small>SESIONES · PERIODO</small><strong id="kpi-sessions">0</strong><span id="kpi-sessions-total">0 totales</span></article>
-        <article><small>PÁGINAS VISTAS</small><strong id="kpi-views">0</strong><span id="kpi-views-total">0 totales</span></article>
-        <article><small>CLICS</small><strong id="kpi-clicks">0</strong><span>en destinos relevantes</span></article>
-        <article><small>DESCARGAS</small><strong id="kpi-downloads">0</strong><span>archivos enlazados</span></article>
-        <article><small>HOY</small><strong id="kpi-today">0</strong><span id="kpi-today-views">0 páginas vistas</span></article>
-      </div>
-
-      <section class="analytics-panel analytics-chart-panel">
-        <div class="analytics-panel-head"><div><small>EVOLUCIÓN</small><h2>Visitas por día</h2></div><span id="analytics-generated"></span></div>
-        <div id="analytics-chart" class="analytics-chart" aria-label="Gráfico diario"></div>
-        <div class="analytics-chart-legend"><span><i class="sessions"></i>Sesiones</span><span><i class="views"></i>Páginas vistas</span></div>
+      <section class="analytics-live-panel" aria-label="Audiencia en directo">
+        <div class="analytics-panel-head analytics-live-head">
+          <div><div class="analytics-live-kicker"><span class="analytics-live-dot"></span> EN DIRECTO <span class="live-sub">· Ventana de actividad de 30 minutos</span></div><h2>Lo que ocurre ahora</h2></div>
+          <span id="analytics-live-updated" class="analytics-stamp">Conectando…</span>
+        </div>
+        <div class="analytics-live-grid">
+          <div class="analytics-live-main">
+            <div class="analytics-live-tally"><strong id="live-active">0</strong><span>sesiones con actividad<br>en los últimos 5 minutos</span></div>
+            <div class="analytics-mini-metrics">
+              <div><strong id="live-sessions">0</strong><small>SESIONES · 30 MIN</small></div>
+              <div><strong id="live-views">0</strong><small>VISTAS · 30 MIN</small></div>
+            </div>
+            <p class="analytics-live-hint">Actualización automática cada 20 segundos · No representa conexiones simultáneas exactas.</p>
+          </div>
+          <div class="analytics-live-visual">
+            <div class="analytics-live-chart-title"><span>Tráfico minuto a minuto</span><span>ÚLTIMOS 30 MIN</span></div>
+            <div id="analytics-live-chart" class="analytics-live-chart" role="img" aria-label="Gráfico de páginas vistas por minuto"></div>
+            <div class="analytics-live-chart-foot"><span>Hace 30 min</span><span>Ahora</span></div>
+          </div>
+          <div class="analytics-live-pages">
+            <h3>Páginas recientes <small>5 MIN</small></h3>
+            <div id="live-pages"></div>
+          </div>
+        </div>
+        <div id="analytics-live-warning" class="analytics-live-warning analytics-hidden" role="status"></div>
       </section>
-
-      <div class="analytics-grid">
-        <section class="analytics-panel"><div class="analytics-panel-head"><div><small>CONTENIDO</small><h2>Páginas más vistas</h2></div></div><div id="top-pages"></div></section>
-        <section class="analytics-panel"><div class="analytics-panel-head"><div><small>INTERACCIÓN</small><h2>Clics y descargas</h2></div></div><div id="top-targets"></div></section>
-        <section class="analytics-panel"><div class="analytics-panel-head"><div><small>ORIGEN</small><h2>Procedencia</h2></div></div><div id="referrers"></div></section>
+      <section class="analytics-kpis" aria-label="Indicadores del periodo">
+        <article><div class="kpi-icon">↗</div><small>SESIONES DEL PERIODO</small><strong id="kpi-sessions">0</strong><span id="kpi-sessions-total">0 acumuladas</span></article>
+        <article><div class="kpi-icon cyan">▦</div><small>PÁGINAS VISTAS</small><strong id="kpi-views">0</strong><span id="kpi-views-total">0 acumuladas</span></article>
+        <article><div class="kpi-icon">⌁</div><small>CLICS</small><strong id="kpi-clicks">0</strong><span>En enlaces destacados</span></article>
+        <article><div class="kpi-icon cyan">↓</div><small>DESCARGAS</small><strong id="kpi-downloads">0</strong><span>Enlaces de archivos</span></article>
+        <article><div class="kpi-icon">◷</div><small>SESIONES HOY</small><strong id="kpi-today">0</strong><span id="kpi-today-views">0 páginas vistas</span></article>
+      </section>
+      <section class="analytics-panel analytics-chart-panel">
+        <div class="analytics-panel-head">
+          <div><small class="panel-overline">TENDENCIA / ALCANCE</small><h2>Evolución de la audiencia</h2><p>Sesiones y páginas vistas por día, hora de Madrid.</p></div>
+          <span id="analytics-generated" class="analytics-stamp"></span>
+        </div>
+        <div id="analytics-chart" class="analytics-chart" role="img" aria-label="Evolución diaria"></div>
+        <div class="analytics-chart-legend"><span><i class="sessions"></i> Sesiones</span><span><i class="views"></i> Páginas vistas</span></div>
+      </section>
+      <section class="analytics-section-title"><div><small>MAPA DE AUDIENCIA</small><h2>¿Desde dónde nos visitan?</h2></div><span>Ubicación aproximada, nunca GPS</span></section>
+      <div class="analytics-grid geo-grid">
+        <section class="analytics-panel"><div class="analytics-panel-head"><div><small class="panel-overline">GEOGRAFÍA</small><h2>Países</h2></div><span class="analytics-panel-chip">PAÍS</span></div><div id="geo-countries"></div></section>
+        <section class="analytics-panel"><div class="analytics-panel-head"><div><small class="panel-overline">GEOGRAFÍA</small><h2>Regiones</h2></div><span class="analytics-panel-chip">REGIÓN</span></div><div id="geo-regions"></div></section>
       </div>
-
-      <p class="analytics-privacy">La medición propia empieza desde la activación de este sistema. Una “sesión” usa un identificador aleatorio guardado solo en <code>sessionStorage</code> de la pestaña; no se guarda IP, User-Agent ni usuario autenticado.</p>
+      <div class="analytics-grid audience-grid">
+        <section class="analytics-panel"><div class="analytics-panel-head"><div><small class="panel-overline">TECNOLOGÍA</small><h2>Tamaños de pantalla</h2></div></div><div id="screen-types"></div><p class="analytics-panel-note">Clasificación por anchura del navegador, no identificación del dispositivo.</p></section>
+        <section class="analytics-panel analytics-age-panel"><div class="analytics-panel-head"><div><small class="panel-overline">DEMOGRAFÍA</small><h2>Rangos de edad</h2></div></div><div class="analytics-no-age"><span>—</span><strong>No disponible</strong><p>No solicitamos ni inferimos edades de visitantes. Este dato solo podría mostrarse con una fuente voluntaria, fiable y compatible con privacidad.</p></div></section>
+      </div>
+      <section class="analytics-section-title"><div><small>DETALLE / COMPORTAMIENTO</small><h2>Contenido e interacción</h2></div></section>
+      <div class="analytics-grid detail-grid">
+        <section class="analytics-panel"><div class="analytics-panel-head"><div><small class="panel-overline">CONTENIDO</small><h2>Páginas populares</h2></div></div><div id="top-pages"></div></section>
+        <section class="analytics-panel"><div class="analytics-panel-head"><div><small class="panel-overline">ACCIONES</small><h2>Clics y descargas</h2></div></div><div id="top-targets"></div></section>
+        <section class="analytics-panel"><div class="analytics-panel-head"><div><small class="panel-overline">ADQUISICIÓN</small><h2>Fuentes de tráfico</h2></div></div><div id="referrers"></div></section>
+      </div>
+      <p class="analytics-privacy">A90 Pulse utiliza datos propios. La ubicación (país/región) comienza a recogerse con esta actualización y no se puede reconstruir para visitas anteriores. No se almacenan IP, User-Agent, ID de cuenta ni edad en analítica. Una sesión corresponde a un identificador aleatorio temporal por pestaña. Conservación máxima: 25 meses. <a href="/privacidad/">Política de privacidad →</a></p>
     </section>
   </main>
-
-  <script src="/assets/analytics-admin.js?v=20261001-1" defer></script>
+  <script src="/assets/analytics-admin.js?v=20261009-pulse-1" defer></script>
 </body>
 </html>

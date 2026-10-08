@@ -20,7 +20,9 @@ function referrerHost(entry){
   try{const u=new URL(document.referrer);return u.hostname===location.hostname?null:u.host}catch{return null}
 }
 function send(event_type,target=null,entry=false){
-  const payload={event_type,path:location.pathname,target,referrer_host:referrerHost(entry),session_id:sessionId(),is_entry:entry};
+  const width=Math.max(0,window.innerWidth||0);
+  const viewport_class=width>0?(width<640?'Compacta':width<1100?'Mediana':'Amplia'):null;
+  const payload={event_type,path:location.pathname,target,referrer_host:referrerHost(entry),session_id:sessionId(),is_entry:entry,viewport_class};
   const body=JSON.stringify(payload);
   try{
     if(navigator.sendBeacon){
