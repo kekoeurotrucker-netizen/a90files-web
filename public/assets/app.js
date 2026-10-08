@@ -63,7 +63,7 @@ const vaultPoolAssetObserver=new MutationObserver(mutations=>{for(const mutation
 vaultPoolAssetObserver.observe(document.documentElement,{childList:true,subtree:true});
 
 addScript('/assets/social-global.js?v=20260916-social-3');
-addScript('/assets/auth.js?v=20261009-user-notifications-1');
+addScript('/assets/auth.js?v=20261009-header-account-fix-1');
 addScript('/assets/auth-extra.js');
 addScript('/assets/staff-notifications.js?v=20261005-1');
 
