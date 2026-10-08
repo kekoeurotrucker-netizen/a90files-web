@@ -9,7 +9,8 @@
 .news-page--premium .news-article-media--marea-clean>img{object-fit:cover;object-position:center;filter:saturate(.9) brightness(.66) contrast(1.05)}
 .news-page--premium .news-article-media--marea-clean::after{content:"";position:absolute;inset:7px;z-index:1;border-radius:10px;background:linear-gradient(180deg,rgba(4,18,25,.12),rgba(4,18,25,.34) 58%,rgba(4,18,25,.66));pointer-events:none}
 .news-page--premium .marea-clean-brand{position:absolute;z-index:2;left:50%;top:48%;width:min(66%,310px);transform:translate(-50%,-50%);padding:18px 22px;border:1px solid rgba(121,219,233,.20);border-radius:16px;background:rgba(4,19,26,.40);backdrop-filter:blur(8px);box-shadow:0 14px 36px rgba(0,0,0,.28)}
-.news-page--premium .marea-clean-brand img{display:block;width:100%;height:auto;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(0,0,0,.35))}
+.news-page--premium .marea-clean-brand img{display:block;width:100%;height:auto;aspect-ratio:auto;object-fit:contain;border-radius:0;filter:drop-shadow(0 8px 18px rgba(0,0,0,.35));transition:none}
+.news-page--premium .news-article-media--marea-clean:hover .marea-clean-brand img{transform:none}
 .news-page--premium .news-article-media--marea-clean figcaption{z-index:3}
 @media(max-width:620px){.news-page--premium .marea-clean-brand{width:min(72%,270px);padding:14px 17px}}
 </style>
