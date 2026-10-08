@@ -132,8 +132,22 @@ async function renderTopic(id){
  const target=showFocus();loading('Cargando conversación…',target);
  const data=await api(`/api/forum/topic?id=${id}`);setTitle(data.topic?.title||'Tema');await authState();
  target.replaceChildren();const view=el('section','forum-live-view');const head=el('header','forum-live-view-head');const titleWrap=el('div');titleWrap.append(linkButton(`← ${data.category?.name||'Foro'}`,`/foro/?c=${encodeURIComponent(data.category?.slug||'')}`));const badges=el('div','forum-topic-title');badges.append(el('h1','',data.topic.title));if(data.topic.is_pinned)badges.append(el('span','forum-chip','FIJADO'));if(data.topic.is_locked)badges.append(el('span','forum-chip','CERRADO'));titleWrap.append(badges,el('small','',`${nameOf(data.topic.author)} · ${fmtDate(data.topic.created_at)}`));head.append(titleWrap);view.append(head);
- const posts=renderConversation(data.posts||[],data.topic);
- view.append(posts);
+ const conversationWrap=el('section','forum-conversation-wrap');
+ const conversationBar=el('div','forum-conversation-bar');
+ conversationBar.append(el('span','forum-conversation-label','ORDENAR COMENTARIOS'));
+ const sort=el('select','forum-conversation-sort');
+ [
+   ['oldest','Más antiguos'],
+   ['newest','Más recientes'],
+   ['popular','Más populares']
+ ].forEach(([value,label])=>{const o=document.createElement('option');o.value=value;o.textContent=label;sort.append(o)});
+ const postsHost=el('div','forum-conversation-host');
+ const paintConversation=()=>{postsHost.replaceChildren(renderConversation(data.posts||[],data.topic,sort.value))};
+ sort.addEventListener('change',paintConversation);
+ conversationBar.append(sort);
+ conversationWrap.append(conversationBar,postsHost);
+ paintConversation();
+ view.append(conversationWrap);
  const reply=el('section','forum-reply-box');
  if(data.topic.is_locked)reply.append(status('Este tema está cerrado y no admite nuevas respuestas.','empty'));
  else if(!currentUser)reply.append(el('h2','','Responder al hilo'),status('Inicia sesión con tu Cuenta A 90 para responder.','empty'),button('Entrar','forum-live-primary',openLogin));
@@ -173,54 +187,74 @@ function quotedParentId(post){
  return m?Number(m[1]):null;
 }
 
-function renderConversation(items,topic){
- const list=el('div','forum-post-list forum-threaded-list');
- const ordered=[...items];
+function reactionScore(post){
+ const counts=post?.reactions?.counts||{};
+ return Object.values(counts).reduce((sum,n)=>sum+(Number(n)||0),0);
+}
+
+function renderConversation(items,topic,mode='oldest'){
+ const list=el('div','forum-post-list forum-comment-list');
+ const ordered=[...items].sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
  const byId=new Map(ordered.map(p=>[Number(p.id),p]));
- const children=new Map();
- const roots=[];
+ const directParent=new Map();
  for(const post of ordered){
    const parentId=quotedParentId(post);
-   if(parentId&&parentId!==Number(post.id)&&byId.has(parentId)){
-     if(!children.has(parentId))children.set(parentId,[]);
-     children.get(parentId).push(post);
-   }else roots.push(post);
+   if(parentId&&parentId!==Number(post.id)&&byId.has(parentId))directParent.set(Number(post.id),parentId);
  }
- const visited=new Set();
- const appendNode=(post,depth=0)=>{
-   const id=Number(post.id);
-   if(visited.has(id))return;
-   visited.add(id);
-   const node=el('div','forum-thread-node');
-   node.dataset.depth=String(Math.min(depth,2));
-   node.style.setProperty('--thread-depth',String(Math.min(depth,2)));
-   node.append(renderPost(post,topic));
-   const replies=children.get(id)||[];
-   if(replies.length){
-     const branch=el('div','forum-thread-children');
-     for(const child of replies)appendChildInto(branch,child,depth+1);
-     node.append(branch);
+
+ const rootOf=id=>{
+   let cur=Number(id),guard=0;
+   while(directParent.has(cur)&&guard++<50){
+     const next=directParent.get(cur);
+     if(!byId.has(next)||next===cur)break;
+     cur=next;
    }
-   list.append(node);
+   return cur;
  };
- const appendChildInto=(container,post,depth)=>{
+
+ const roots=ordered.filter(p=>!directParent.has(Number(p.id)));
+ const groups=new Map(roots.map(p=>[Number(p.id),[]]));
+ for(const post of ordered){
    const id=Number(post.id);
-   if(visited.has(id))return;
-   visited.add(id);
-   const node=el('div','forum-thread-node');
-   node.dataset.depth=String(Math.min(depth,2));
-   node.style.setProperty('--thread-depth',String(Math.min(depth,2)));
-   node.append(renderPost(post,topic));
-   const replies=children.get(id)||[];
+   if(!directParent.has(id))continue;
+   const root=rootOf(id);
+   if(!groups.has(root))groups.set(root,[]);
+   groups.get(root).push(post);
+ }
+
+ let sortedRoots=[...roots];
+ if(mode==='newest')sortedRoots.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+ else if(mode==='popular')sortedRoots.sort((a,b)=>{
+   const aReplies=groups.get(Number(a.id))?.length||0;
+   const bReplies=groups.get(Number(b.id))?.length||0;
+   const aScore=reactionScore(a)+(aReplies*.25);
+   const bScore=reactionScore(b)+(bReplies*.25);
+   return bScore-aScore||new Date(a.created_at)-new Date(b.created_at);
+ });
+ else sortedRoots.sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
+
+ for(const root of sortedRoots){
+   const group=el('section','forum-comment-group');
+   group.append(renderPost(root,topic));
+   const replies=[...(groups.get(Number(root.id))||[])].sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
    if(replies.length){
-     const branch=el('div','forum-thread-children');
-     for(const child of replies)appendChildInto(branch,child,depth+1);
-     node.append(branch);
+     const controls=el('div','forum-comment-replies-head');
+     const toggle=button(`${replies.length} respuesta${replies.length===1?'':'s'}`,'forum-comment-replies-toggle');
+     const branch=el('div','forum-comment-replies');
+     const initiallyCollapsed=replies.length>3;
+     branch.hidden=initiallyCollapsed;
+     toggle.setAttribute('aria-expanded',String(!initiallyCollapsed));
+     toggle.addEventListener('click',()=>{
+       branch.hidden=!branch.hidden;
+       toggle.setAttribute('aria-expanded',String(!branch.hidden));
+       toggle.textContent=branch.hidden?`${replies.length} respuesta${replies.length===1?'':'s'}`:'Ocultar respuestas';
+     });
+     controls.append(toggle);
+     group.append(controls,branch);
+     for(const reply of replies)branch.append(renderPost(reply,topic));
    }
-   container.append(node);
- };
- for(const root of roots)appendNode(root,0);
- for(const post of ordered)if(!visited.has(Number(post.id)))appendNode(post,0);
+   list.append(group);
+ }
  return list;
 }
 
