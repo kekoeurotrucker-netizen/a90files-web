@@ -6,7 +6,7 @@ function addStylesheet(href){if(document.querySelector(`link[href="${href}"]`))r
 function addScript(src){if(document.querySelector(`script[src="${src}"]`))return;const s=document.createElement('script');s.src=src;s.defer=true;document.head.appendChild(s)}
 addStylesheet('/assets/auth.css?v=20261006-email-avatar-1');
 addStylesheet('/assets/auth-icons.css');
-addStylesheet('/assets/auth-extra.css');
+addStylesheet('/assets/auth-extra.css?v=20261009-user-notifications-1');
 addStylesheet('/assets/software-menu.css');
 addStylesheet('/assets/social-global.css?v=20260916-social-3');
 addStylesheet('/assets/header-velocity.css?v=20261004-v3');
@@ -63,7 +63,7 @@ const vaultPoolAssetObserver=new MutationObserver(mutations=>{for(const mutation
 vaultPoolAssetObserver.observe(document.documentElement,{childList:true,subtree:true});
 
 addScript('/assets/social-global.js?v=20260916-social-3');
-addScript('/assets/auth.js?v=20261006-email-avatar-1');
+addScript('/assets/auth.js?v=20261009-user-notifications-1');
 addScript('/assets/auth-extra.js');
 addScript('/assets/staff-notifications.js?v=20261005-1');
 
