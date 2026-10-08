@@ -225,7 +225,13 @@ async function quotePost(post,card){
    const range=selection.getRangeAt(0);
    if(bodyNode.contains(range.commonAncestorContainer))quoted=selection.toString().trim();
  }
- if(!quoted)quoted=String(post.body||'').trim();
+ if(!quoted){
+   const hint=el('span','forum-quote-hint','Selecciona primero el fragmento que quieras citar.');
+   const actions=card.querySelector('.forum-post-actions');
+   actions?.append(hint);
+   setTimeout(()=>hint.remove(),2600);
+   return;
+ }
  quoted=quoted.replace(/\[\/quote\]/gi,'[ /quote ]');
  const ta=document.querySelector('.forum-reply-box .forum-live-textarea');
  if(!ta)return;
