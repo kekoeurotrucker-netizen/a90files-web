@@ -268,3 +268,26 @@
     0 0 12px rgba(83,224,235,.055),
     5px 5px 14px rgba(230,171,75,.025) !important;
 }
+
+/* A90 gradient framing · software menu · 2026-10-09 */
+.software-nav-menu{
+  border:1px solid transparent!important;
+  background:
+    linear-gradient(180deg,rgba(5,24,33,.985),rgba(4,19,27,.99)) padding-box,
+    linear-gradient(120deg,rgba(83,232,242,.88) 0%,rgba(58,173,201,.62) 34%,rgba(113,133,131,.40) 60%,rgba(231,174,74,.82) 100%) border-box!important;
+  box-shadow:
+    0 18px 48px rgba(0,0,0,.38),
+    inset 0 1px 0 rgba(255,255,255,.035),
+    0 0 0 1px rgba(255,255,255,.01)!important;
+}
+.software-nav-menu:before{
+  border-left:1px solid rgba(86,222,235,.58)!important;
+  border-top:1px solid rgba(86,222,235,.58)!important;
+  background:#071c26!important;
+}
+.software-nav-icon{
+  border:1px solid transparent!important;
+  background:
+    linear-gradient(145deg,#071d26,#05171e) padding-box,
+    linear-gradient(135deg,rgba(91,235,244,.96) 0%,rgba(42,166,195,.78) 38%,rgba(119,139,137,.48) 62%,rgba(231,175,77,.92) 100%) border-box!important;
+}
