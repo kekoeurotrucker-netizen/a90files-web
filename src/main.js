@@ -7,6 +7,7 @@ import {handleSecurityAuth} from './security-auth-api.js';
 import {handleAnalyticsApi} from './analytics-api.js';
 
 const FORUM_BUILD='20261009-youtube-comments-1';
+const APP_BUILD='20261009-header-account-fix-2';
 const GLOBAL_BUILD='20261007-legal-1';
 const ANALYTICS_BUILD='20261001-analytics-2';
 const LEGAL_LINKS='<a class="a90-legal-link" data-a90-legal-link href="/aviso-legal/">Aviso legal</a><a class="a90-legal-link" data-a90-legal-link href="/privacidad/">Privacidad</a><a class="a90-legal-link" data-a90-legal-link href="/cookies/">Cookies</a><a class="a90-legal-link" data-a90-legal-link href="/licencias/">Licencias</a>';
@@ -105,6 +106,10 @@ async function injectGlobalUi(response,force=false){
   let html=await response.text();
   if(!html.includes('</body>')&&!html.includes('</head>'))return response;
   html=injectLegalFooter(html);
+  const appScript=`<script src="/assets/app.js?v=${APP_BUILD}" defer></script>`;
+  if(/<script[^>]+src=["']\/assets\/app\.js(?:\?[^"']*)?["'][^>]*><\/script>/i.test(html)){
+    html=html.replace(/<script[^>]+src=["']\/assets\/app\.js(?:\?[^"']*)?["'][^>]*><\/script>/i,appScript);
+  }
   const stylesheet=`<link rel="stylesheet" href="/assets/social-global.css?v=${GLOBAL_BUILD}">`;
   if(/<link[^>]+href=["']\/assets\/social-global\.css(?:\?[^"']*)?["'][^>]*>/i.test(html))html=html.replace(/<link[^>]+href=["']\/assets\/social-global\.css(?:\?[^"']*)?["'][^>]*>/i,stylesheet);
   else html=html.replace('</head>',`${stylesheet}\n</head>`);
@@ -115,6 +120,7 @@ async function injectGlobalUi(response,force=false){
   if(!html.includes('/assets/analytics.js'))html=html.replace('</body>',`${analyticsScript}\n</body>`);
   const headers=new Headers(response.headers);
   headers.set('Content-Type','text/html; charset=utf-8');
+  headers.set('Cache-Control','no-cache, no-store, must-revalidate');
   return new Response(html,{status:response.status,statusText:response.statusText,headers});
 }
 
