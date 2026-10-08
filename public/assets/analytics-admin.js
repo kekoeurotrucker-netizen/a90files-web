@@ -31,6 +31,7 @@ function barRows(items,label,value,detail,accent=false){
 function drawDayChart(data){
   const el=$('#analytics-chart');if(!el)return;
   if(!Array.isArray(data)||!data.length){el.innerHTML='<p class="analytics-empty">Sin datos por día.</p>';return}
+  el.classList.toggle('dense',data.length>100);
   const max=Math.max(1,...data.flatMap(x=>[Number(x.sessions)||0,Number(x.page_views)||0]));
   const labelEvery=Math.max(1,Math.ceil(data.length/9));
   el.innerHTML=data.map((x,i)=>{
