@@ -6,7 +6,7 @@ import {handleHealth} from './health.js';
 import {handleSecurityAuth} from './security-auth-api.js';
 import {handleAnalyticsApi} from './analytics-api.js';
 
-const FORUM_BUILD='20261009-quote-1';
+const FORUM_BUILD='20261009-direct-replies-notifications-1';
 const GLOBAL_BUILD='20261007-legal-1';
 const ANALYTICS_BUILD='20261001-analytics-2';
 const LEGAL_LINKS='<a class="a90-legal-link" data-a90-legal-link href="/aviso-legal/">Aviso legal</a><a class="a90-legal-link" data-a90-legal-link href="/privacidad/">Privacidad</a><a class="a90-legal-link" data-a90-legal-link href="/cookies/">Cookies</a><a class="a90-legal-link" data-a90-legal-link href="/licencias/">Licencias</a>';
