@@ -251,20 +251,22 @@ function renderConversation(items,topic,mode='oldest'){
  else if(mode==='popular')sortedRoots.sort((a,b)=>{
    const metrics=post=>{
      const replies=groups.get(Number(post.id))||[];
-     const directReplies=replies.length;
-     const citations=replies.reduce((count,item)=>{
+     let responseCount=0;
+     let citationCount=0;
+     for(const item of replies){
+       if(Number(item?.reply_to?.id)===Number(post.id))responseCount++;
        const body=String(item.body||'');
-       const hits=[...body.matchAll(/\[quote="[^"]{1,80}" post="(\d+)"\]/g)]
+       citationCount += [...body.matchAll(/\[quote="[^"]{1,80}" post="(\d+)"\]/g)]
          .filter(match=>Number(match[1])===Number(post.id)).length;
-       return count+hits;
-     },0);
+     }
      const reactions=reactionScore(post);
-     return {score:reactions+directReplies+citations,reactions,directReplies,citations};
+     const score=responseCount+citationCount+(reactions*0.25);
+     return {score,reactions,responseCount,citationCount};
    };
    const am=metrics(a),bm=metrics(b);
    return bm.score-am.score
-     || bm.citations-am.citations
-     || bm.directReplies-am.directReplies
+     || bm.citationCount-am.citationCount
+     || bm.responseCount-am.responseCount
      || bm.reactions-am.reactions
      || new Date(a.created_at)-new Date(b.created_at);
  });
