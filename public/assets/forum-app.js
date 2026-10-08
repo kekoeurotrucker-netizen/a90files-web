@@ -137,10 +137,11 @@ async function renderTopic(id){
  conversationBar.append(el('span','forum-conversation-label','ORDENAR COMENTARIOS'));
  const sort=el('select','forum-conversation-sort');
  [
-   ['oldest','Más antiguos'],
    ['newest','Más recientes'],
+   ['oldest','Más antiguos'],
    ['popular','Más populares · respuestas + citas + reacciones']
  ].forEach(([value,label])=>{const o=document.createElement('option');o.value=value;o.textContent=label;sort.append(o)});
+ sort.value='newest';
  const postsHost=el('div','forum-conversation-host');
  const paintConversation=()=>{postsHost.replaceChildren(renderConversation(data.posts||[],data.topic,sort.value))};
  sort.addEventListener('change',paintConversation);
@@ -192,7 +193,7 @@ function reactionScore(post){
  return Object.values(counts).reduce((sum,n)=>sum+(Number(n)||0),0);
 }
 
-function renderConversation(items,topic,mode='oldest'){
+function renderConversation(items,topic,mode='newest'){
  const list=el('div','forum-post-list forum-comment-list');
  const ordered=[...items].sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
  const byId=new Map(ordered.map(p=>[Number(p.id),p]));
