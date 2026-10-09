@@ -106,4 +106,20 @@ jobs:
           grep -Eqi '^x-content-type-options:[[:space:]]*nosniff$' "$tmp/home.headers.clean"
           grep -Eqi '^content-security-policy:.*challenges\.cloudflare\.com' "$tmp/home.headers.clean"
 
+          echo '9/10 English localized pages and assets'
+          request english "$BASE_URL/en/"
+          grep -qi '<html lang="en"' "$tmp/english.body"
+          grep -qi 'hreflang="en"' "$tmp/english.body"
+          grep -q 'site-language.js' "$tmp/english.body"
+          request english_forum "$BASE_URL/en/foro/"
+          grep -qi '<html lang="en"' "$tmp/english_forum.body"
+          request locale_assets "$BASE_URL/assets/site-language.js"
+          grep -q 'a90-language-switcher' "$tmp/locale_assets.body"
+
+          echo '10/10 Anonymous translation is private and opt-in'
+          code="$(status_request translate_anon -X POST "$BASE_URL/api/forum/translate" \\
+            -H "Origin: $BASE_URL" -H 'Content-Type: application/json' \\
+            --data '{"post_id":1,"target_lang":"en"}')"
+          test "$code" = '401' || { cat "$tmp/translate_anon.body"; echo "Expected 401, got $code"; exit 1; }
+
           echo 'Production smoke tests passed.'
