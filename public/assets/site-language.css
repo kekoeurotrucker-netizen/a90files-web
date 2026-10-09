@@ -30,3 +30,7 @@
 @media(max-width:760px){.a90-language-switcher{margin-left:4px}.a90-language-switcher summary{min-width:74px;height:36px;padding:0 7px;gap:5px}.a90-language-flag{width:21px;height:15px}.a90-language-menu{right:0}}
 @media(max-width:400px){.a90-language-switcher summary{min-width:68px}.a90-language-menu{width:185px;min-width:185px}}
 @media(prefers-reduced-motion:reduce){.a90-language-switcher summary,.a90-language-chevron{transition:none}}
+
+.analytics-topbar-inner .a90-language-switcher{margin-left:auto}
+.analytics-topbar-inner .analytics-back{margin-left:8px}
+@media(max-width:510px){.analytics-topbar-inner .a90-language-switcher{margin-left:auto}.analytics-topbar-inner .analytics-back{font-size:10px;max-width:82px;line-height:1.25}}

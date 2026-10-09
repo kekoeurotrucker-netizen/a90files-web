@@ -9,7 +9,7 @@ function remember(lang){try{localStorage.setItem(LOCALE_KEY,lang)}catch{}}
 function localizedPath(path,lang){
   if(!path||path.startsWith('//'))return path;
   const canonical=path.replace(/^\/en(?=\/|$)/,'')||'/';
-  if(/^\/(?:api|assets|admin|downloads|\.well-known)(?:\/|$)/.test(canonical)||/^\/favicon/.test(canonical))return canonical;
+  if((/^\/(?:api|assets|downloads|\.well-known)(?:\/|$)/.test(canonical) || (canonical.startsWith('/admin/')&&canonical!=='/admin/analytics/'))||/^\/favicon/.test(canonical))return canonical;
   return lang==='en'?'/en'+(canonical==='/'?'/':canonical):canonical;
 }
 function pathWithQuery(lang){return localizedPath(location.pathname,lang)+location.search+location.hash}
@@ -58,7 +58,7 @@ function walk(root){
  const all=[];while(walker.nextNode())all.push(walker.currentNode);all.forEach(translateNode);
 }
 function setupSwitcher(){
- const bar=document.querySelector('.topbar-inner');
+ const bar=document.querySelector('.topbar-inner,.analytics-topbar-inner');
  if(!bar||bar.querySelector('.a90-language-switcher'))return;
  const ui=document.createElement('details');ui.className='a90-language-switcher';
  ui.innerHTML='<summary aria-label="'+(english?'Choose language':'Elegir idioma')+'"><span class="a90-language-current">'+flag(selected)+'</span><strong>'+selected.toUpperCase()+'</strong><svg class="a90-language-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></summary><div class="a90-language-menu" role="group" aria-label="Languages"><button type="button" data-a90-lang="es">'+flag('es')+'<span>Español<small>Spanish</small></span></button><button type="button" data-a90-lang="en">'+flag('en')+'<span>English<small>Inglés</small></span></button></div>';
@@ -73,7 +73,7 @@ function setupSwitcher(){
      location.assign(pathWithQuery(lang));
    });
  });
- const menu=bar.querySelector('.menu-button');
+ const menu=bar.querySelector('.menu-button,.analytics-back');
  bar.insertBefore(ui,menu||null);
  document.addEventListener('click',event=>{if(!ui.contains(event.target))ui.removeAttribute('open')});
  document.addEventListener('keydown',event=>{if(event.key==='Escape')ui.removeAttribute('open')});

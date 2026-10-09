@@ -1,5 +1,6 @@
 import {A90_EN_EXTRA} from './site-i18n-extra.js';
 import {A90_EN_MORE} from './site-i18n-more.js';
+import {A90_EN_ADMIN} from './site-i18n-admin.js';
 // A90 native English copy, curated. Keys are visible Spanish strings, not user submissions.
 export const A90_EN = {
   "Inicio": "Home",
@@ -276,7 +277,7 @@ export const A90_EN = {
   "Iniciar sesión o crear cuenta": "Sign in or create an account"
 };
 
-Object.assign(A90_EN,A90_EN_EXTRA,A90_EN_MORE);
+Object.assign(A90_EN,A90_EN_EXTRA,A90_EN_MORE,A90_EN_ADMIN);
 
 export function localizeEnglishHtml(html,requestUrl){
   const url=new URL(requestUrl);
