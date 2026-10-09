@@ -28,6 +28,40 @@ function barRows(items,label,value,detail,accent=false){
     return '<div class="analytics-rank-row"><div class="analytics-rank-line"><span class="analytics-rank-label" title="'+esc(label(x))+'">'+esc(label(x))+'</span><span class="analytics-rank-amount">'+n(amount)+' <small>'+esc(detail)+'</small></span></div><div class="analytics-meter'+(accent?' amber':'')+'"><i style="width:'+pct+'%"></i></div></div>';
   }).join('')+'</div>';
 }
+
+/* Donut visualizations use only server aggregate counts; no personal profiles are inferred. */
+const PIE_PALETTE=['#56cedb','#eeb15b','#67c5ab','#d08a52','#598fae'];
+function renderPie(selector,items,describe,getValue,metric){
+  const target=$(selector);
+  if(!target)return;
+  const source=Array.isArray(items)?items:[];
+  const values=source.map(item=>({
+    label:String(describe(item)),
+    value:Math.max(0,Number(getValue(item))||0)
+  })).filter(item=>item.value>0).sort((a,b)=>b.value-a.value);
+  const total=values.reduce((sum,item)=>sum+item.value,0);
+  if(!total){
+    target.innerHTML='<div class="analytics-pie-empty"><span class="analytics-donut-empty" aria-hidden="true"></span><span><strong>Sin datos suficientes</strong><small>La distribución aparecerá cuando haya actividad registrada.</small></span></div>';
+    return;
+  }
+  const visible=values.slice(0,4);
+  if(values.length>4)visible.push({label:'Otros',value:values.slice(4).reduce((sum,item)=>sum+item.value,0)});
+  let cumulative=0;
+  const stops=visible.map((item,index)=>{
+    const start=360*cumulative/total;
+    cumulative+=item.value;
+    const end=360*cumulative/total;
+    return PIE_PALETTE[index]+' '+start.toFixed(3)+'deg '+end.toFixed(3)+'deg';
+  });
+  const gradient='conic-gradient('+stops.join(',')+')';
+  const details=visible.map((item,index)=>{
+    const percent=(100*item.value/total).toLocaleString('es-ES',{maximumFractionDigits:1});
+    return '<li class="analytics-pie-legend-item" title="'+esc(item.label)+'"><span class="pie-label"><i class="pie-dot" style="background:'+PIE_PALETTE[index]+'"></i><span>'+esc(item.label)+'</span></span><strong>'+percent+'%</strong></li>';
+  }).join('');
+  const accessible=visible.map(item=>item.label+': '+n(item.value)).join('; ');
+  target.innerHTML='<div class="analytics-pie-layout"><div class="analytics-donut" role="img" aria-label="'+esc('Distribución de '+metric+'. '+accessible)+'" style="background:'+gradient+'"><div class="analytics-donut-core" aria-hidden="true"><strong>'+n(total)+'</strong><small>'+esc(metric)+'</small></div></div><ul class="analytics-pie-legend">'+details+'</ul></div>';
+}
+
 function drawDayChart(data){
   const el=$('#analytics-chart');if(!el)return;
   if(!Array.isArray(data)||!data.length){el.innerHTML='<p class="analytics-empty">Sin datos por día.</p>';return}
@@ -58,6 +92,15 @@ function renderHistory(d){
   text('#kpi-today',n(s.today_sessions));text('#kpi-today-views',n(s.today_page_views)+' páginas vistas hoy');
   text('#analytics-generated',d.generated_at?'Actualizado '+new Date(d.generated_at).toLocaleTimeString('es-ES'):'');
   drawDayChart(d.daily||[]);
+  renderPie('#geo-countries-pie',g.countries,x=>countryName(x.country),x=>x.sessions,'sesiones');
+  renderPie('#geo-regions-pie',g.regions,x=>(x.region==='Sin región'?'Región no registrada':x.region)+' · '+(x.country||'—'),x=>x.sessions,'sesiones');
+  renderPie('#screen-types-pie',d.screens,x=>screenName(x.category),x=>x.sessions,'sesiones');
+  renderPie('#referrers-pie',d.referrers,x=>x.source,x=>x.sessions,'entradas');
+  renderPie('#top-pages-pie',d.top_pages,x=>x.path,x=>x.views,'vistas destacadas');
+  renderPie('#top-targets-pie',[
+    {label:'Clics',count:Number(s.period_clicks)||0},
+    {label:'Descargas',count:Number(s.period_downloads)||0}
+  ],x=>x.label,x=>x.count,'acciones');
   $('#top-pages').innerHTML=plainRows(d.top_pages,x=>x.path,x=>n(x.views)+' vistas');
   $('#top-targets').innerHTML=plainRows(d.top_targets,x=>x.target,x=>n(x.clicks)+' clics · '+n(x.downloads)+' desc.');
   $('#referrers').innerHTML=barRows(d.referrers,x=>x.source,x=>x.sessions,'entradas');

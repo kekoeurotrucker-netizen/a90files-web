@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#071116">
   <title>A90 Pulse · Analítica privada — A 90 Files</title>
   <link rel="stylesheet" href="/assets/styles.css">
-  <link rel="stylesheet" href="/assets/analytics-admin.css?v=20261009-pulse-2">
+  <link rel="stylesheet" href="/assets/analytics-admin.css?v=20261009-pulse-3">
 </head>
 <body class="a90-analytics-page">
   <header class="analytics-topbar">
@@ -78,22 +78,22 @@
       </section>
       <section class="analytics-section-title"><div><small>MAPA DE AUDIENCIA</small><h2>¿Desde dónde nos visitan?</h2></div><span>Ubicación aproximada, nunca GPS</span></section>
       <div class="analytics-grid geo-grid">
-        <section class="analytics-panel"><div class="analytics-panel-head"><div><small class="panel-overline">GEOGRAFÍA</small><h2>Países</h2></div><span class="analytics-panel-chip">PAÍS</span></div><div id="geo-countries"></div></section>
-        <section class="analytics-panel"><div class="analytics-panel-head"><div><small class="panel-overline">GEOGRAFÍA</small><h2>Regiones</h2></div><span class="analytics-panel-chip">REGIÓN</span></div><div id="geo-regions"></div></section>
+        <section class="analytics-panel"><div class="analytics-panel-head"><div><small class="panel-overline">GEOGRAFÍA</small><h2>Países</h2></div><span class="analytics-panel-chip">PAÍS</span></div><div id="geo-countries-pie" class="analytics-pie-slot"></div><div id="geo-countries"></div></section>
+        <section class="analytics-panel"><div class="analytics-panel-head"><div><small class="panel-overline">GEOGRAFÍA</small><h2>Regiones</h2></div><span class="analytics-panel-chip">REGIÓN</span></div><div id="geo-regions-pie" class="analytics-pie-slot"></div><div id="geo-regions"></div></section>
       </div>
       <div class="analytics-grid audience-grid">
-        <section class="analytics-panel"><div class="analytics-panel-head"><div><small class="panel-overline">TECNOLOGÍA</small><h2>Tamaños de pantalla</h2></div></div><div id="screen-types"></div><p class="analytics-panel-note">Clasificación por anchura del navegador, no identificación del dispositivo.</p></section>
+        <section class="analytics-panel"><div class="analytics-panel-head"><div><small class="panel-overline">TECNOLOGÍA</small><h2>Tamaños de pantalla</h2></div></div><div id="screen-types-pie" class="analytics-pie-slot"></div><div id="screen-types"></div><p class="analytics-panel-note">Clasificación por anchura del navegador, no identificación del dispositivo.</p></section>
         <section class="analytics-panel analytics-age-panel"><div class="analytics-panel-head"><div><small class="panel-overline">DEMOGRAFÍA</small><h2>Rangos de edad</h2></div></div><div class="analytics-no-age"><span>—</span><strong>No disponible</strong><p>No solicitamos ni inferimos edades de visitantes. Este dato solo podría mostrarse con una fuente voluntaria, fiable y compatible con privacidad.</p></div></section>
       </div>
       <section class="analytics-section-title"><div><small>DETALLE / COMPORTAMIENTO</small><h2>Contenido e interacción</h2></div></section>
       <div class="analytics-grid detail-grid">
-        <section class="analytics-panel"><div class="analytics-panel-head"><div><small class="panel-overline">CONTENIDO</small><h2>Páginas populares</h2></div></div><div id="top-pages"></div></section>
-        <section class="analytics-panel"><div class="analytics-panel-head"><div><small class="panel-overline">ACCIONES</small><h2>Clics y descargas</h2></div></div><div id="top-targets"></div></section>
-        <section class="analytics-panel"><div class="analytics-panel-head"><div><small class="panel-overline">ADQUISICIÓN</small><h2>Fuentes de tráfico</h2></div></div><div id="referrers"></div></section>
+        <section class="analytics-panel"><div class="analytics-panel-head"><div><small class="panel-overline">CONTENIDO</small><h2>Páginas populares</h2></div></div><div id="top-pages-pie" class="analytics-pie-slot"></div><div id="top-pages"></div></section>
+        <section class="analytics-panel"><div class="analytics-panel-head"><div><small class="panel-overline">ACCIONES</small><h2>Clics y descargas</h2></div></div><div id="top-targets-pie" class="analytics-pie-slot"></div><div id="top-targets"></div></section>
+        <section class="analytics-panel"><div class="analytics-panel-head"><div><small class="panel-overline">ADQUISICIÓN</small><h2>Fuentes de tráfico</h2></div></div><div id="referrers-pie" class="analytics-pie-slot"></div><div id="referrers"></div></section>
       </div>
       <p class="analytics-privacy">A90 Pulse utiliza datos propios. La ubicación (país/región) comienza a recogerse con esta actualización y no se puede reconstruir para visitas anteriores. No se almacenan IP, User-Agent, ID de cuenta ni edad en analítica. Una sesión corresponde a un identificador aleatorio temporal por pestaña. Conservación máxima: 25 meses. <a href="/privacidad/">Política de privacidad →</a></p>
     </section>
   </main>
-  <script src="/assets/analytics-admin.js?v=20261009-pulse-2" defer></script>
+  <script src="/assets/analytics-admin.js?v=20261009-pulse-3" defer></script>
 </body>
 </html>
