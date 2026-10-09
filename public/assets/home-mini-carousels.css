@@ -1,0 +1,35 @@
+
+/* 2026-10-10: Compact carousel cards in homepage Software, Juegos and Channel modules.
+   Support card stays unchanged. */
+.home .section-grid .area-card.a90-mini-module{display:flex;flex-direction:column;gap:0;cursor:default;background-image:linear-gradient(135deg,rgba(6,23,31,.96),rgba(10,33,41,.95));border:1px solid transparent;background:linear-gradient(145deg,#0e2832,#091d25) padding-box,linear-gradient(105deg,#50cbdb,#eab065) border-box;min-height:192px;isolation:isolate}
+.home .section-grid .area-card.a90-mini-module::after{content:none!important}
+.home .section-grid .a90-mini-module .area-top{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:6px}
+.home .a90-mini-module .mini-module-title{color:#ebf8f8;font-size:16px;font-weight:790;line-height:1.15;margin:0;letter-spacing:-.02em}
+.home .a90-mini-module .mini-module-eyebrow{display:block;font-size:9px;color:#84ccd4;letter-spacing:.14em;font-weight:750;margin-bottom:3px}
+.home .a90-mini-module .mini-module-toplink{border:1px solid transparent;border-radius:8px;padding:5px 9px;white-space:nowrap;color:#b5dfe3;text-decoration:none;font-size:10px;background:linear-gradient(#102b35,#102b35) padding-box,linear-gradient(105deg,#60cddb,#e9ae58) border-box}
+.home .a90-mini-module .mini-module-toplink:hover{color:white;background:linear-gradient(#173b48,#112c36) padding-box,linear-gradient(110deg,#50dfef,#ffce83) border-box}
+.home .a90-mini-module .mini-viewport{position:relative;flex:1;min-height:112px;margin:9px -7px 0;overflow:hidden;border:1px solid rgba(109,186,200,.16);border-radius:11px}
+.home .a90-mini-module .mini-slide{display:none;position:relative;height:100%;min-height:112px;padding:13px 12px;isolation:isolate}
+.home .a90-mini-module .mini-slide.is-active{display:flex;flex-direction:column;justify-content:flex-end}
+.home .a90-mini-module .mini-slide::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(4,17,25,.90) 0%,rgba(4,17,25,.52) 48%,rgba(4,17,25,.15) 100%);z-index:-1}
+.home .a90-mini-module .mini-slide>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;filter:saturate(.9) brightness(.75)}
+.home .a90-mini-module .mini-slide .mini-name{margin:0 0 4px;font-size:15px;line-height:1.16;color:#f2fbfb;font-weight:800;text-shadow:0 2px 7px #020e14}
+.home .a90-mini-module .mini-slide .mini-desc{margin:0 0 7px;max-width:94%;font-size:10px;color:#d0e1e3;line-height:1.35;text-shadow:0 2px 7px #020e14}
+.home .a90-mini-module .mini-slide .mini-cta{display:inline-flex;width:max-content;max-width:100%;align-items:center;gap:6px;border:1px solid transparent;border-radius:7px;padding:6px 9px;text-decoration:none;color:#f3faff;font-size:10px;font-weight:780;background:linear-gradient(#0c3240,#0c3240) padding-box,linear-gradient(110deg,#58d5e5,#f1b56a) border-box}
+.home .a90-mini-module .mini-slide .mini-cta:hover{filter:brightness(1.16)}
+.home .a90-mini-module .mini-slide .mini-cta:focus-visible,.home .a90-mini-module button:focus-visible{outline:2px solid #9ce7ed;outline-offset:2px}
+.home .a90-mini-module .mini-controls{position:relative;z-index:3;display:flex;justify-content:space-between;align-items:center;gap:4px;padding-top:7px}
+.home .a90-mini-module .mini-arrow{appearance:none;display:grid;place-items:center;min-width:25px;height:24px;border-radius:7px;border:1px solid rgba(112,190,201,.27);background:#102d37;color:#bde9e9;cursor:pointer;font-size:13px}
+.home .a90-mini-module .mini-arrow:hover{border-color:#eab065;color:#fff}
+.home .a90-mini-module .mini-count{font-size:9px;letter-spacing:.1em;color:#a2c6ce;font-variant-numeric:tabular-nums}
+.home .a90-mini-module .mini-dots{display:flex;gap:5px;align-items:center}
+.home .a90-mini-module .mini-dot{width:6px;height:6px;padding:0;border:0;border-radius:50%;background:#466775;cursor:pointer}
+.home .a90-mini-module .mini-dot[aria-current="true"]{width:17px;border-radius:7px;background:linear-gradient(90deg,#5bd4e1,#ecb36c)}
+.home .a90-mini-module .mini-slide--mystery::after{background:linear-gradient(95deg,#060e17 0%,rgba(6,14,23,.80) 60%,rgba(6,14,23,.30) 100%)}
+.home .a90-mini-module .mini-slide--mystery .mini-name{letter-spacing:.04em}
+.home .a90-mini-module .mini-slide--video .mini-name{font-size:12px;max-width:98%;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.home .a90-mini-module .mini-slide--video .mini-desc{margin-bottom:5px}
+.home .a90-mini-module .mini-slide--video>img{object-position:50% 32%;filter:brightness(.62) saturate(.90)}
+@media(max-width:900px){.home .section-grid .area-card.a90-mini-module{min-height:200px}}
+@media(max-width:620px){.home .section-grid .area-card.a90-mini-module{min-height:200px;padding:13px 14px}}
+@media(prefers-reduced-motion:reduce){.home .a90-mini-module *{transition:none!important}}
