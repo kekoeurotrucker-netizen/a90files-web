@@ -1,4 +1,4 @@
-// Hand-reviewed English copy for Marea Composer audio recording and live MIDI roadmap.
+// Hand-reviewed English copy for Marea Composer audio recording, live MIDI and tester invitation.
 export const A90_EN_INPUTS = {
   "Marea Studio Composer rumbo a Microsoft Store: Marea Engine y compatibilidades — A 90 Files": "Marea Studio Composer heading to Microsoft Store: Marea Engine and compatibility — A90 Files",
   "Estamos preparando el lanzamiento para Windows. Además del Editor de pistas, los modelos locales y Marea Engine, trabajaremos en grabación de micrófono e instrumentos por interfaz de audio y recepción de teclados MIDI. Estas entradas todavía no están en el MSIX preparado.": "We're preparing the Windows release. Alongside the Track Editor, local models and Marea Engine, we're working toward microphone/instrument recording through audio interfaces and live MIDI keyboard input. These are not in the current MSIX.",
@@ -44,5 +44,21 @@ export const A90_EN_INPUTS = {
   "MSIX 1.3.22 base · próximo paquete previsto con grabación de audio y MIDI en directo · sin descarga pública": "MSIX 1.3.22 baseline · next package planned with audio recording and live MIDI · no public download",
   "MSIX 1.3.22 preparado como base; nueva grabación de micrófono e instrumentos y teclados MIDI en directo en desarrollo para otro MSIX. También selección múltiple, editor preciso, modelos locales y Marea Engine.": "MSIX 1.3.22 is the baseline; microphone/instrument recording and live MIDI keyboards are being developed for another MSIX. Also multiselection, precise editing, local models and Marea Engine.",
   "MSIX 1.3.22 como base. Grabación de audio y teclados MIDI en directo previstas para un nuevo MSIX; editor multipista, modelos instalados y motor propio Marea Engine.": "MSIX 1.3.22 is the baseline. Audio recording and live MIDI keyboards are planned for a new MSIX; multitrack editing, existing models and our own Marea Engine.",
-  "MSIX 1.3.22 como base: preparando grabación de micrófono, instrumentos y teclados MIDI para otro MSIX. Además, editor preciso, selección múltiple y Marea Engine. Próximamente.": "MSIX 1.3.22 baseline: preparing microphone, instrument and MIDI keyboard recording for another MSIX. Plus precise editing, multiselection and Marea Engine. Coming soon."
+  "MSIX 1.3.22 como base: preparando grabación de micrófono, instrumentos y teclados MIDI para otro MSIX. Además, editor preciso, selección múltiple y Marea Engine. Próximamente.": "MSIX 1.3.22 baseline: preparing microphone, instrument and MIDI keyboard recording for another MSIX. Plus precise editing, multiselection and Marea Engine. Coming soon.",
+  "🌊 Quiero participar en las pruebas →": "🌊 Join the testing community →",
+  "Comentar las novedades": "Discuss the latest updates",
+  "COMUNIDAD A90 · BUSCAMOS TESTERS": "A90 COMMUNITY · TESTERS WANTED",
+  "¿Te apuntas a poner Marea Studio a prueba?": "Want to help test Marea Studio?",
+  "Queremos probar Marea con gente real antes del lanzamiento. Tanto si haces música como si estás empezando,": "We want real people to test Marea before release. Whether you make music or are just getting started,",
+  "tu experiencia puede ayudarnos a decidir qué mejorar": "your experience can help us decide what to improve",
+  ": editor de pistas, modelos de IA, importación de audio, proyectos de LMMS y, cuando estén disponibles, grabación e instrumentos MIDI.": ": track editing, AI models, audio import, LMMS projects and, when ready, recording and MIDI instruments.",
+  "Entra en el": "Visit the",
+  "foro de Marea Studio": "Marea Studio forum",
+  ", preséntate como tester y cuéntanos qué equipo utilizas, qué te gustaría probar y qué mejorarías. También puedes publicar errores reproducibles, sugerencias o capturas": ", introduce yourself as a tester and tell us about your computer, what you want to try and what could be improved. You can also share reproducible bugs, suggestions or screenshots",
+  "sin datos privados": "with no private information",
+  "cuando tengas una versión de pruebas.": "once a test build is available.",
+  "🌊 Quiero ser tester · Ir al foro →": "🌊 I want to be a tester · Visit the forum →",
+  "Comentar todas las novedades ↗": "Discuss all updates ↗",
+  "La convocatoria recoge interés y feedback; no implica acceso inmediato. Todavía no existe una descarga pública ni hay fecha confirmada. Anunciaremos cómo acceder a builds de prueba una vez estén verificadas.": "We're collecting interest and feedback; this does not grant immediate access. There is no public download or confirmed release date. We'll explain how to access test builds when they're verified.",
+  "Consultar el estado de descarga ↗": "Check download availability ↗"
 };

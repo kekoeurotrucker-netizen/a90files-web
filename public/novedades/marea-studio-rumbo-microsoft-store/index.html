@@ -27,6 +27,19 @@
   line-height:1.45;
   backdrop-filter:blur(5px);
 }
+
+.marea-testers-cta{position:relative;overflow:hidden;margin:36px 0 20px;padding:28px 30px 25px;border:1px solid transparent;border-radius:20px;background:radial-gradient(circle at 94% 12%,rgba(226,160,73,.14),transparent 40%),linear-gradient(135deg,#0b2933 0%,#0a1f28 61%,#132a2d 100%) padding-box,linear-gradient(112deg,#56d0dc,#7dc2c2 47%,#efb568 100%) border-box;box-shadow:0 20px 46px rgba(0,0,0,.25),0 0 32px rgba(70,182,191,.055)}
+.marea-testers-cta::before{content:"";position:absolute;top:0;left:22px;right:22px;height:2px;background:linear-gradient(90deg,#5be0e6,#f1b45c);border-radius:0 0 3px 3px}
+.marea-testers-topline{display:flex;align-items:center;gap:9px;font:760 11px/1.4 ui-monospace,Consolas,monospace;letter-spacing:.11em;color:#f4ba6e}
+.marea-testers-dot{width:8px;height:8px;flex:none;border-radius:50%;background:#6fe0e1;box-shadow:0 0 0 4px rgba(98,214,216,.11),0 0 16px rgba(98,214,216,.35)}
+.news-page--premium .marea-testers-cta h2{font-size:clamp(25px,3vw,38px);line-height:1.15;letter-spacing:-.035em;margin:17px 0 13px;color:#effcfa;max-width:680px}
+.news-page--premium .marea-testers-cta p{color:#c5d8d9;line-height:1.75;font-size:14px;max-width:820px;margin:0 0 13px}
+.news-page--premium .marea-testers-cta p strong{color:#f1fcfc}
+.marea-testers-actions{display:flex;flex-wrap:wrap;align-items:center;gap:11px;margin:23px 0 15px}
+.marea-testers-actions .button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;text-decoration:none}
+.news-page--premium .marea-testers-cta .marea-testers-footnote{margin:16px 0 0;color:#9eb9bd;font-size:11px;line-height:1.6}
+@media(max-width:650px){.marea-testers-cta{padding:23px 19px}.marea-testers-actions{align-items:stretch;flex-direction:column}.marea-testers-actions .button{width:100%;box-sizing:border-box;text-align:center}.news-page--premium .marea-testers-cta p{font-size:13px}}
+@media(prefers-reduced-motion:reduce){.marea-testers-cta *{transition:none!important}}
 </style>
 <style>
 .marea-store-status{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:17px 0 30px}
@@ -57,7 +70,7 @@
     <h1>Marea Studio Composer pone rumbo a Microsoft Store.</h1>
     <p>Estamos preparando el lanzamiento para Windows. Además del Editor de pistas, los modelos locales y Marea Engine, trabajaremos en grabación de micrófono e instrumentos por interfaz de audio y recepción de teclados MIDI. Estas entradas todavía no están en el MSIX preparado.</p>
     <div class="news-meta"><span>MSIX 1.3.22 · versión base</span><span>Nuevo MSIX previsto</span><span>Windows</span><span>IA local</span><span>Marea Engine</span><span>Próximamente</span></div>
-    <div class="news-actions"><a class="button primary" href="/foro/?t=42">Comentar el anuncio →</a><a class="button secondary" href="/software/marea-studio/">Ficha de Marea</a></div>
+    <div class="news-actions"><a class="button primary" href="/foro/?t=41">🌊 Quiero participar en las pruebas →</a><a class="button secondary" href="/foro/?t=42">Comentar las novedades</a></div>
   </div>
   <figure class="news-article-media" data-media-label="MAREA STUDIO · CAMINO A MICROSOFT STORE">
     <img src="/assets/marea/marea-hero-waves.webp?v=20261005-marea-fixed-2" alt="Identidad visual oficial de Marea Studio" style="object-fit:cover;object-position:center">
@@ -113,8 +126,18 @@
 
 <h2>Queremos que la comunidad participe desde A90 Files</h2>
 <p>Marea Studio será una aplicación de creación musical local, pero su comunidad tendrá aquí su casa: novedades verificadas, guía de uso, futuras descargas y un foro donde compartir pruebas, ideas y canciones. La creación musical no dependerá de iniciar sesión ni de mantener la conexión a Internet.</p>
-<div class="news-callout"><strong>¿Qué quieres probar primero?</strong><p>El selector de modelos existentes, la edición por fracciones de compás, las operaciones sobre varios clips, los proyectos de LMMS, el motor propio, la grabación de voces/instrumentos o los teclados MIDI: cuéntanoslo en el foro. Compartiremos el enlace de Microsoft Store en cuanto la publicación se confirme.</p></div>
-<div class="news-actions"><a class="button primary" href="/foro/?t=42">Debatir las novedades →</a><a class="button secondary" href="/foro/?t=41">Proponer mejoras</a><a class="button secondary" href="/descargas/#marea">Estado de disponibilidad</a></div>
+<section class="marea-testers-cta" aria-labelledby="marea-testers-title">
+  <div class="marea-testers-topline"><span class="marea-testers-dot" aria-hidden="true"></span> COMUNIDAD A90 · BUSCAMOS TESTERS</div>
+  <h2 id="marea-testers-title">¿Te apuntas a poner Marea Studio a prueba?</h2>
+  <p>Queremos probar Marea con gente real antes del lanzamiento. Tanto si haces música como si estás empezando, <strong>tu experiencia puede ayudarnos a decidir qué mejorar</strong>: editor de pistas, modelos de IA, importación de audio, proyectos de LMMS y, cuando estén disponibles, grabación e instrumentos MIDI.</p>
+  <p>Entra en el <strong>foro de Marea Studio</strong>, preséntate como tester y cuéntanos qué equipo utilizas, qué te gustaría probar y qué mejorarías. También puedes publicar errores reproducibles, sugerencias o capturas <strong>sin datos privados</strong> cuando tengas una versión de pruebas.</p>
+  <div class="marea-testers-actions">
+    <a class="button primary" href="/foro/?t=41">🌊 Quiero ser tester · Ir al foro →</a>
+    <a class="button secondary" href="/foro/?t=42">Comentar todas las novedades ↗</a>
+  </div>
+  <p class="marea-testers-footnote">La convocatoria recoge interés y feedback; no implica acceso inmediato. Todavía no existe una descarga pública ni hay fecha confirmada. Anunciaremos cómo acceder a builds de prueba una vez estén verificadas.</p>
+</section>
+<div class="news-actions"><a class="button secondary" href="/descargas/#marea">Consultar el estado de descarga ↗</a></div>
 </article>
 </main><footer class="footer shell"><span>© <span id="year"></span> A 90 Files</span><nav><a href="/novedades/">Novedades</a><a href="/software/marea-studio/">Marea Studio</a><a href="/foro/?c=marea-studio">Foro Marea</a></nav></footer>
 <script src="/assets/app.js?v=velocity-20261004-v3" defer></script></body></html>
