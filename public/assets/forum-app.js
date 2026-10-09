@@ -340,6 +340,52 @@ function renderPost(post,topic,{nested=false}={}){
    holder.append(bodyToggle);
    main.append(holder);
  }else main.append(renderedBody);
+ const toolbar=el('div','forum-translation-tools');
+ const translateButton=button(location.pathname.startsWith('/en/')?'🌐 Translate post':'🌐 Traducir mensaje','forum-translate-button',async()=>{
+   const lang=location.pathname.startsWith('/en/')?'en':'es';
+   const existing=main.querySelector('.forum-post-translation');
+   if(existing&&!existing.hidden){
+     existing.hidden=true;
+     main.querySelector('.forum-live-body')?.classList.remove('forum-original-hidden');
+     translateButton.textContent=lang==='en'?'🌐 Translate post':'🌐 Traducir mensaje';
+     return;
+   }
+   if(existing){
+     existing.hidden=false;
+     main.querySelector('.forum-live-body')?.classList.add('forum-original-hidden');
+     translateButton.textContent=lang==='en'?'Show original':'Ver original';
+     return;
+   }
+   translateButton.disabled=true;
+   translateButton.textContent=lang==='en'?'Translating…':'Traduciendo…';
+   try{
+     const d=await api('/api/forum/translate',{method:'POST',body:JSON.stringify({post_id:post.id,target_lang:lang})});
+     if(d.same_language){
+       translateButton.textContent=lang==='en'?'Already in English':'Ya está en español';
+       return;
+     }
+     if(!d.translation)throw new Error(lang==='en'?'No translation was returned.':'No se ha obtenido traducción.');
+     const box=el('section','forum-post-translation');
+     const heading=el('div','forum-post-translation-label',
+       lang==='en'?'🌐 Automatic translation · '+String(d.original_language||'').toUpperCase()+' → EN'
+                  :'🌐 Traducción automática · '+String(d.original_language||'').toUpperCase()+' → ES');
+     const content=el('p','forum-post-translation-text',d.translation);
+     box.append(heading,content);
+     if(d.truncated)box.append(el('small','forum-post-translation-note',
+       lang==='en'?'Long post: only the first 1,400 characters were translated.':'Mensaje largo: solo se han traducido los primeros 1.400 caracteres.'));
+     const original=main.querySelector('.forum-live-body');
+     original?.classList.add('forum-original-hidden');
+     toolbar.after(box);
+     translateButton.textContent=lang==='en'?'Show original':'Ver original';
+   }catch(err){
+     const error=el('span','forum-translation-error',err.message||'Translation unavailable.');
+     toolbar.querySelector('.forum-translation-error')?.remove();toolbar.append(error);
+     translateButton.textContent=lang==='en'?'🌐 Translate post':'🌐 Traducir mensaje';
+   }finally{translateButton.disabled=false}
+ });
+ translateButton.setAttribute('aria-label',location.pathname.startsWith('/en/')?'Translate this post into English':'Traducir este mensaje al español');
+ toolbar.append(translateButton);
+ main.append(toolbar);
  const react=el('div','forum-reactions');
  for(const r of reactions){const count=post.reactions?.counts?.[r]||0;const b=button(`${r} ${count}`,'forum-reaction'+(post.reactions?.mine?.includes(r)?' active':''),()=>reactPost(post.id,r,topic.id));b.setAttribute('aria-pressed',String(post.reactions?.mine?.includes(r)||false));react.append(b)}
  main.append(react);card.append(side,main);return card;

@@ -5,11 +5,13 @@ import {handleExtraAuth} from './oauth-extra.js';
 import {handleHealth} from './health.js';
 import {handleSecurityAuth} from './security-auth-api.js';
 import {handleAnalyticsApi} from './analytics-api.js';
+import {localizeEnglishHtml} from './site-i18n.js';
 
-const FORUM_BUILD='20261009-newest-comments-1';
-const APP_BUILD='20261009-gradient-frame-1';
+const FORUM_BUILD='20261009-forum-translate-1';
+const APP_BUILD='20261009-bilingual-navigation-1';
 const GLOBAL_BUILD='20261007-legal-1';
 const ANALYTICS_BUILD='20261009-pulse-1';
+const LOCALE_BUILD='20261009-a90-locales-1';
 const LEGAL_LINKS='<a class="a90-legal-link" data-a90-legal-link href="/aviso-legal/">Aviso legal</a><a class="a90-legal-link" data-a90-legal-link href="/privacidad/">Privacidad</a><a class="a90-legal-link" data-a90-legal-link href="/cookies/">Cookies</a><a class="a90-legal-link" data-a90-legal-link href="/licencias/">Licencias</a>';
 const SOCIAL_RAIL=`<nav class="a90-social-rail" aria-label="Redes sociales de A 90 por Hora">
 <a class="a90-social-link" href="https://www.facebook.com/a90porhorafb/?locale=es_ES" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.414c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.97H15.83c-1.491 0-1.956.931-1.956 1.887v2.264h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg></a>
@@ -21,6 +23,24 @@ const SOCIAL_RAIL=`<nav class="a90-social-rail" aria-label="Redes sociales de A 
 export default {
   async fetch(request,env,ctx){
     const url=new URL(request.url);
+
+    // Bilingual pages share the original route and live forum data, never duplicate users/posts.
+    if(request.method==='GET' && (url.pathname==='/en'||url.pathname.startsWith('/en/'))){
+      const underlying=url.pathname==='/en'?'/':url.pathname.slice(3)||'/';
+      if(/^\/(?:api|admin|assets|downloads|\.well-known)(?:\/|$)/.test(underlying))
+        return new Response('Not found',{status:404});
+      const canonical=new URL(underlying+url.search,url.origin);
+      const source=await this.fetch(new Request(canonical,request),env,ctx);
+      if(!source.ok || !(source.headers.get('Content-Type')||'').includes('text/html')) return source;
+      const localized=localizeEnglishHtml(await source.text(),url.href);
+      const headers=new Headers(source.headers);
+      headers.delete('Content-Length');
+      headers.delete('Content-Encoding');
+      headers.set('Content-Language','en');
+      headers.set('Cache-Control','no-cache, no-store, must-revalidate');
+      headers.set('Content-Type','text/html; charset=utf-8');
+      return new Response(localized,{status:source.status,headers});
+    }
 
     if(url.pathname==='/assets/auth.js'){
       const original=await env.ASSETS.fetch(request);
@@ -116,6 +136,10 @@ async function injectGlobalUi(response,force=false){
   if(!html.includes('class="a90-social-rail"'))html=html.replace('</body>',`${SOCIAL_RAIL}\n</body>`);
   const socialScript=`<script src="/assets/social-global.js?v=${GLOBAL_BUILD}" defer></script>`;
   if(!html.includes('/assets/social-global.js'))html=html.replace('</body>',`${socialScript}\n</body>`);
+  const localeStyles=`<link rel="stylesheet" href="/assets/site-language.css?v=${LOCALE_BUILD}">`;
+  if(!html.includes('/assets/site-language.css'))html=html.replace('</head>',localeStyles+'\n</head>');
+  const localeScript=`<script src="/assets/site-language.js?v=${LOCALE_BUILD}" defer></script>`;
+  if(!html.includes('/assets/site-language.js'))html=html.replace('</body>',localeScript+'\n</body>');
   const analyticsScript=`<script src="/assets/analytics.js?v=${ANALYTICS_BUILD}" defer></script>`;
   if(!html.includes('/assets/analytics.js'))html=html.replace('</body>',`${analyticsScript}\n</body>`);
   const headers=new Headers(response.headers);

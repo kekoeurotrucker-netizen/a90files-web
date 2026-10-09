@@ -1,0 +1,32 @@
+
+/* A90 premium two-language selector. SVG flags remain recognizable on Windows. */
+.a90-language-switcher{position:relative;z-index:35;flex:0 0 auto;margin-left:8px;font-family:Inter,system-ui,sans-serif}
+.a90-language-switcher summary{height:39px;min-width:90px;padding:0 10px;display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:11px;background:linear-gradient(#10242a,#10242a) padding-box,linear-gradient(110deg,rgba(85,201,216,.75),rgba(232,169,72,.68)) border-box;cursor:pointer;color:#e3f3f3;user-select:none;list-style:none;box-shadow:0 3px 14px rgba(0,0,0,.13);transition:filter .18s}
+.a90-language-switcher summary::-webkit-details-marker{display:none}
+.a90-language-switcher summary:hover{filter:brightness(1.17)}
+.a90-language-switcher summary:focus-visible{outline:2px solid #5dccdc;outline-offset:3px}
+.a90-language-switcher summary strong{font-size:11px;letter-spacing:.055em;font-weight:800}
+.a90-language-current{line-height:0;display:flex;align-items:center}
+.a90-language-flag{width:23px;height:16px;display:block;flex:none;border-radius:3px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.a90-language-chevron{width:12px;height:12px;color:#b6c6c8;transition:transform .2s ease}
+.a90-language-switcher[open] .a90-language-chevron{transform:rotate(180deg)}
+.a90-language-menu{position:absolute;top:calc(100% + 9px);right:0;z-index:40;width:203px;min-width:203px;padding:7px;border:1px solid transparent;border-radius:15px;background:linear-gradient(#10262d,#0a1b21) padding-box,linear-gradient(130deg,#58ccdb,#e4a657) border-box;box-shadow:0 16px 44px rgba(0,0,0,.44),0 0 26px rgba(62,171,182,.08)}
+.a90-language-menu button{appearance:none;border:1px solid transparent;background:transparent;color:#d2e4e5;display:flex;align-items:center;gap:12px;width:100%;padding:10px 11px;cursor:pointer;border-radius:9px;text-align:left;font:inherit}
+.a90-language-menu button:hover,.a90-language-menu button.is-selected{background:linear-gradient(105deg,rgba(73,185,201,.16),rgba(226,161,65,.10));border-color:rgba(106,179,180,.24)}
+.a90-language-menu button:focus-visible{outline:2px solid #66ced9;outline-offset:1px}
+.a90-language-menu button>span{font-size:12px;font-weight:750;line-height:1.25}
+.a90-language-menu button small{display:block;color:#96acb0;font-size:10px;font-weight:450;margin-top:3px}
+.a90-language-menu button .a90-language-flag{height:20px;width:29px}
+.forum-translation-tools{display:flex;align-items:center;gap:10px;margin-top:12px}
+.forum-translate-button{border:1px solid transparent;border-radius:9px;padding:7px 12px;cursor:pointer;font-size:12px;font-weight:650;color:#ccecef;background:linear-gradient(#10242a,#10242a) padding-box,linear-gradient(110deg,rgba(91,205,218,.68),rgba(237,170,65,.52)) border-box}
+.forum-translate-button:hover{filter:brightness(1.15)}
+.forum-translate-button:disabled{opacity:.58;cursor:progress}
+.forum-translation-error{font-size:11px;color:#ebbb78}
+.forum-post-translation{margin-top:10px;padding:14px 16px;border:1px solid transparent;border-radius:12px;color:#e0eded;background:linear-gradient(#10262b,#0c1b21) padding-box,linear-gradient(120deg,rgba(84,198,210,.54),rgba(223,156,61,.5)) border-box}
+.forum-post-translation-label{color:#80c9d4;font-size:10px;font-weight:800;letter-spacing:.09em;margin-bottom:8px}
+.forum-post-translation-text{font-size:13px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere;margin:0}
+.forum-post-translation-note{display:block;margin-top:9px;color:#cba675}
+.forum-live-body.forum-original-hidden{display:none!important}
+@media(max-width:760px){.a90-language-switcher{margin-left:4px}.a90-language-switcher summary{min-width:74px;height:36px;padding:0 7px;gap:5px}.a90-language-flag{width:21px;height:15px}.a90-language-menu{right:0}}
+@media(max-width:400px){.a90-language-switcher summary{min-width:68px}.a90-language-menu{width:185px;min-width:185px}}
+@media(prefers-reduced-motion:reduce){.a90-language-switcher summary,.a90-language-chevron{transition:none}}

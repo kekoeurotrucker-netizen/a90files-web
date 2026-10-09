@@ -20,6 +20,7 @@ export async function handleForumApi(request,env,url){
     if(url.pathname==='/api/forum/users'&&request.method==='GET') return publicUsers(request,env);
     if(url.pathname==='/api/forum/presence'&&request.method==='POST') return presencePing(request,env);
     if(url.pathname==='/api/forum/recent'&&request.method==='GET') return recentActivity(request,env);
+    if(url.pathname==='/api/forum/translate'&&request.method==='POST') return translateForumPost(request,env);
     return respond({error:'Ruta del foro no encontrada.'},404);
   }catch(error){
     console.error('A90 forum error',error?.message||error);
@@ -486,4 +487,64 @@ async function createReport(request,env){
   const r=await rpc(env,s.access,'forum_create_report',{p_topic_id:topicId,p_post_id:postId,p_reason:reason});
   if(!r.res.ok)return respond({error:forumError(r.body,r.res.status)},400,s.refreshed);
   return respond({ok:true,report_id:Number(r.body)||r.body},201,s.refreshed);
+}
+
+
+const AUTO_LANGS={
+  es:new Set('el la los las de del al que por para con como este esta esto hay una uno un es son en su sus se lo te me nos mi si no más pero aquí cuando desde sobre hola gracias mensaje foro puedes ayuda quiero necesito pregunta'.split(' ')),
+  en:new Set('the this that for with you your when what where why how are is it and or from have has can will would should not but there here hello thanks please post forum message help need want'.split(' ')),
+  pt:new Set('não uma um que para por com como este esta isso você vocês obrigado olá mensagem fórum estou temos quando onde'.split(' ')),
+  fr:new Set('une les des est sont pas pour avec dans sur bonjour merci vous nous votre cette comment pourquoi quand message forum'.split(' ')),
+  de:new Set('und der die das ist sind nicht mit für von aber wie wenn ich du sie wir danke hallo bitte einen eine nach'.split(' ')),
+  it:new Set('non una uno per con nel nella come che sono ciao grazie quando questo questa dove perché voi noi il gli'.split(' '))
+};
+function detectPostLanguage(text){
+  const cleaned=String(text||'').replace(/https?:\/\/\S+/g,' ').replace(/(?:\x60{3})[\s\S]*?\x60{3}/g,' ').toLowerCase();
+  const words=(cleaned.match(/\p{L}{2,}/gu)||[]).slice(0,150);
+  if(words.length<3)return 'und';
+  const scores=Object.fromEntries(Object.keys(AUTO_LANGS).map(lang=>[lang,0]));
+  for(const word of words){
+    for(const [lang,set] of Object.entries(AUTO_LANGS))if(set.has(word))scores[lang]++;
+  }
+  const sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+  return sorted[0][1]>=2&&sorted[0][1]>sorted[1][1]?sorted[0][0]:'und';
+}
+async function translateForumPost(request,env){
+  // Translation is opt-in, authenticated, and fetches only an existing visible public post.
+  const s=await visibleContext(request,env);
+  if(!s.user)return respond({error:'Sign in to translate forum messages.'},401,s.refreshed);
+  if(!env.AI)return respond({error:'Translation service is not configured yet.'},503,s.refreshed);
+  let input;try{input=await readJson(request)}catch{return respond({error:'Invalid request.'},400,s.refreshed)}
+  const id=integer(input?.post_id,1,Number.MAX_SAFE_INTEGER);
+  const target=['es','en'].includes(input?.target_lang)?input.target_lang:null;
+  if(!id||!target)return respond({error:'Invalid message or target language.'},400,s.refreshed);
+  const row=await db(env,'/rest/v1/forum_posts?id=eq.'+id+'&is_hidden=eq.false&deleted_at=is.null&select=id,topic_id,body,updated_at&limit=1',s.token);
+  const post=row.res.ok&&Array.isArray(row.body)?row.body[0]:null;
+  if(!post)return respond({error:'The message is not available.'},404,s.refreshed);
+  const topicResult=await db(env,'/rest/v1/forum_topics?id=eq.'+post.topic_id+'&is_hidden=eq.false&select=id&limit=1',s.token);
+  if(!topicResult.res.ok||!Array.isArray(topicResult.body)||!topicResult.body.length)
+    return respond({error:'The conversation is not public.'},404,s.refreshed);
+  const source=detectPostLanguage(post.body);
+  if(source==='und')return respond({error:'Could not reliably detect this message language. Short or multilingual texts may need manual translation.'},422,s.refreshed);
+  if(source===target)return respond({original_language:source,target_language:target,same_language:true,translation:null},200,s.refreshed);
+  // The source post remains untouched. The translated extract is plain text, never executable HTML.
+  const cleaned=String(post.body||'')
+    .replace(/\x60{3}[\s\S]*?\x60{3}/g,'[code omitted]')
+    .replace(/https?:\/\/[^\s)]+/g,'[link]')
+    .replace(/\[(?:\/)?(?:b|i|u|s|quote|code|url|img|color|size|button|center|h2|h3|spoiler)[^\]]*\]/gi,'')
+    .replace(/\s+/g,' ').trim();
+  const excerpt=cleaned.slice(0,1400);
+  if(!excerpt)return respond({error:'This post has no translatable text.'},422,s.refreshed);
+  const cacheKey=new Request('https://a90-i18n-cache.invalid/forum/'+id+'/'+target+'/'+encodeURIComponent(post.updated_at||'initial'));
+  let cached=null;
+  try{cached=await caches.default.match(cacheKey)}catch{}
+  if(cached){const data=await cached.json().catch(()=>null);if(data)return respond(data,200,s.refreshed)}
+  let output;
+  try{output=await env.AI.run('@cf/meta/m2m100-1.2b',{text:excerpt,source_lang:source,target_lang:target})}
+  catch{return respond({error:'Automatic translation is temporarily unavailable.'},503,s.refreshed)}
+  const translated=String(output?.translated_text||output?.translation||output?.answer||'').trim();
+  if(!translated)return respond({error:'The translation service returned no text.'},503,s.refreshed);
+  const data={translation:translated.slice(0,5000),original_language:source,target_language:target,truncated:cleaned.length>excerpt.length,automated:true};
+  try{await caches.default.put(cacheKey,new Response(JSON.stringify(data),{headers:{'Content-Type':'application/json','Cache-Control':'public, max-age=604800'}}))}catch{}
+  return respond(data,200,s.refreshed);
 }

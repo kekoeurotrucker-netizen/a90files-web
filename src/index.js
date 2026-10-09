@@ -25,6 +25,7 @@ export default {
       if(url.pathname==='/api/auth/signup'&&request.method==='POST') return signup(request,env,url);
       if(url.pathname==='/api/auth/logout'&&request.method==='POST') return logout(request,env);
       if(url.pathname==='/api/auth/profile'&&request.method==='POST') return updateProfile(request,env);
+      if(url.pathname==='/api/auth/language'&&request.method==='POST') return setLanguage(request,env);
       return json({error:'Ruta no encontrada.'},404);
     }catch(error){
       console.error('A90 auth error',error?.message||error);
@@ -302,7 +303,7 @@ async function profileData(env,access,user){
   const h=authHeaders(env,access); h.Accept='application/json';
   const id=encodeURIComponent(user.id);
   const [p,r]=await Promise.all([
-    supabase(env,`/rest/v1/profiles?id=eq.${id}&select=id,username,display_name,avatar_url`,{headers:h}),
+    supabase(env,`/rest/v1/profiles?id=eq.${id}&select=id,username,display_name,avatar_url,preferred_language`,{headers:h}),
     supabase(env,`/rest/v1/user_roles?user_id=eq.${id}&select=role`,{headers:h})
   ]);
   const profile=p.res.ok&&Array.isArray(p.body)?p.body[0]||null:null;
@@ -320,6 +321,20 @@ async function session(request,env){
   const response={authenticated:true,user:{id:s.user.id,provider:s.user.app_metadata?.provider||'email',network_name:s.user.user_metadata?.full_name||s.user.user_metadata?.name||'Usuario'},profile,role};
   const headers=s.refreshed?headersWithCookies(s.refreshed):new Headers({'Content-Type':'application/json; charset=utf-8','Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff'});
   return new Response(JSON.stringify(response),{status:200,headers});
+}
+
+async function setLanguage(request,env){
+  const s=await resolveSession(request,env);
+  if(!s.user)return json({error:'Sign in to save your language across devices.'},401);
+  let data;try{data=await readBody(request)}catch{return json({error:'Invalid language settings.'},400)}
+  if(data?.language!=='es'&&data?.language!=='en')return json({error:'Unsupported language.'},400);
+  const h=authHeaders(env,s.access);h.Prefer='return=representation';
+  const {res,body}=await supabase(env,'/rest/v1/profiles?id=eq.'+encodeURIComponent(s.user.id),{
+    method:'PATCH',headers:h,body:JSON.stringify({preferred_language:data.language})
+  });
+  if(!res.ok)return json({error:'Could not save language preference.'},502);
+  const headers=s.refreshed?headersWithCookies(s.refreshed):new Headers({'Content-Type':'application/json; charset=utf-8','Cache-Control':'private, no-store'});
+  return new Response(JSON.stringify({ok:true,language:data.language}),{status:200,headers});
 }
 
 async function updateProfile(request,env){
