@@ -55,8 +55,8 @@
     <img class="news-brand-logo" src="/assets/marea/marea-logo.webp?v=20261005-marea-fixed-2" alt="Marea Studio">
     <div class="news-kicker">09 OCT 2026 · MICROSOFT STORE · PRÓXIMAMENTE</div>
     <h1>Marea Studio Composer pone rumbo a Microsoft Store.</h1>
-    <p>Estamos preparando su primer lanzamiento para Windows. Y no llega solo con un generador musical: el Editor de pistas, la selección múltiple, el reconocimiento de modelos y nuestro motor de audio independiente han dado un salto enorme.</p>
-    <div class="news-meta"><span>MSIX 1.3.22 preparado</span><span>Windows</span><span>IA local</span><span>Marea Engine</span><span>Próximamente</span></div>
+    <p>Estamos preparando el lanzamiento para Windows. Además del Editor de pistas, los modelos locales y Marea Engine, trabajaremos en grabación de micrófono e instrumentos por interfaz de audio y recepción de teclados MIDI. Estas entradas todavía no están en el MSIX preparado.</p>
+    <div class="news-meta"><span>MSIX 1.3.22 · versión base</span><span>Nuevo MSIX previsto</span><span>Windows</span><span>IA local</span><span>Marea Engine</span><span>Próximamente</span></div>
     <div class="news-actions"><a class="button primary" href="/foro/?t=42">Comentar el anuncio →</a><a class="button secondary" href="/software/marea-studio/">Ficha de Marea</a></div>
   </div>
   <figure class="news-article-media" data-media-label="MAREA STUDIO · CAMINO A MICROSOFT STORE">
@@ -67,13 +67,13 @@
 <div class="news-reading-rail"><span>A90 / EN DETALLE</span><nav><a href="#article-content">Leer artículo ↓</a><a href="/foro/?t=42">Debatir en el foro ↗</a></nav></div>
 <article class="news-article-body" id="article-content">
 <h2>Un paso más cerca de Windows Store</h2>
-<p><strong>Marea Studio Composer</strong> ya tiene nombre e identidad reservados en Microsoft Partner Center y una ficha de primer envío creada. Se ha preparado el paquete <strong>MSIX 1.3.22</strong>, de aproximadamente <strong>3,96 GB</strong>, con identidad y comprobaciones de contenido y hashes. Es una versión para tramitar su distribución, no una descarga pública todavía.</p>
+<p><strong>Marea Studio Composer</strong> ya tiene nombre e identidad reservados en Microsoft Partner Center y una ficha de primer envío creada. Se ha preparado el paquete <strong>MSIX 1.3.22</strong>, de aproximadamente <strong>3,96 GB</strong>, con identidad y comprobaciones de contenido y hashes. <strong>Esta compilación reproduce audio e importa archivos MIDI, pero no graba por micrófono ni por interfaz de audio ni recibe MIDI en directo.</strong> Para incorporar esas entradas harán falta cambios de código, pruebas en Windows y generar un <strong>nuevo MSIX</strong>. Todavía no hay descarga pública.</p>
 <div class="marea-store-status" aria-label="Estado de lanzamiento de Marea Studio Composer">
   <div><small>01 · LISTO</small><strong>Identidad de Marea Studio Composer</strong><p>Producto reservado y configuración de Microsoft Partner Center iniciada.</p></div>
-  <div><small>02 · PREPARADO</small><strong>MSIX 1.3.22 · aprox. 3,96 GB</strong><p>Paquete generado para la Store. Falta confirmar instalación en Windows y resultado del envío.</p></div>
+  <div><small>02 · PREPARADO</small><strong>MSIX 1.3.22 · paquete base</strong><p>Paquete generado de unos 3,96 GB. Se sustituirá por un nuevo MSIX tras implementar y verificar la grabación de audio y MIDI en directo.</p></div>
   <div><small>03 · PENDIENTE</small><strong>Certificación y publicación</strong><p>Microsoft todavía no ha aprobado ni puesto a disposición del público esta versión.</p></div>
 </div>
-<div class="news-callout"><strong>Próximamente, pero todavía no descargable</strong><p>Estamos preparando la subida y las comprobaciones del paquete. No anunciamos una fecha cerrada ni enlazamos un archivo interno como si fuera una versión pública. El enlace oficial se activará cuando Microsoft Store confirme su disponibilidad.</p></div>
+<div class="news-callout"><strong>Próximamente, pero todavía no descargable</strong><p>Estamos preparando las nuevas entradas de audio y MIDI antes del siguiente paquete. El MSIX 1.3.22 no incluye todavía esas funciones. No anunciamos una fecha cerrada ni enlazamos un archivo interno como si fuera una versión pública. El enlace oficial se activará cuando Microsoft Store confirme su disponibilidad.</p></div>
 
 <h2>Todo lo nuevo: editar música de verdad, sin perder la sencillez</h2>
 <p>Queremos que <strong>Crear</strong> continúe siendo la opción directa para generar música con IA local. Pero quienes quieran trabajar cada compás encontrarán una experiencia de edición cada vez más completa.</p>
@@ -86,6 +86,14 @@
   <div class="marea-update-card"><small>06 · REMIX Y AUDIO PROPIO</small><h3>IA solo donde aporte valor</h3><p>Importación de audio, trabajo por frases, cortes y repeticiones; una dirección de desarrollo que permite pedir generación de fragmentos concretos y combinar el resultado con tus propias pistas.</p></div>
 </div>
 
+<h2>Próxima incorporación: grabación real y teclados MIDI</h2>
+<p>La siguiente versión busca dar otro salto: permitir <strong>grabar voz y instrumentos conectados al ordenador</strong>, además de <strong>recibir notas MIDI en directo</strong> para trabajar desde un teclado controlador. Estas funciones están en fase de implementación, por lo que no se deben confundir con capacidades ya disponibles en el MSIX 1.3.22.</p>
+<div class="marea-update-grid">
+ <div class="marea-update-card"><small>07 · EN DESARROLLO · AUDIO</small><h3>Micrófonos e interfaces de audio</h3><p>Prepararemos selección de dispositivo y entrada, permisos de micrófono, grabación de voz, guitarras o instrumentos por interfaz, y conversión de las tomas en clips editables. Antes del lanzamiento habrá que validar canales, estabilidad, sincronización y calidad en Windows.</p></div>
+ <div class="marea-update-card"><small>08 · EN DESARROLLO · MIDI</small><h3>Teclados MIDI en directo</h3><p>El objetivo es reconocer controladores MIDI conectados, permitir elegir la entrada y registrar notas en tiempo real en el editor. <strong>Importar un archivo MIDI ya es posible; tocar y grabar desde un teclado conectado todavía no.</strong></p></div>
+</div>
+<div class="news-callout"><strong>Estado real del paquete</strong><p><strong>MSIX 1.3.22:</strong> reproduce audio e importa archivos MIDI. <strong>Pendiente:</strong> grabación de audio desde dispositivos físicos y recepción MIDI en directo. Cuando estén implementadas y probadas, generaremos otro MSIX y repetiremos las comprobaciones antes del envío a Microsoft Store.</p></div>
+
 <h2>Marea Engine: estamos construyendo nuestro propio motor musical</h2>
 <p>La evolución no afecta solo a la apariencia. <strong>Marea Engine</strong> es nuestro proyecto de motor de audio independiente: buscamos que Marea pueda organizar, importar, reproducir, automatizar y exportar proyectos con tecnología propia. No estamos incorporando código de LMMS dentro de Marea ni convirtiendo LMMS en su motor principal.</p>
 <p>En la rama experimental <strong>Marea Engine 0.5</strong> ya se verificaron funciones concretas de importación y audio en Linux, con <strong>siete comprobaciones superadas y sanitizadores</strong>. Esa validación <strong>no equivale a pruebas superadas en Windows</strong>, ni convierte automáticamente las capacidades del motor experimental en funciones de la edición de Store.</p>
@@ -97,13 +105,15 @@
   <div class="marea-planned"><strong>Instrumentos y sonidos LMMS</strong><p>Compatibilidad parcial y experimental: previsualizaciones de Triple Oscillator y Kicker. No es emulación completa de LMMS ni compatibilidad sonora exacta con sus presets.</p></div>
   <div class="marea-planned"><strong>VST3 / plugins</strong><p>Hay interfaces y adaptadores preliminares del motor, <strong>pero todavía no existe un host VST3 completo y validado</strong>. No anunciamos carga general de plugins como una función disponible.</p></div>
   <div class="marea-planned"><strong>WASAPI / ASIO</strong><p>WASAPI por eventos tiene una implementación inicial pendiente de comprobar en Windows. ASIO queda como vía opcional futura que necesita pruebas reales; no se incluye como compatibilidad confirmada.</p></div>
-  <div class="marea-planned"><strong>MIDI y otros proyectos</strong><p>La interoperabilidad MIDI y la ampliación a más formatos están en la hoja de ruta. No anunciamos importación/exportación MIDI integral como función final mientras no se haya verificado.</p></div>
+  <div><strong>Importación de archivos MIDI</strong><p><strong>Disponible en el MSIX 1.3.22.</strong> Permite abrir archivos MIDI existentes; esto no significa que reciba eventos de teclados en directo.</p></div>
+  <div class="marea-planned"><strong>Entrada y grabación MIDI en directo</strong><p>Pendientes de implementación, conexión de dispositivos y validación en Windows. Necesitarán un nuevo MSIX.</p></div>
+  <div class="marea-planned"><strong>Grabación de micrófono e interfaces de audio</strong><p>En desarrollo. Reproducción/importación de audio no equivalen a capturar una voz o un instrumento desde una entrada física.</p></div>
 </div>
 <p class="marea-store-micro">Nuestro enfoque será <strong>Marea como estudio principal</strong>, con importadores y alternativas de compatibilidad cuando un formato externo no pueda reproducirse de forma completa. Los formatos externos conservan las limitaciones propias de cada proyecto.</p>
 
 <h2>Queremos que la comunidad participe desde A90 Files</h2>
 <p>Marea Studio será una aplicación de creación musical local, pero su comunidad tendrá aquí su casa: novedades verificadas, guía de uso, futuras descargas y un foro donde compartir pruebas, ideas y canciones. La creación musical no dependerá de iniciar sesión ni de mantener la conexión a Internet.</p>
-<div class="news-callout"><strong>¿Qué quieres probar primero?</strong><p>El selector de modelos existentes, la edición por fracciones de compás, las operaciones sobre varios clips, los proyectos de LMMS o nuestro motor independiente: cuéntanoslo en el foro. Compartiremos el enlace de Microsoft Store en cuanto la publicación se confirme.</p></div>
+<div class="news-callout"><strong>¿Qué quieres probar primero?</strong><p>El selector de modelos existentes, la edición por fracciones de compás, las operaciones sobre varios clips, los proyectos de LMMS, el motor propio, la grabación de voces/instrumentos o los teclados MIDI: cuéntanoslo en el foro. Compartiremos el enlace de Microsoft Store en cuanto la publicación se confirme.</p></div>
 <div class="news-actions"><a class="button primary" href="/foro/?t=42">Debatir las novedades →</a><a class="button secondary" href="/foro/?t=41">Proponer mejoras</a><a class="button secondary" href="/descargas/#marea">Estado de disponibilidad</a></div>
 </article>
 </main><footer class="footer shell"><span>© <span id="year"></span> A 90 Files</span><nav><a href="/novedades/">Novedades</a><a href="/software/marea-studio/">Marea Studio</a><a href="/foro/?c=marea-studio">Foro Marea</a></nav></footer>
