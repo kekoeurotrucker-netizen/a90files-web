@@ -8,7 +8,7 @@ import {handleAnalyticsApi} from './analytics-api.js';
 import {localizeEnglishHtml} from './site-i18n.js';
 
 const FORUM_BUILD='20261009-forum-translate-1';
-const APP_BUILD='20261009-bilingual-navigation-1';
+const APP_BUILD='20261009-gradient-nav-1';
 const GLOBAL_BUILD='20261007-legal-1';
 const ANALYTICS_BUILD='20261009-pulse-1';
 const LOCALE_BUILD='20261009-a90-locales-2';
@@ -126,6 +126,8 @@ async function injectGlobalUi(response,force=false){
   let html=await response.text();
   if(!html.includes('</body>')&&!html.includes('</head>'))return response;
   html=injectLegalFooter(html);
+  // Refresh the authored header stylesheet version for immediate visibility on every page.
+  html=html.replace(/(\/assets\/header-velocity\.css\?v=)[^"']+/g,'$1'+'20261009-gradient-nav-1');
   const appScript=`<script src="/assets/app.js?v=${APP_BUILD}" defer></script>`;
   if(/<script[^>]+src=["']\/assets\/app\.js(?:\?[^"']*)?["'][^>]*><\/script>/i.test(html)){
     html=html.replace(/<script[^>]+src=["']\/assets\/app\.js(?:\?[^"']*)?["'][^>]*><\/script>/i,appScript);

@@ -9,7 +9,7 @@ addStylesheet('/assets/auth-icons.css');
 addStylesheet('/assets/auth-extra.css?v=20261009-user-notifications-1');
 addStylesheet('/assets/software-menu.css?v=20261009-gradient-frame-1');
 addStylesheet('/assets/social-global.css?v=20260916-social-3');
-addStylesheet('/assets/header-velocity.css?v=20261004-v3');
+addStylesheet('/assets/header-velocity.css?v=20261009-gradient-nav-1');
 addStylesheet('/assets/staff-notifications.css?v=20261005-1');
 
 const softwareProjects=[

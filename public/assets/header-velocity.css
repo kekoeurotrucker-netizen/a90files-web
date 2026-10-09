@@ -234,3 +234,125 @@
   .topbar .topbar-inner .a90-account-label{max-width:54px;font-size:10px}
 }
 @media(prefers-reduced-motion:reduce){.topbar .brand-mark,.topbar .a90-account-button{transition:none}}
+
+
+/* A90 Files · Cabecera 2026-10-09
+   Uniform cyan → amber gradient frames for the real navbar components.
+   Header-only; no behavioral changes or redesign of existing dropdowns. */
+.topbar {
+  --a90-header-frame: linear-gradient(108deg, #56cfdd 0%, #77bec1 42%, #efb362 100%);
+  --a90-header-frame-soft: linear-gradient(108deg, rgba(86,207,221,.82) 0%,rgba(121,186,187,.65) 48%,rgba(239,179,98,.83) 100%);
+  --a90-header-surface: linear-gradient(125deg, rgba(13,38,46,.97), rgba(8,24,31,.98));
+  --a90-header-surface-hover: linear-gradient(125deg, rgba(18,53,62,.97), rgba(11,35,42,.98));
+}
+/* Preserve the former overall sizes while reserving a 1px invisible frame for hover. */
+.topbar .topbar-inner .nav > a,
+.topbar .topbar-inner .nav > .software-nav > summary {
+  box-sizing:border-box;
+  border:1px solid transparent;
+  padding:7px 10px;
+  border-radius:9px;
+  background:transparent;
+  box-shadow:none;
+  transition:color .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+.topbar .topbar-inner .nav > a:is(:hover,:focus-visible,.active,[aria-current="page"]),
+.topbar .topbar-inner .nav > .software-nav > summary:is(:hover,:focus-visible,.active),
+.topbar .topbar-inner .nav > .software-nav[open] > summary {
+  border-color:transparent;
+  background:
+    var(--a90-header-surface) padding-box,
+    var(--a90-header-frame-soft) border-box;
+  color:#f1fbfc;
+  box-shadow:0 4px 13px rgba(0,0,0,.17);
+}
+.topbar .topbar-inner .nav > a:is(:hover,:focus-visible),
+.topbar .topbar-inner .nav > .software-nav > summary:is(:hover,:focus-visible),
+.topbar .topbar-inner .nav > .software-nav[open] > summary {
+  background:
+    var(--a90-header-surface-hover) padding-box,
+    var(--a90-header-frame) border-box;
+  box-shadow:0 5px 17px rgba(0,0,0,.23),0 0 13px rgba(77,193,207,.07);
+}
+.topbar .topbar-inner .nav > a.active,
+.topbar .topbar-inner .nav > a[aria-current="page"],
+.topbar .topbar-inner .nav > .software-nav > summary.active {
+  background:
+    linear-gradient(125deg,rgba(17,51,57,.98),rgba(27,35,32,.97)) padding-box,
+    var(--a90-header-frame) border-box;
+  color:#fff7e9;
+  font-weight:650;
+  box-shadow:0 5px 14px rgba(0,0,0,.15);
+}
+.topbar .topbar-inner .nav > a.active:hover,
+.topbar .topbar-inner .nav > a[aria-current="page"]:hover,
+.topbar .topbar-inner .nav > .software-nav > summary.active:hover {
+  background:
+    var(--a90-header-surface-hover) padding-box,
+    var(--a90-header-frame) border-box;
+}
+/* Read-only status pill, notification trigger, account/avatar shell and language picker. */
+.topbar .topbar-inner .header-status,
+.topbar .topbar-inner .a90-staff-notify-btn,
+.topbar .topbar-inner .a90-account-button,
+.topbar .topbar-inner .a90-language-switcher > summary {
+  border:1px solid transparent;
+  background:
+    var(--a90-header-surface) padding-box,
+    var(--a90-header-frame-soft) border-box;
+  box-shadow:inset 0 1px 0 rgba(237,251,251,.055),0 3px 12px rgba(0,0,0,.16);
+}
+.topbar .topbar-inner .a90-staff-notify-btn:is(:hover,:focus-visible,[aria-expanded="true"]),
+.topbar .topbar-inner .a90-account-button:is(:hover,:focus-visible),
+.topbar .topbar-inner .a90-language-switcher > summary:is(:hover,:focus-visible),
+.topbar .topbar-inner .a90-language-switcher[open] > summary {
+  border-color:transparent;
+  background:
+    var(--a90-header-surface-hover) padding-box,
+    var(--a90-header-frame) border-box;
+  color:#ecfbfc;
+  box-shadow:0 7px 18px rgba(0,0,0,.22),0 0 12px rgba(85,205,218,.10);
+}
+.topbar .topbar-inner .a90-account-button.is-authenticated,
+.topbar .topbar-inner .a90-account-button[data-account-role="admin"],
+.topbar .topbar-inner .a90-account-button[data-account-role="super_admin"],
+.topbar .topbar-inner .a90-staff-notify-btn.has-unread {
+  border-color:transparent;
+  background:
+    var(--a90-header-surface) padding-box,
+    var(--a90-header-frame) border-box;
+}
+.topbar .topbar-inner .a90-account-button.is-authenticated:hover,
+.topbar .topbar-inner .a90-account-button[data-account-role="admin"]:hover,
+.topbar .topbar-inner .a90-account-button[data-account-role="super_admin"]:hover,
+.topbar .topbar-inner .a90-staff-notify-btn.has-unread:hover {
+  background:
+    var(--a90-header-surface-hover) padding-box,
+    var(--a90-header-frame) border-box;
+}
+.topbar .topbar-inner .a90-language-switcher > summary {transition:filter .18s ease, box-shadow .18s ease}
+.topbar .topbar-inner .a90-language-switcher > summary:hover {filter:brightness(1.05)}
+/* Mobile drawer and menu button: matching hover, without changing menu behavior. */
+.topbar .topbar-inner .menu-button,
+.mobile-nav > a,
+.mobile-nav > .mobile-software-nav > summary {
+  border:1px solid transparent;
+  background:
+    linear-gradient(#0d2832,#0d2832) padding-box,
+    var(--a90-header-frame-soft,linear-gradient(108deg,rgba(86,207,221,.8),rgba(239,179,98,.8))) border-box;
+}
+.topbar .topbar-inner .menu-button:is(:hover,:focus-visible,[aria-expanded="true"]),
+.mobile-nav > a:is(:hover,:focus-visible,.active),
+.mobile-nav > .mobile-software-nav > summary:is(:hover,:focus-visible),
+.mobile-nav > .mobile-software-nav[open] > summary {
+  border-color:transparent;
+  background:
+    linear-gradient(125deg,#143640,#0a2530) padding-box,
+    linear-gradient(108deg,#56cfdd,#efb362) border-box;
+  color:#f4fcfd;
+}
+@media(prefers-reduced-motion:reduce){
+  .topbar .topbar-inner .nav > a,
+  .topbar .topbar-inner .nav > .software-nav > summary,
+  .topbar .topbar-inner .a90-language-switcher > summary {transition:none}
+}
