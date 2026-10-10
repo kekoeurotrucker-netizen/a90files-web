@@ -134,3 +134,14 @@
   .feature-news-ticker-window{mask-image:none}
   .feature-news-cta,.feature-news-control,.feature-news-dot{transition:none}
 }
+
+/* 2026-10-10: restore visibility and photographic treatment of real A90 cover art. */
+.home .hero-panel--news .feature-news-photo img{
+  filter:saturate(1.06) brightness(.95) contrast(1.055);
+}
+.home .hero-panel--news .feature-news-slide--marea .feature-news-photo img{
+  filter:saturate(1.10) brightness(.91) contrast(1.06);
+}
+.home .hero-panel--news .feature-news-slide--mystery .feature-news-photo img{
+  filter:saturate(.94) brightness(.91) contrast(1.06);
+}
