@@ -1,5 +1,12 @@
 // Additional hand-reviewed English UI, feature and news copy.
 export const A90_EN_MORE = {
+  "Surviving the Fallout: un proyecto futuro": "Surviving the Fallout: a future project",
+  "Las bases ya están puestas. Algo está tomando forma en A 90 Files. Por ahora, no revelamos más.": "The foundations are in place. Something is taking shape at A 90 Files. For now, that's all we'll reveal.",
+  "Juegos · Un misterio comienza": "Games · A mystery begins",
+  "Surviving": "Surviving",
+  "the Fallout.": "the Fallout.",
+  "Un futuro proyecto de A 90 Files. Sus bases ya están puestas. El resto seguirá siendo un misterio… por ahora.": "A future A 90 Files project. Its foundations are in place. The rest remains a mystery... for now.",
+  "Descubrir la primera pista": "Discover the first clue",
   "Marea Studio · Editor de pistas": "Marea Studio · Track Editor",
   "Escuchar cómo avanza": "Hear the progress",
   "Descubrir la evolución": "Explore the evolution",
