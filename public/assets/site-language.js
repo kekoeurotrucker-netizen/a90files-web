@@ -9,6 +9,12 @@ function remember(lang){try{localStorage.setItem(LOCALE_KEY,lang)}catch{}}
 function localizedPath(path,lang){
   if(!path||path.startsWith('//'))return path;
   const canonical=path.replace(/^\/en(?=\/|$)/,'')||'/';
+  // Switch between true ES/EN forum slugs for the same category or topic.
+  const currentForumEs=document.documentElement.dataset.a90ForumEsPath;
+  const currentForumEn=document.documentElement.dataset.a90ForumEnPath;
+  if(currentForumEs&&currentForumEn&&
+     (path===location.pathname||path===currentForumEs||path===currentForumEn))
+    return lang==='en'?currentForumEn:currentForumEs;
   if((/^\/(?:api|assets|downloads|\.well-known)(?:\/|$)/.test(canonical) || (canonical.startsWith('/admin/')&&canonical!=='/admin/analytics/'))||/^\/favicon/.test(canonical))return canonical;
   return lang==='en'?'/en'+(canonical==='/'?'/':canonical):canonical;
 }

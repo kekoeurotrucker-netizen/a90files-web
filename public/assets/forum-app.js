@@ -24,6 +24,18 @@ function avatarNode(profile){const box=el('div','forum-post-avatar');const raw=p
 function setTitle(value){document.title=value?`${value} · Foro · A 90 Files`:'Foro · A 90 Files'}
 
 function button(label,className,fn){const b=el('button',className,label);b.type='button';if(fn)b.addEventListener('click',fn);return b}
+const forumLocale=location.pathname.startsWith('/en/foro/')?'en':'es';
+const forumRoot=forumLocale==='en'?'/en/foro/':'/foro/';
+function categoryHref(cat){
+ const slug=typeof cat==='string'?cat:(forumLocale==='en'?(cat?.slug_en||cat?.slug):cat?.slug);
+ return slug?forumRoot+encodeURIComponent(slug)+'/':forumRoot;
+}
+function topicHref(topic,cat){
+ if(!topic||!cat)return forumRoot;
+ const slug=forumLocale==='en'?(topic.slug_en||topic.slug):(topic.slug||topic.slug_en);
+ return slug?categoryHref(cat)+encodeURIComponent(slug)+'/':forumRoot+'?t='+encodeURIComponent(topic.id);
+}
+
 function linkButton(label,href,className='forum-live-back'){const a=el('a',className,label);a.href=href;return a}
 function status(message,type=''){const p=el('p','forum-live-status'+(type?' '+type:''),message);return p}
 
@@ -104,7 +116,7 @@ async function renderBoard({setPageTitle=true}={}){
   const head=el('header','forum-section-head');const left=el('div');const code=el('span','section-code',parent.slug==='normas-y-avisos'?'!':String(parent.name).slice(0,3).toUpperCase());const copy=el('div');copy.append(el('small','',parent.parent_id?'SUBFORO':'COMUNIDAD'));copy.append(el('h2','',parent.name));left.append(code,copy);head.append(left,el('span','section-note',parent.description||''));article.append(head);
   const list=el('div','subforum-list');const sub=children.get(String(parent.id))||[];const rows=sub.length?sub:[parent];
   rows.forEach(cat=>{
-    const st=stats[String(cat.id)]||{topics:0,last_post_at:null};const row=button('','subforum live-subforum',()=>{location.href=`/foro/?c=${encodeURIComponent(cat.slug)}`});
+    const st=stats[String(cat.id)]||{topics:0,last_post_at:null};const row=button('','subforum live-subforum',()=>{location.href=categoryHref(cat)});
     row.removeAttribute('aria-label');const icon=el('span','subforum-icon',cat.is_locked?'🔒':'#');const main=el('div');main.append(el('strong','',cat.name),el('p','',cat.description||''));const meta=el('span','empty-state',st.topics?`${st.topics} tema${st.topics===1?'':'s'}${st.last_post_at?` · ${fmtDate(st.last_post_at)}`:''}`:'Sin temas');row.append(icon,main,meta);list.append(row);
   });
   article.append(list);board.append(article);
@@ -120,9 +132,9 @@ async function renderTopics(slug,page=1){
  const actions=el('div','forum-live-actions');actions.append(button('Nuevo tema','forum-live-primary',async()=>{const auth=await authState();if(!auth){openLogin();return}openComposer({mode:'topic',category:data.category})}));head.append(titleWrap,actions);view.append(head);
  const list=el('div','forum-topic-list');
  if(!data.topics?.length)list.append(status('Todavía no hay temas. Puedes abrir el primero cuando hayas iniciado sesión.','empty'));
- for(const t of data.topics||[]){const a=el('a','forum-topic-row');a.href=`/foro/?t=${t.id}`;const icon=el('span','forum-topic-icon',t.is_pinned?'📌':t.is_locked?'🔒':'#');const main=el('div','forum-topic-main');const top=el('div','forum-topic-title');top.append(el('strong','',t.title));if(t.is_pinned)top.append(el('span','forum-chip','FIJADO'));if(t.is_locked)top.append(el('span','forum-chip','CERRADO'));main.append(top,el('small','',`${nameOf(t.author)} · ${roleName(t.author?.role)} · ${fmtDate(t.created_at)}`));const meta=el('div','forum-topic-meta');meta.append(el('b','',String(t.replies||0)),el('span','',` respuesta${t.replies===1?'':'s'}`),el('small','',fmtDate(t.last_post_at)));a.append(icon,main,meta);list.append(a)}
+ for(const t of data.topics||[]){const a=el('a','forum-topic-row');a.href=topicHref(t,data.category);const icon=el('span','forum-topic-icon',t.is_pinned?'📌':t.is_locked?'🔒':'#');const main=el('div','forum-topic-main');const top=el('div','forum-topic-title');top.append(el('strong','',t.title));if(t.is_pinned)top.append(el('span','forum-chip','FIJADO'));if(t.is_locked)top.append(el('span','forum-chip','CERRADO'));main.append(top,el('small','',`${nameOf(t.author)} · ${roleName(t.author?.role)} · ${fmtDate(t.created_at)}`));const meta=el('div','forum-topic-meta');meta.append(el('b','',String(t.replies||0)),el('span','',` respuesta${t.replies===1?'':'s'}`),el('small','',fmtDate(t.last_post_at)));a.append(icon,main,meta);list.append(a)}
  view.append(list);
- const pager=el('nav','forum-live-pager');if(page>1)pager.append(linkButton('← Anterior',`/foro/?c=${encodeURIComponent(slug)}&p=${page-1}`,'forum-live-secondary'));if(data.has_more)pager.append(linkButton('Siguiente →',`/foro/?c=${encodeURIComponent(slug)}&p=${page+1}`,'forum-live-secondary'));view.append(pager);target.append(view);
+ const pager=el('nav','forum-live-pager');if(page>1)pager.append(linkButton('← Anterior',categoryHref(data.category)+'?p='+(page-1),'forum-live-secondary'));if(data.has_more)pager.append(linkButton('Siguiente →',categoryHref(data.category)+'?p='+(page+1),'forum-live-secondary'));view.append(pager);target.append(view);
  await renderBoard({setPageTitle:false});
  target.scrollIntoView({block:'start',behavior:'auto'});
 }
@@ -131,7 +143,7 @@ async function renderTopic(id){
  activeReplyTarget=null;
  const target=showFocus();loading('Cargando conversación…',target);
  const data=await api(`/api/forum/topic?id=${id}`);setTitle(data.topic?.title||'Tema');await authState();
- target.replaceChildren();const view=el('section','forum-live-view');const head=el('header','forum-live-view-head');const titleWrap=el('div');titleWrap.append(linkButton(`← ${data.category?.name||'Foro'}`,`/foro/?c=${encodeURIComponent(data.category?.slug||'')}`));const badges=el('div','forum-topic-title');badges.append(el('h1','',data.topic.title));if(data.topic.is_pinned)badges.append(el('span','forum-chip','FIJADO'));if(data.topic.is_locked)badges.append(el('span','forum-chip','CERRADO'));titleWrap.append(badges,el('small','',`${nameOf(data.topic.author)} · ${fmtDate(data.topic.created_at)}`));head.append(titleWrap);view.append(head);
+ target.replaceChildren();const view=el('section','forum-live-view');const head=el('header','forum-live-view-head');const titleWrap=el('div');titleWrap.append(linkButton(`← ${data.category?.name||'Foro'}`,categoryHref(data.category)));const badges=el('div','forum-topic-title');badges.append(el('h1','',data.topic.title));if(data.topic.is_pinned)badges.append(el('span','forum-chip','FIJADO'));if(data.topic.is_locked)badges.append(el('span','forum-chip','CERRADO'));titleWrap.append(badges,el('small','',`${nameOf(data.topic.author)} · ${fmtDate(data.topic.created_at)}`));head.append(titleWrap);view.append(head);
  const conversationWrap=el('section','forum-conversation-wrap');
  const conversationBar=el('div','forum-conversation-bar');
  conversationBar.append(el('span','forum-conversation-label','ORDENAR COMENTARIOS'));
@@ -467,7 +479,7 @@ function makeMiniToolbar(textarea){
 function openComposer({mode,category}){
  document.querySelector('.forum-compose-overlay')?.remove();const overlay=el('div','forum-compose-overlay');const modal=el('section','forum-compose-modal');const head=el('header','forum-compose-head');head.append(el('div','',''),button('×','forum-compose-close',()=>overlay.remove()));head.firstChild.append(el('small','',mode==='topic'?'NUEVO TEMA':'RESPUESTA'),el('h2','',category?.name||'Foro'));modal.append(head);
  let title=null;if(mode==='topic'){title=el('input','forum-live-input');title.maxLength=180;title.placeholder='Título del tema';modal.append(title)}
- const ta=el('textarea','forum-live-textarea');ta.maxLength=20000;ta.placeholder='Escribe tu mensaje…';const preview=el('div','forum-live-preview');ta.addEventListener('input',()=>preview.replaceChildren(renderBody(ta.value)));modal.append(makeMiniToolbar(ta),ta,preview);const foot=el('footer','forum-compose-foot');const msg=el('span','forum-compose-message');const send=button('Publicar tema','forum-live-primary',async()=>{const body=ta.value.trim();const subject=title?.value.trim()||'';if(!body||subject.length<3){msg.textContent='Escribe un título y un mensaje.';return}send.disabled=true;send.textContent='Publicando…';try{const d=await api('/api/forum/topic',{method:'POST',body:JSON.stringify({category_id:category.id,title:subject,body})});location.href=`/foro/?t=${encodeURIComponent(d.topic_id)}`}catch(e){msg.textContent=e.message;send.disabled=false;send.textContent='Publicar tema'}});foot.append(msg,send);modal.append(foot);overlay.append(modal);overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()});document.body.append(overlay);title?.focus();
+ const ta=el('textarea','forum-live-textarea');ta.maxLength=20000;ta.placeholder='Escribe tu mensaje…';const preview=el('div','forum-live-preview');ta.addEventListener('input',()=>preview.replaceChildren(renderBody(ta.value)));modal.append(makeMiniToolbar(ta),ta,preview);const foot=el('footer','forum-compose-foot');const msg=el('span','forum-compose-message');const send=button('Publicar tema','forum-live-primary',async()=>{const body=ta.value.trim();const subject=title?.value.trim()||'';if(!body||subject.length<3){msg.textContent='Escribe un título y un mensaje.';return}send.disabled=true;send.textContent='Publicando…';try{const d=await api('/api/forum/topic',{method:'POST',body:JSON.stringify({category_id:category.id,title:subject,body})});location.href=forumRoot+'?t='+encodeURIComponent(d.topic_id)}catch(e){msg.textContent=e.message;send.disabled=false;send.textContent='Publicar tema'}});foot.append(msg,send);modal.append(foot);overlay.append(modal);overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()});document.body.append(overlay);title?.focus();
 }
 
 async function route(){
@@ -475,6 +487,14 @@ async function route(){
   const q=new URLSearchParams(location.search);const topicId=Number(q.get('t'));const category=q.get('c');const page=pageNumber(q.get('p'));
   if(Number.isSafeInteger(topicId)&&topicId>0)return renderTopic(topicId);
   if(category&&/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(category))return renderTopics(category,page);
+  const path=location.pathname.replace(/^\/(?:en\/)?foro\/?/,'').split('/').filter(Boolean);
+  if(path.length===1||path.length===2){
+   const qp=new URLSearchParams({lang:forumLocale,category:path[0]});
+   if(path[1])qp.set('topic',path[1]);
+   const result=await api('/api/forum/resolve?'+qp);
+   if(path[1])return renderTopic(result.topic_id);
+   return renderTopics(result.category.slug,page);
+  }
   hideFocus();return renderBoard();
  }catch(e){fail(e)}
 }

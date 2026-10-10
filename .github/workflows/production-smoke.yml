@@ -121,4 +121,25 @@ jobs:
           code="$(status_request translate_anon -X POST "$BASE_URL/api/forum/translate" -H "Origin: $BASE_URL" -H 'Content-Type: application/json' --data '{"post_id":1,"target_lang":"en"}')"
           test "$code" = '401' || { cat "$tmp/translate_anon.body"; echo "Expected 401, got $code"; exit 1; }
 
+          echo '11/11 Bilingual forum keyword URLs and legacy redirects'
+          request forum_slug_es "$BASE_URL/foro/marea-studio/politica-de-privacidad/"
+          grep -q 'data-a90-forum-es-path="/foro/marea-studio/politica-de-privacidad/"' "$tmp/forum_slug_es.body"
+          request forum_slug_en "$BASE_URL/en/foro/marea-studio/privacy-policy/"
+          grep -q 'data-a90-forum-en-path="/en/foro/marea-studio/privacy-policy/"' "$tmp/forum_slug_en.body"
+          grep -q 'hreflang="es".*/foro/marea-studio/politica-de-privacidad/' "$tmp/forum_slug_en.body"
+          request forum_category_es "$BASE_URL/foro/marea-studio/"
+          request forum_category_en "$BASE_URL/en/foro/marea-studio/"
+          request resolve_es "$BASE_URL/api/forum/resolve?lang=es&category=marea-studio&topic=politica-de-privacidad"
+          grep -q '"topic_id":43' "$tmp/resolve_es.body"
+          request resolve_en "$BASE_URL/api/forum/resolve?lang=en&category=marea-studio&topic=privacy-policy"
+          grep -q '"topic_id":43' "$tmp/resolve_en.body"
+          code="$(status_request forum_old_id "$BASE_URL/foro/?t=43")"
+          test "$code" = '301' || { echo "Legacy Spanish link did not redirect: $code"; exit 1; }
+          grep -qi '^location:.*\/foro\/marea-studio\/politica-de-privacidad\/' "$tmp/forum_old_id.headers"
+          code="$(status_request forum_old_en "$BASE_URL/en/foro/?t=43")"
+          test "$code" = '301' || { echo "Legacy English link did not redirect: $code"; exit 1; }
+          grep -qi '^location:.*\/en\/foro\/marea-studio\/privacy-policy\/' "$tmp/forum_old_en.headers"
+          code="$(status_request forum_missing "$BASE_URL/foro/marea-studio/no-existe-este-tema/")"
+          test "$code" = '404' || { echo "Missing forum topic should 404: $code"; exit 1; }
+
           echo 'Production smoke tests passed.'

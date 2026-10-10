@@ -7,7 +7,7 @@ import {handleSecurityAuth} from './security-auth-api.js';
 import {handleAnalyticsApi} from './analytics-api.js';
 import {localizeEnglishHtml} from './site-i18n.js';
 
-const FORUM_BUILD='20261009-forum-translate-1';
+const FORUM_BUILD='20261010-forum-bilingual-slugs-1';
 const APP_BUILD='20261009-gradient-nav-1';
 const GLOBAL_BUILD='20261007-legal-1';
 const ANALYTICS_BUILD='20261009-pulse-1';
@@ -30,7 +30,13 @@ export default {
       if(/^\/(?:api|assets|downloads|\.well-known)(?:\/|$)/.test(underlying) || (underlying.startsWith('/admin/') && underlying!=='/admin/analytics/'))
         return new Response('Not found',{status:404});
       const canonical=new URL(underlying+url.search,url.origin);
-      const source=await this.fetch(new Request(canonical,request),env,ctx);
+      let canonicalRequest=new Request(canonical,request);
+      if(underlying.startsWith('/foro/')){
+        const headers=new Headers(canonicalRequest.headers);
+        headers.set('X-A90-Forum-Language','en');
+        canonicalRequest=new Request(canonicalRequest,{headers});
+      }
+      const source=await this.fetch(canonicalRequest,env,ctx);
       if(!source.ok || !(source.headers.get('Content-Type')||'').includes('text/html')) return source;
       const localized=localizeEnglishHtml(await source.text(),url.href);
       const headers=new Headers(source.headers);
@@ -53,11 +59,48 @@ export default {
     }
 
     if(url.pathname==='/foro/'||url.pathname.startsWith('/foro/')){
-      const original=await env.ASSETS.fetch(request);
+      const language=request.headers.get('X-A90-Forum-Language')==='en'?'en':'es';
+      const segments=url.pathname.slice('/foro/'.length).split('/').filter(Boolean);
+      if(segments.length>2||segments.some(s=>!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(s)))
+        return hardenStatic(new Response('Foro: dirección no encontrada',{status:404}));
+      const oldId=url.searchParams.get('t'),oldCat=url.searchParams.get('c');
+      const lookupNeeded=segments.length>0||oldId||oldCat;
+      let resolved=null;
+      if(lookupNeeded){
+        const lookup=new URL('/api/forum/resolve',url.origin);
+        lookup.searchParams.set('lang',oldCat?'es':language);
+        if(oldId)lookup.searchParams.set('id',oldId);
+        else{
+          lookup.searchParams.set('category',oldCat||segments[0]||'');
+          if(segments.length===2)lookup.searchParams.set('topic',segments[1]);
+        }
+        const found=await handleForumApi(request,env,lookup);
+        if(!found.ok)return hardenStatic(new Response('Tema o categoría no encontrados',{status:found.status===404?404:found.status===400?404:503}));
+        resolved=await found.json();
+        const desired=resolved.urls[language];
+        const expected=language==='en'?desired.slice(3):desired;
+        if(url.pathname!==expected||oldId||oldCat){
+          const destination=new URL(desired,url.origin);
+          const page=url.searchParams.get('p');
+          if(page&&/^\d{1,4}$/.test(page))destination.searchParams.set('p',page);
+          return Response.redirect(destination.toString(),301);
+        }
+      }
+      const staticUrl=new URL('/foro/',url.origin);
+      const original=await env.ASSETS.fetch(new Request(staticUrl,request));
       if(!original.ok)return hardenStatic(original);
       const type=original.headers.get('Content-Type')||'';
       if(!type.includes('text/html'))return hardenStatic(original);
       let html=await original.text();
+      if(resolved){
+        // Stable links remain language-specific, but forum posts and their numeric IDs are shared.
+        const es=resolved.urls.es,en=resolved.urls.en;
+        html=html.replace('<html lang="es"',`<html lang="es" data-a90-forum-es-path="${es}" data-a90-forum-en-path="${en}"`);
+        const title=resolved.topic?.title||resolved.category?.name||'Foro';
+        const safeTitle=title.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        html=html.replace(/<title>[^<]*<\/title>/i,'<title>'+safeTitle+' — Foro A 90 Files</title>');
+        html=html.replace('</head>',`<link rel="canonical" href="${new URL(es,url.origin)}"><link rel="alternate" hreflang="es" href="${new URL(es,url.origin)}"><link rel="alternate" hreflang="en" href="${new URL(en,url.origin)}"><link rel="alternate" hreflang="x-default" href="${new URL(es,url.origin)}"></head>`);
+      }
       const styles=`\n<link rel="stylesheet" href="/assets/forum-live.css?v=${FORUM_BUILD}">\n<link rel="stylesheet" href="/assets/forum-mod.css?v=${FORUM_BUILD}">\n<link rel="stylesheet" href="/assets/forum-rich.css?v=${FORUM_BUILD}">\n<link rel="stylesheet" href="/assets/forum-polish.css?v=${FORUM_BUILD}">\n<link rel="stylesheet" href="/assets/forum-users.css?v=${FORUM_BUILD}">\n<link rel="stylesheet" href="/assets/forum-recent.css?v=${FORUM_BUILD}">\n`;
       const scripts=`\n<script src="/assets/forum-app.js?v=${FORUM_BUILD}" defer></script>\n<script src="/assets/forum-mod.js?v=${FORUM_BUILD}" defer></script>\n<script src="/assets/forum-rich.js?v=${FORUM_BUILD}" defer></script>\n<script src="/assets/forum-community-intro.js?v=${FORUM_BUILD}" defer></script>\n<script src="/assets/forum-users.js?v=${FORUM_BUILD}" defer></script>\n<script src="/assets/forum-recent.js?v=${FORUM_BUILD}" defer></script>\n`;
       if(!html.includes(`/assets/forum-polish.css?v=${FORUM_BUILD}`))html=html.replace('</head>',styles+'</head>');

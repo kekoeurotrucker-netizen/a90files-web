@@ -291,7 +291,7 @@ export function localizeEnglishHtml(html,requestUrl){
     const leading=raw.match(/^\s*/)?.[0]||'',trailing=raw.match(/\s*$/)?.[0]||'';
     return '>'+leading+translation+trailing+'<';
   })).join('');
-  html=html.replace(/<title>([^<]+)<\/title>/i,(whole,title)=>'<title>'+(A90_EN[title.trim()]||title.replace('Foro','Forum').replace('Novedades','News').replace('Descargas','Downloads').replace('Juegos','Games').replace('Soporte','Support'))+'</title>');
+  html=html.replace(/<title>([^<]+)<\/title>/i,(whole,title)=>'<title>'+(A90_EN[title.trim()]||title.replace('Foro A 90 Files','A 90 Files Forum').replace('Foro','Forum').replace('Novedades','News').replace('Descargas','Downloads').replace('Juegos','Games').replace('Soporte','Support'))+'</title>');
   // Only rewrite internal page links. API, assets, downloads, auth and admin stay canonical.
   html=html.replace(/\b(href)=(['"])(\/[^'"#]*)(\2)/gi,(all,attr,quote,path,end)=>{
     if(/^\/(?:en\/|assets\/|api\/|admin\/|downloads\/|favicon|\.well-known\/)/.test(path))return all;
@@ -301,8 +301,12 @@ export function localizeEnglishHtml(html,requestUrl){
   html=html.replace(/\b(data-headline|data-ticker|aria-label|placeholder|title)=(['"])([^'"]+)(\2)/gi,(all,name,quote,value,end)=>name+'='+quote+(A90_EN[value]||value)+end);
   const original=url.pathname.replace(/^\/en(?=\/|$)/,'')||'/';
   const path=original.endsWith('/')?original:original+'/';
-  const canonical=new URL(path,url.origin).toString();
-  const english=new URL('/en'+path,url.origin).toString();
+  const forumSpanish=html.match(/\bdata-a90-forum-es-path="([^"]+)"/)?.[1];
+  const forumEnglish=html.match(/\bdata-a90-forum-en-path="([^"]+)"/)?.[1];
+  const canonical=new URL(forumSpanish||path,url.origin).toString();
+  const english=new URL(forumEnglish||('/en'+path),url.origin).toString();
+  // Strip any Spanish-shell alternates before authoring the correct bilingual pairs.
+  html=html.replace(/<link\s+rel="alternate"\s+hreflang="(?:es|en|x-default)"[^>]*>/gi,'');
   const links='<link rel="alternate" hreflang="es" href="'+canonical+'"><link rel="alternate" hreflang="en" href="'+english+'"><link rel="alternate" hreflang="x-default" href="'+canonical+'">';
   html=html.replace(/<link\s+rel="canonical"[^>]*>/i,'');
   html=html.replace('</head>',links+'<link rel="canonical" href="'+english+'"></head>');

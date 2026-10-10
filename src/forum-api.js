@@ -7,6 +7,7 @@ const PAGE_SIZE=30;
 export async function handleForumApi(request,env,url){
   try{
     if(url.pathname==='/api/forum/board'&&request.method==='GET') return board(request,env);
+    if(url.pathname==='/api/forum/resolve'&&request.method==='GET') return resolveForumRoute(request,env,url);
     if(url.pathname==='/api/forum/topics'&&request.method==='GET') return topics(request,env,url);
     if(url.pathname==='/api/forum/topic'&&request.method==='GET') return topic(request,env,url);
     if(url.pathname==='/api/forum/topic'&&request.method==='POST') return createTopic(request,env);
@@ -120,7 +121,7 @@ async function visibleContext(request,env){
 async function board(request,env){
   const s=await visibleContext(request,env);
   const [cats,topicsRes]=await Promise.all([
-    db(env,'/rest/v1/forum_categories?select=id,parent_id,slug,name,description,sort_order,min_role_to_post,is_locked&is_visible=eq.true&order=sort_order.asc,id.asc',s.token),
+    db(env,'/rest/v1/forum_categories?select=id,parent_id,slug,slug_en,name,description,sort_order,min_role_to_post,is_locked&is_visible=eq.true&order=sort_order.asc,id.asc',s.token),
     db(env,'/rest/v1/forum_topics?select=id,category_id,last_post_at&is_hidden=eq.false&limit=5000',s.token)
   ]);
   if(!cats.res.ok)return respond({error:'No se pudieron cargar las categorías.'},502,s.refreshed);
@@ -137,7 +138,7 @@ async function board(request,env){
 }
 
 async function getCategoryBySlug(env,token,slug){
-  const {res,body}=await db(env,`/rest/v1/forum_categories?slug=eq.${encodeURIComponent(slug)}&is_visible=eq.true&select=id,parent_id,slug,name,description,min_role_to_post,is_locked&limit=1`,token);
+  const {res,body}=await db(env,`/rest/v1/forum_categories?slug=eq.${encodeURIComponent(slug)}&is_visible=eq.true&select=id,parent_id,slug,slug_en,name,description,min_role_to_post,is_locked&limit=1`,token);
   if(!res.ok||!Array.isArray(body)||!body[0])return null;
   return body[0];
 }
@@ -156,6 +157,47 @@ async function profilesFor(env,token,ids){
   return out;
 }
 
+// Persistent bilingual topic/category slugs; numeric IDs remain internal and old links can redirect.
+async function resolveForumRoute(request,env,url){
+  const locale=url.searchParams.get('lang')==='en'?'en':'es';
+  const catSlug=String(url.searchParams.get('category')||'');
+  const topicSlug=String(url.searchParams.get('topic')||'');
+  const topicId=integer(url.searchParams.get('id'));
+  if(!topicId && (!validSlug(catSlug)||topicSlug&&!validSlug(topicSlug)))
+    return respond({error:'Dirección del foro no válida.'},400);
+  const s=await visibleContext(request,env);
+  let cat=null,topic=null;
+  if(topicId){
+    const found=await db(env,`/rest/v1/forum_topics?id=eq.${topicId}&is_hidden=eq.false&select=id,category_id,title,slug,slug_en&limit=1`,s.token);
+    topic=found.res.ok&&Array.isArray(found.body)?found.body[0]||null:null;
+    if(!topic)return respond({error:'Tema no encontrado.'},404,s.refreshed);
+    const cr=await db(env,`/rest/v1/forum_categories?id=eq.${topic.category_id}&is_visible=eq.true&select=id,slug,slug_en,name&limit=1`,s.token);
+    cat=cr.res.ok&&Array.isArray(cr.body)?cr.body[0]||null:null;
+  } else {
+    const col=locale==='en'?'slug_en':'slug';
+    const cr=await db(env,`/rest/v1/forum_categories?${col}=eq.${encodeURIComponent(catSlug)}&is_visible=eq.true&select=id,slug,slug_en,name&limit=1`,s.token);
+    cat=cr.res.ok&&Array.isArray(cr.body)?cr.body[0]||null:null;
+    // An old Spanish link embedded in an English article can still find its real category.
+    if(!cat&&locale==='en'){
+      const oldCat=await db(env,`/rest/v1/forum_categories?slug=eq.${encodeURIComponent(catSlug)}&is_visible=eq.true&select=id,slug,slug_en,name&limit=1`,s.token);
+      cat=oldCat.res.ok&&Array.isArray(oldCat.body)?oldCat.body[0]||null:null;
+    }
+    if(!cat)return respond({error:'Categoría no encontrada.'},404,s.refreshed);
+    if(topicSlug){
+      const tr=await db(env,`/rest/v1/forum_topics?category_id=eq.${cat.id}&${col}=eq.${encodeURIComponent(topicSlug)}&is_hidden=eq.false&select=id,category_id,title,slug,slug_en&limit=1`,s.token);
+      topic=tr.res.ok&&Array.isArray(tr.body)?tr.body[0]||null:null;
+      if(!topic&&locale==='en'){
+        const oldTopic=await db(env,`/rest/v1/forum_topics?category_id=eq.${cat.id}&slug=eq.${encodeURIComponent(topicSlug)}&is_hidden=eq.false&select=id,category_id,title,slug,slug_en&limit=1`,s.token);
+        topic=oldTopic.res.ok&&Array.isArray(oldTopic.body)?oldTopic.body[0]||null:null;
+      }
+    }
+  }
+  if(!cat || topicSlug&&!topic)return respond({error:'Página del foro no encontrada.'},404,s.refreshed);
+  const es='/foro/'+cat.slug+'/'+(topic?topic.slug+'/':'');
+  const en='/en/foro/'+(cat.slug_en||cat.slug)+'/'+(topic?(topic.slug_en||topic.slug)+'/':'');
+  return respond({kind:topic?'topic':'category',topic_id:topic?.id||null,topic,category:cat,urls:{es,en}},200,s.refreshed);
+}
+
 async function topics(request,env,url){
   const slug=String(url.searchParams.get('category')||'');
   if(!validSlug(slug))return respond({error:'Categoría no válida.'},400);
@@ -165,7 +207,7 @@ async function topics(request,env,url){
   const category=await getCategoryBySlug(env,s.token,slug);
   if(!category)return respond({error:'Categoría no encontrada.'},404,s.refreshed);
 
-  const path=`/rest/v1/forum_topics?category_id=eq.${category.id}&select=id,category_id,author_id,title,is_pinned,is_locked,created_at,updated_at,last_post_at&order=is_pinned.desc,last_post_at.desc&limit=${PAGE_SIZE+1}&offset=${offset}`;
+  const path=`/rest/v1/forum_topics?category_id=eq.${category.id}&select=id,category_id,author_id,title,slug,slug_en,is_pinned,is_locked,created_at,updated_at,last_post_at&order=is_pinned.desc,last_post_at.desc&limit=${PAGE_SIZE+1}&offset=${offset}`;
   const tr=await db(env,path,s.token);
   if(!tr.res.ok)return respond({error:'No se pudieron cargar los temas.'},502,s.refreshed);
   const raw=Array.isArray(tr.body)?tr.body:[];
@@ -186,11 +228,11 @@ async function topic(request,env,url){
   const id=integer(url.searchParams.get('id'));
   if(!id)return respond({error:'Tema no válido.'},400);
   const s=await visibleContext(request,env);
-  const tr=await db(env,`/rest/v1/forum_topics?id=eq.${id}&select=id,category_id,author_id,title,is_pinned,is_locked,created_at,updated_at,last_post_at&limit=1`,s.token);
+  const tr=await db(env,`/rest/v1/forum_topics?id=eq.${id}&select=id,category_id,author_id,title,slug,slug_en,is_pinned,is_locked,created_at,updated_at,last_post_at&limit=1`,s.token);
   if(!tr.res.ok||!Array.isArray(tr.body)||!tr.body[0])return respond({error:'Tema no encontrado.'},404,s.refreshed);
   const item=tr.body[0];
   const [cat,postsRes]=await Promise.all([
-    db(env,`/rest/v1/forum_categories?id=eq.${item.category_id}&select=id,slug,name,description,min_role_to_post,is_locked&limit=1`,s.token),
+    db(env,`/rest/v1/forum_categories?id=eq.${item.category_id}&select=id,slug,slug_en,name,description,min_role_to_post,is_locked&limit=1`,s.token),
     db(env,`/rest/v1/forum_posts?topic_id=eq.${id}&select=id,topic_id,author_id,body,reply_to_post_id,edited_at,created_at,updated_at&deleted_at=is.null&is_hidden=eq.false&order=created_at.asc&limit=500`,s.token)
   ]);
   const posts=postsRes.res.ok&&Array.isArray(postsRes.body)?postsRes.body:[];
@@ -365,7 +407,7 @@ async function recentActivity(request,env){
   const s=await visibleContext(request,env);
 
   const [topicsRes,postsRes]=await Promise.all([
-    db(env,'/rest/v1/forum_topics?select=id,category_id,author_id,title,created_at,last_post_at&is_hidden=eq.false&order=created_at.desc&limit=8',s.token),
+    db(env,'/rest/v1/forum_topics?select=id,category_id,author_id,title,slug,slug_en,created_at,last_post_at&is_hidden=eq.false&order=created_at.desc&limit=8',s.token),
     db(env,'/rest/v1/forum_posts?select=id,topic_id,author_id,body,created_at&deleted_at=is.null&is_hidden=eq.false&order=created_at.desc&limit=40',s.token)
   ]);
 
@@ -381,7 +423,7 @@ async function recentActivity(request,env){
 
   if(topicIds.length){
     const [allTopicsRes,allPostsRes]=await Promise.all([
-      db(env,`/rest/v1/forum_topics?id=in.(${topicIds.join(',')})&select=id,category_id,author_id,title,created_at&is_hidden=eq.false&limit=200`,s.token),
+      db(env,`/rest/v1/forum_topics?id=in.(${topicIds.join(',')})&select=id,category_id,author_id,title,slug,slug_en,created_at&is_hidden=eq.false&limit=200`,s.token),
       db(env,`/rest/v1/forum_posts?topic_id=in.(${topicIds.join(',')})&select=id,topic_id,created_at&deleted_at=is.null&is_hidden=eq.false&order=created_at.asc,id.asc&limit=5000`,s.token)
     ]);
 
@@ -389,7 +431,7 @@ async function recentActivity(request,env){
       for(const item of allTopicsRes.body)topicMap[item.id]=item;
       const categoryIds=[...new Set(allTopicsRes.body.map(t=>t.category_id).filter(Boolean))];
       if(categoryIds.length){
-        const cr=await db(env,`/rest/v1/forum_categories?id=in.(${categoryIds.join(',')})&select=id,name,slug&is_visible=eq.true&limit=200`,s.token);
+        const cr=await db(env,`/rest/v1/forum_categories?id=in.(${categoryIds.join(',')})&select=id,name,slug,slug_en&is_visible=eq.true&limit=200`,s.token);
         if(cr.res.ok&&Array.isArray(cr.body))for(const item of cr.body)categoryMap[item.id]=item;
       }
     }
@@ -419,7 +461,7 @@ async function recentActivity(request,env){
 
   const topicsOut=latestTopics.slice(0,6).map(t=>({
     id:t.id,
-    title:t.title,
+    title:t.title,slug:t.slug,slug_en:t.slug_en,
     created_at:t.created_at,
     category:categoryMap[t.category_id]||null,
     author:authors[t.author_id]||null
@@ -431,6 +473,8 @@ async function recentActivity(request,env){
       id:p.id,
       topic_id:p.topic_id,
       topic_title:topic?.title||'Tema',
+      topic_slug:topic?.slug||null,
+      topic_slug_en:topic?.slug_en||null,
       created_at:p.created_at,
       excerpt:cleanExcerpt(p.body),
       category:topic?categoryMap[topic.category_id]||null:null,

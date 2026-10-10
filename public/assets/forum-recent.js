@@ -28,9 +28,15 @@ const fmtDate=value=>{
 };
 
 function row(item,type){
-  const href=type==='reply'
-    ? '/foro/?t='+encodeURIComponent(item.topic_id)+'#post-'+encodeURIComponent(item.id)
-    : '/foro/?t='+encodeURIComponent(item.id);
+  const english=location.pathname.startsWith('/en/foro/');
+  const c=item.category;
+  const categorySlug=english?(c?.slug_en||c?.slug):c?.slug;
+  const titleSlug=english?(type==='reply'?item.topic_slug_en:item.slug):(type==='reply'?item.topic_slug:item.slug);
+  const root=english?'/en/foro/':'/foro/';
+  const path=categorySlug&&titleSlug
+    ? root+encodeURIComponent(categorySlug)+'/'+encodeURIComponent(titleSlug)+'/'
+    : root+'?t='+encodeURIComponent(type==='reply'?item.topic_id:item.id);
+  const href=path+(type==='reply'?'#post-'+encodeURIComponent(item.id):'');
   const a=el('a','forum-recent-row');
   a.href=href;
 
