@@ -12,7 +12,7 @@ const translations=new Map(Object.entries({
 'Juegos':'Games','Soporte y foro':'Support & Forum','Ver sección':'Explore',
 'VaultPool Storage':'VaultPool Storage','Tu almacenamiento multinube, en Microsoft Store.':'Your multi-cloud storage, on Microsoft Store.',
 'Descubrir VaultPool':'Explore VaultPool','Marea Studio Composer':'Marea Studio Composer',
-'Tu estudio de creación musical local. Próximamente en Store.':'Your local music creation studio. Coming soon to the Store.',
+'Tu estudio de creación musical local. Ya en Microsoft Store.':'Your local music creation studio. Available now on Microsoft Store.',
 'Descubrir Marea':'Explore Marea','Minería adaptativa, con prioridad para tu equipo.':'Adaptive mining with your hardware as the priority.',
 'Conocer AutoMiner':'Discover AutoMiner','Personalización y optimización inteligente de Windows.':'Intelligent Windows customization and optimization.',
 'Conocer StartWise':'Discover StartWise','Del transporte profesional a una nueva simulación 3D.':'From professional trucking to a new 3D simulation.',
