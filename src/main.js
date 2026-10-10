@@ -5,6 +5,7 @@ import {handleExtraAuth} from './oauth-extra.js';
 import {handleHealth} from './health.js';
 import {handleSecurityAuth} from './security-auth-api.js';
 import {handleAnalyticsApi} from './analytics-api.js';
+import {handleCmsApi,loadPublishedArticle,renderPublicCmsArticle} from './cms-api.js';
 import {localizeEnglishHtml} from './site-i18n.js';
 
 const FORUM_BUILD='20261010-forum-bilingual-slugs-1';
@@ -24,6 +25,19 @@ export default {
   async fetch(request,env,ctx){
     const url=new URL(request.url);
 
+    // CMS public articles have independent ES/EN copy (never auto-translate user drafts).
+    if(request.method==='GET'){
+      const matched=url.pathname.match(/^\/(en\/)?articulos\/([a-z0-9]+(?:-[a-z0-9]+)*)\/?$/);
+      if(matched){
+        const article=await loadPublishedArticle(env,matched[2]);
+        if(!article)return hardenStatic(new Response('Artículo no encontrado',{status:404}));
+        const language=matched[1]?'en':'es';
+        const canonical=language==='en'?'/en/articulos/'+matched[2]+'/':'/articulos/'+matched[2]+'/';
+        if(url.pathname!==canonical)return Response.redirect(new URL(canonical,url.origin).toString(),301);
+        const html=renderPublicCmsArticle(article,language,url);
+        return hardenStatic(new Response(html,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'public, max-age=90'}}));
+      }
+    }
     // Bilingual pages share the original route and live forum data, never duplicate users/posts.
     if(request.method==='GET' && (url.pathname==='/en'||url.pathname.startsWith('/en/'))){
       const underlying=url.pathname==='/en'?'/':url.pathname.slice(3)||'/';
@@ -123,6 +137,13 @@ export default {
     const extraAuth=await handleExtraAuth(request,env,url);
     if(extraAuth)return hardenApi(extraAuth);
 
+    if(url.pathname.startsWith('/api/cms/')){
+      if(!['GET','POST'].includes(request.method))return hardenApi(json({error:'Método no permitido.'},405));
+      if(request.method==='POST'&&!sameOrigin(request,url))return hardenApi(json({error:'Solicitud rechazada.'},403));
+      const answer=await handleCmsApi(request,env,url);
+      return hardenApi(answer||json({error:'Ruta no encontrada.'},404));
+    }
+
     if(url.pathname.startsWith('/api/analytics/')){
       if(!['GET','POST'].includes(request.method))return hardenApi(json({error:'Método no permitido.'},405));
       if(request.method==='POST'&&!sameOrigin(request,url))return hardenApi(json({error:'Solicitud rechazada.'},403));
@@ -168,6 +189,9 @@ async function injectGlobalUi(response,force=false){
   if(!force&&!type.includes('text/html'))return response;
   let html=await response.text();
   if(!html.includes('</body>')&&!html.includes('</head>'))return response;
+  // CMS assets only on homepage four-module row and news index (legacy pages remain unchanged).
+  if((html.includes('a90-lower-modules')||html.includes('class="news-grid"'))&&!html.includes('/assets/cms-public.js'))
+    html=html.replace('</body>','<script src="/assets/cms-public.js?v=20261010-cms-1" defer></script></body>');
   html=injectLegalFooter(html);
   // Refresh the authored header stylesheet version for immediate visibility on every page.
   html=html.replace(/(\/assets\/header-velocity\.css\?v=)[^"']+/g,'$1'+'20261009-gradient-nav-1');

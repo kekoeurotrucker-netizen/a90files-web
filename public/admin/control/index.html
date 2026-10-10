@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive"><meta name="theme-color" content="#081b24">
+<title>A90 Control · Administración editorial</title>
+<link rel="icon" type="image/svg+xml" href="/assets/brand/a90-velocity.svg">
+<link rel="stylesheet" href="/assets/cms-admin.css?v=20261010-1">
+</head>
+<body class="a90-control">
+<header class="control-topbar">
+  <a class="control-logo" href="/"><img src="/assets/brand/a90-velocity.svg" alt=""><span><strong>A90 Control</strong><small>ESTUDIO DIGITAL / ADMINISTRACIÓN</small></span></a>
+  <nav class="control-toplinks"><a href="/admin/analytics/">A90 Pulse ↗</a><a href="/" target="_blank" rel="noopener">Ver sitio ↗</a></nav>
+</header>
+<div id="control-gate" class="control-gate"><span class="control-kicker">ÁREA RESERVADA</span><h1>Administración de A90 Files</h1><p id="control-gate-message">Comprobando sesión y verificación MFA…</p><a class="control-button" href="/">Volver a A90 Files ↗</a></div>
+<main id="control-app" class="control-app" hidden>
+  <aside class="control-sidebar">
+    <div class="control-sidebar-title"><span class="live-led"></span> CENTRO DE CONTROL</div>
+    <button data-tab="overview" class="control-tab active" type="button">◈ Resumen</button>
+    <button data-tab="articles" class="control-tab" type="button">▤ Artículos</button>
+    <button data-tab="modules" class="control-tab" type="button">▦ Módulos</button>
+    <button data-tab="media" class="control-tab" type="button">▧ Biblioteca visual</button>
+    <button data-tab="settings" class="control-tab" type="button">⚙ Configuración</button>
+    <div class="control-sidebar-foot">A90 FILES · CMS V1<br>Acceso protegido · MFA</div>
+  </aside>
+  <section class="control-workspace">
+    <div class="control-heading"><div><span class="control-kicker">A 90 FILES / ADMINISTRACIÓN</span><h1 id="control-section-title">Panel general</h1><p id="control-section-subtitle">Control editorial de la web, sin editar archivos del repositorio.</p></div><button type="button" class="control-button control-reload" id="control-reload">↻ Actualizar</button></div>
+    <div id="control-message" role="status" aria-live="polite" class="control-message" hidden></div>
+    <section data-panel="overview" class="control-panel">
+      <div class="control-stats"><div><small>ARTÍCULOS</small><strong id="stat-all">—</strong></div><div><small>PUBLICADOS</small><strong id="stat-published">—</strong></div><div><small>BORRADORES</small><strong id="stat-drafts">—</strong></div><div><small>MÓDULOS ACTIVOS</small><strong id="stat-modules">—</strong></div></div>
+      <div class="control-card"><span class="control-kicker">PUBLICACIÓN EDITORIAL</span><h2>Tu web, desde un solo sitio.</h2><p>Crea noticias en español e inglés, revisa los borradores y publícalos con un clic. Se incorporarán al listado de Novedades y tendrán su propia URL. Las noticias antiguas permanecen intactas.</p><button type="button" class="control-button" id="control-create-from-home">+ Crear artículo</button></div>
+      <div class="control-card"><span class="control-kicker">ESTADO DEL SISTEMA</span><h2>Sin plantillas externas ni CMS de terceros.</h2><p>El panel usa tu misma Cuenta A90 Files. Solo Super Admin con MFA puede guardar cambios; el público únicamente ve lo que publicas.</p></div>
+    </section>
+    <section data-panel="articles" class="control-panel" hidden>
+      <div class="control-section-row"><div><span class="control-kicker">CONTENIDO</span><h2>Noticias y artículos</h2></div><button id="control-new-article" class="control-button" type="button">+ Nuevo artículo</button></div>
+      <div id="control-articles-list" class="control-list"></div>
+      <form id="control-article-form" class="control-card control-form" hidden>
+        <div class="control-section-row"><h2 id="control-editor-heading">Nuevo artículo</h2><button type="button" id="control-close-editor" class="control-button ghost">Cerrar editor</button></div>
+        <input type="hidden" name="id" id="control-article-id">
+        <div class="control-fields two"><label>Título en español<input name="title_es" maxlength="180" required placeholder="Ej.: Novedades de nuestro próximo lanzamiento"></label><label>Título en inglés<input name="title_en" maxlength="180" placeholder="English headline (optional)"></label></div>
+        <div class="control-fields two"><label>URL del artículo<input name="slug" required pattern="[a-z0-9]+(-[a-z0-9]+)*" maxlength="100" placeholder="novedades-de-octubre"></label><label>Imagen de portada<select name="cover_path" id="control-cover"><option value="">Sin imagen</option></select></label></div>
+        <div class="control-fields two"><label>Entradilla en español<textarea name="excerpt_es" rows="2" maxlength="500"></textarea></label><label>Entradilla en inglés<textarea name="excerpt_en" rows="2" maxlength="500"></textarea></label></div>
+        <div class="control-fields two"><label>Contenido en español<textarea id="control-body-es" name="body_es" rows="12" maxlength="60000" required placeholder="Texto del artículo. Admite párrafos, ## subtítulos y - listas."></textarea></label><label>Contenido en inglés<textarea id="control-body-en" name="body_en" rows="12" maxlength="60000" placeholder="English content (optional)"></textarea></label></div>
+        <div class="control-fields two"><label>Estado<select name="status" id="control-status"><option value="draft">Borrador · Privado</option><option value="published">Publicado · Visible en Novedades</option><option value="archived">Archivado · No visible</option></select></label><label class="control-check"><input type="checkbox" name="is_featured"> Marcar como destacado editorial</label></div>
+        <p class="control-help">Los artículos se guardan en la base de datos. El contenido se muestra como texto seguro: no se ejecuta HTML ni código incrustado.</p>
+        <div class="control-actions"><button type="submit" class="control-button">Guardar artículo</button><a id="control-article-open" href="#" target="_blank" rel="noopener" class="control-button ghost" hidden>Ver publicado ↗</a></div>
+      </form>
+    </section>
+    <section data-panel="modules" class="control-panel" hidden>
+      <div class="control-section-row"><div><span class="control-kicker">PORTADA</span><h2>Cuatro módulos inferiores</h2></div><a class="control-button ghost" href="/" target="_blank" rel="noopener">Ver portada ↗</a></div>
+      <p class="control-help">Orden, visibilidad y títulos. El contenido de cada carrusel se conserva. Solo afecta a Software, Juegos, A 90 por Hora y Soporte + Foro.</p>
+      <div id="control-modules-list" class="control-module-grid"></div>
+    </section>
+    <section data-panel="media" class="control-panel" hidden>
+      <div class="control-section-row"><div><span class="control-kicker">RECURSOS GRÁFICOS</span><h2>Biblioteca de imágenes</h2></div></div>
+      <p class="control-help">Organiza los recursos que ya están publicados en <code>/assets/</code>. Este primer editor registra imágenes existentes; todavía no sube archivos nuevos.</p>
+      <div id="control-media-grid" class="control-media-grid"></div>
+      <form id="control-media-form" class="control-card control-form">
+        <h3>Incorporar imagen existente</h3>
+        <div class="control-fields two"><label>Nombre descriptivo<input name="label" required maxlength="140" placeholder="Pantalla de la nueva versión"></label><label>Ruta en A90 Files<input name="asset_path" required placeholder="/assets/proyecto/imagen.webp"></label></div>
+        <div class="control-fields two"><label>Descripción accesible en español<input name="alt_es" maxlength="180"></label><label>Descripción en inglés<input name="alt_en" maxlength="180"></label></div>
+        <button class="control-button" type="submit">Añadir a biblioteca</button>
+      </form>
+    </section>
+    <section data-panel="settings" class="control-panel" hidden>
+      <span class="control-kicker">PREFERENCIAS INTERNAS</span><h2>Configuración editorial</h2>
+      <p class="control-help">Notas de planificación internas. No se publican en la web ni en el foro al guardarlas.</p>
+      <form class="control-card control-form" id="control-settings-form"><label>Comunicado interno<textarea name="site_announcement" rows="4" placeholder="Notas para próximos anuncios"></textarea></label><label>Planificación de portada<textarea name="editorial_banner" rows="4" placeholder="Ideas y próximos contenidos de portada"></textarea></label><button class="control-button" type="submit">Guardar notas</button></form>
+    </section>
+    <footer class="control-footer">A90 Control · Edición administrativa privada · <a href="/admin/analytics/">A90 Pulse</a></footer>
+  </section>
+</main>
+<script src="/assets/cms-admin.js?v=20261010-1" defer></script>
+</body></html>
