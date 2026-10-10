@@ -142,4 +142,24 @@ jobs:
           code="$(status_request forum_missing "$BASE_URL/foro/marea-studio/no-existe-este-tema/")"
           test "$code" = '404' || { echo "Missing forum topic should 404: $code"; exit 1; }
 
+          echo '12/12 A90 Control, CMS permissions and Surviving teaser'
+          request cms_panel "$BASE_URL/admin/control/"
+          grep -q 'A90 Control' "$tmp/cms_panel.body"
+          request cms_assets "$BASE_URL/assets/cms-admin.js"
+          grep -q 'api(' "$tmp/cms_assets.body"
+          request cms_public "$BASE_URL/api/cms/published"
+          grep -q '"articles"' "$tmp/cms_public.body"
+          request cms_modules "$BASE_URL/api/cms/public-modules"
+          grep -q '"modules"' "$tmp/cms_modules.body"
+          code="$(status_request cms_private "$BASE_URL/api/cms/dashboard")"
+          test "$code" = '401' || { cat "$tmp/cms_private.body"; echo "Private dashboard must reject anonymous visitors"; exit 1; }
+          code="$(status_request cms_write \
+            -X POST "$BASE_URL/api/cms/article" \
+            -H "Origin: $BASE_URL" -H 'Content-Type: application/json' \
+            --data '{"slug":"test-must-not-publish","title_es":"Security test","body_es":"Must not be created.","status":"published"}')"
+          test "$code" = '401' || { cat "$tmp/cms_write.body"; echo "CMS write must reject anonymous visitors"; exit 1; }
+          request fallout "$BASE_URL/novedades/surviving-the-fallout/"
+          grep -q 'Surviving the Fallout' "$tmp/fallout.body"
+          request home_with_teaser "$BASE_URL/"
+          grep -q 'Surviving the Fallout: un proyecto futuro' "$tmp/home_with_teaser.body"
           echo 'Production smoke tests passed.'
