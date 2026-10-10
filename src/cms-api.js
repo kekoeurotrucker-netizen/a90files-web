@@ -36,7 +36,8 @@ async function superAdmin(request,env){
 }
 async function publicArticles(env,slug){
  const filter=slug?'&slug=eq.'+encodeURIComponent(slug):'';
- const res=await query(env,TABLES.articles+'?select='+fields.articles+'&status=eq.published'+filter+'&order=published_at.desc.nullslast,created_at.desc&limit='+(slug?'1':'36'));
+ const cols=slug?'slug,title_es,title_en,excerpt_es,excerpt_en,body_es,body_en,cover_path,is_featured,published_at,created_at':'slug,title_es,title_en,excerpt_es,excerpt_en,cover_path,is_featured,published_at,created_at';
+ const res=await query(env,TABLES.articles+'?select='+cols+'&status=eq.published'+filter+'&order=published_at.desc.nullslast,created_at.desc&limit='+(slug?'1':'36'));
  return res.ok?res.data:null;
 }
 export async function loadPublishedArticle(env,slug){
