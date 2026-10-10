@@ -128,3 +128,55 @@
 .news-page--premium .news-grid>.news-card--latest time{color:#f7bc73;font-weight:850}
 @media(max-width:650px){.news-page--premium .news-latest-jump{align-items:flex-start}.news-page--premium .news-latest-jump strong{font-size:9px}.news-page--premium .news-latest-jump small{font-size:11px}}
 @media(prefers-reduced-motion:reduce){.news-page--premium .news-latest-jump{transition:none}}
+
+/* Editorial mini-news with three genuine Logistic Trucker screenshots.
+   Scoped to /novedades/; original Marea feature and global templates are unchanged. */
+.news-page--premium .news-lt-mini{
+  position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(245px,.94fr) minmax(0,1.64fr);
+  align-items:center;gap:22px;margin:0 0 16px;padding:19px;
+  border:1px solid transparent;border-radius:17px;overflow:hidden;
+  background:linear-gradient(134deg,#102e39 0%,#081d27 72%,#071a24 100%) padding-box,
+    linear-gradient(115deg,rgba(100,222,234,.85) 0%,rgba(96,180,199,.4) 49%,rgba(240,173,83,.8) 100%) border-box;
+  box-shadow:0 13px 34px rgba(0,0,0,.27),inset 0 1px rgba(236,255,255,.035)
+}
+.news-page--premium .news-lt-mini::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:2px;pointer-events:none;
+  background:linear-gradient(90deg,#64d8e6,#e8af65 67%,transparent)
+}
+.news-page--premium .news-lt-mini-copy{min-width:0;padding:3px 1px 3px 4px}
+.news-page--premium .news-lt-mini-label{
+  display:flex;align-items:center;gap:7px;color:#edb56b;
+  font:840 9px/1.4 ui-monospace,Consolas,monospace;letter-spacing:.065em
+}
+.news-page--premium .news-lt-mini-label span{display:block;flex:0 0 7px;width:7px;height:7px;border-radius:50%;background:#f0b25b}
+.news-page--premium .news-lt-mini h2{font-size:clamp(19px,2.05vw,28px);line-height:1.13;letter-spacing:-.04em;color:#f0fafc;margin:9px 0 10px;text-wrap:balance}
+.news-page--premium .news-lt-mini h2 em{color:#8cdee8;font-style:normal}
+.news-page--premium .news-lt-mini-copy p{margin:0 0 12px;color:#bacfd4;font-size:11.5px;line-height:1.62}
+.news-page--premium .news-lt-mini-read{
+  display:inline-flex;gap:7px;align-items:center;justify-content:center;
+  text-decoration:none;border:1px solid transparent;border-radius:9px;
+  background:linear-gradient(110deg,#1a6e80,#bb8950) padding-box,
+    linear-gradient(107deg,#72e2ec,#fbc680) border-box;
+  color:#faffff;font-size:11px;font-weight:850;padding:10px 12px;
+  box-shadow:0 6px 13px rgba(0,0,0,.25);transition:filter .2s ease,transform .2s ease
+}
+.news-page--premium .news-lt-mini-read:hover{filter:brightness(1.13);transform:translateY(-1px)}
+.news-page--premium .news-lt-mini-images{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;min-width:0}
+.news-page--premium .news-lt-mini-images>a{
+  display:flex;flex-direction:column;overflow:hidden;min-width:0;
+  border:1px solid rgba(108,198,213,.28);border-radius:10px;
+  background:linear-gradient(160deg,#102f3a,#0c2630);color:#a8d6dd;text-decoration:none;
+  transition:border-color .18s ease,transform .18s ease
+}
+.news-page--premium .news-lt-mini-images>a:hover{border-color:#f0bc74;transform:translateY(-2px)}
+.news-page--premium .news-lt-mini-images img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+.news-page--premium .news-lt-mini-images span{
+  display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  padding:9px 8px;color:#9dd7df;font:800 8.5px/1.25 ui-monospace,Consolas,monospace;letter-spacing:.005em
+}
+.news-page--premium .news-lt-mini-read:focus-visible,.news-page--premium .news-lt-mini-images>a:focus-visible{
+  outline:2px solid #f3b867;outline-offset:3px
+}
+@media(max-width:1000px){.news-page--premium .news-lt-mini{grid-template-columns:1fr;gap:15px}.news-page--premium .news-lt-mini-copy{padding:0}.news-page--premium .news-lt-mini-images span{font-size:9px}}
+@media(max-width:540px){.news-page--premium .news-lt-mini{padding:14px;gap:13px}.news-page--premium .news-lt-mini-images{gap:5px}.news-page--premium .news-lt-mini-images span{font-size:7px;padding:7px 4px}.news-page--premium .news-lt-mini-copy p{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.news-page--premium .news-lt-mini-read,.news-page--premium .news-lt-mini-images>a{transition:none!important}}

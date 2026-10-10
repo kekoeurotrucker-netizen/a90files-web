@@ -102,4 +102,12 @@ export const A90_EN_RELEASE = {
   "ÚLTIMA NOTICIA · LOGISTIC TRUCKER": "LATEST NEWS · LOGISTIC TRUCKER",
   "3 capturas reales del nuevo entorno 3D": "3 real screenshots from the new 3D environment",
   "10 OCT 2026 · NUEVO · 3 CAPTURAS REALES": "10 OCT 2026 · NEW · 3 REAL SCREENSHOTS"
+,
+  "10 OCT 2026 · NUEVO AVANCE · LOGISTIC TRUCKER": "10 OCT 2026 · NEW DEVELOPMENT UPDATE · LOGISTIC TRUCKER",
+  "primeras capturas 3D.": "first 3D screenshots.",
+  "El prototipo toma forma. Te enseñamos las instalaciones logísticas, los vehículos y una primera interacción para entrar en el coche. Tres imágenes reales del desarrollo, todavía en pre-alpha.": "The prototype is taking shape. Here are the logistics facilities, vehicles and an early interaction to enter the car. Three real screenshots from development, still in pre-alpha.",
+  "Ver la mininoticia completa": "Read the full update",
+  "01 · INSTALACIONES": "01 · FACILITIES",
+  "02 · PRIMERA INTERACCIÓN": "02 · FIRST INTERACTION",
+  "03 · VEHÍCULOS": "03 · VEHICLES"
 };
