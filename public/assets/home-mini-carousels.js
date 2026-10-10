@@ -17,7 +17,7 @@ const translations=new Map(Object.entries({
 'Conocer AutoMiner':'Discover AutoMiner','Personalización y optimización inteligente de Windows.':'Intelligent Windows customization and optimization.',
 'Conocer StartWise':'Discover StartWise','Del transporte profesional a una nueva simulación 3D.':'From professional trucking to a new 3D simulation.',
 'Ver el proyecto':'View the project','Un proyecto futuro. Las bases ya están puestas.':'A future project. Its foundations are already in place.',
-'Descubrir el misterio':'Discover the mystery','Reproducir':'Play',
+'Descubrir el misterio':'Discover the mystery','Reproducir':'Play','▶ Reproducir':'▶ Play',
 'CENTRO DE AYUDA':'HELP CENTER','¿Necesitas una mano?':'Need a hand?',
 'Guías, incidencias y contacto con A 90 Files.':'Guides, issue reports and contact with A 90 Files.',
 'Ir a Soporte':'Visit Support','COMUNIDAD EN DIRECTO':'LIVE COMMUNITY',
@@ -26,6 +26,10 @@ const translations=new Map(Object.entries({
 'Todos los temas':'All topics','Ir al foro':'Visit the forum'
 }));
 if(english){
+ for(const node of document.querySelectorAll('.a90-lower-modules [aria-label]')){
+   const label=node.getAttribute('aria-label')||'';
+   node.setAttribute('aria-label',label.replace('Anterior en ','Previous in ').replace('Siguiente en ','Next in ').replace('Ir a ','Open ').replace(': diapositiva ',': slide ').replace('contenidos destacados','featured content').replace('ayuda y actividad reciente','help and recent activity').replace('Temas recientes del foro','Recent forum topics').replace('Respuestas recientes del foro','Recent forum replies'));
+ }
  const targets=document.querySelectorAll('.a90-lower-modules .mini-module-eyebrow,.a90-lower-modules .mini-module-title,.a90-lower-modules .mini-module-toplink,.a90-lower-modules .mini-name,.a90-lower-modules .mini-desc,.a90-lower-modules .mini-cta,.a90-lower-modules .mini-subline,.a90-lower-modules .mini-forum-more,.a90-lower-modules .mini-forum-wait');
  for(const target of targets){
    for(const node of target.childNodes){
