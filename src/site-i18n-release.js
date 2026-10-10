@@ -98,5 +98,8 @@ export const A90_EN_RELEASE = {
   "Un mundo 3D.": "A 3D world.",
   "Las primeras imágenes reales.": "The first real screenshots.",
   "Un vistazo al desarrollo: edificios logísticos, coches y una primera interacción en el escenario 3D. Todavía en pre-alpha.": "A glimpse at development: logistics buildings, cars and an early interaction in the 3D environment. Still in pre-alpha.",
-  "Ver las tres capturas": "See all three screenshots"
+  "Ver las tres capturas": "See all three screenshots",
+  "ÚLTIMA NOTICIA · LOGISTIC TRUCKER": "LATEST NEWS · LOGISTIC TRUCKER",
+  "3 capturas reales del nuevo entorno 3D": "3 real screenshots from the new 3D environment",
+  "10 OCT 2026 · NUEVO · 3 CAPTURAS REALES": "10 OCT 2026 · NEW · 3 REAL SCREENSHOTS"
 };
