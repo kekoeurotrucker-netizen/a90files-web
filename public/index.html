@@ -10,8 +10,8 @@
   <link rel="stylesheet" href="/assets/theme-petrol-amber.css?v=20261001-icons-11">
   <link rel="stylesheet" href="/assets/home-feature.css?v=20261010-cinematic-recovery-1">
   <link rel="stylesheet" href="/assets/home-modules.css?v=20261004-1"><link rel="stylesheet" href="/assets/home-mini-carousels.css?v=20261010-elegant-4">
-  <link rel="stylesheet" href="/assets/home-lower-cards.css?v=20261011-gold-minimal-1">
-  <link rel="stylesheet" href="/assets/vaultpool-spotlight.css?v=20261005-brand-icon-1">
+  <link rel="stylesheet" href="/assets/home-lower-cards.css?v=20261011-gold-cta-1">
+  <link rel="stylesheet" href="/assets/vaultpool-spotlight.css?v=20261011-marea-spotlight-1">
   <link rel="stylesheet" href="/assets/social-global.css?v=20261007-social-gradient-3">
   <link rel="stylesheet" href="/assets/header-velocity.css?v=20261004-v3">
 </head>
@@ -91,7 +91,9 @@
         <span class="feature-news-sr" aria-live="polite" aria-atomic="true" data-feature-announcement></span>
       </section>
 
-      <aside class="panel project-panel project-panel--visual project-panel--spotlight" aria-labelledby="vaultpool-title">
+      <aside class="panel project-panel project-panel--visual project-panel--spotlight" aria-label="Proyectos destacados: VaultPool y Marea Studio" data-project-spotlight>
+        <div class="spotlight-slides">
+          <section class="spotlight-slide is-active" data-spotlight-slide role="group" aria-label="VaultPool Storage">
         <div class="project-head">
           <div class="project-label"><span class="live-dot" aria-hidden="true"></span>PROYECTO DESTACADO</div>
           <span class="project-state">1.30.16.0 · STORE</span>
@@ -120,6 +122,47 @@
         <div class="project-actions">
           <a class="button project-main" href="/software/vaultpool/">Descubrir VaultPool <span aria-hidden="true">↗</span></a>
           <a class="icon-button" href="/soporte/" aria-label="Soporte de VaultPool">?</a>
+        </div>
+          </section>
+          <section class="spotlight-slide spotlight-slide--marea" data-spotlight-slide role="group" aria-label="Marea Studio Composer" hidden>
+        <div class="project-head">
+          <div class="project-label"><span class="live-dot" aria-hidden="true"></span>PROYECTO DESTACADO</div>
+          <span class="project-state">COMPOSER · STORE</span>
+        </div>
+        <a class="project-visual-preview project-visual-preview--concept" href="/software/marea-studio/" aria-label="Conocer Marea Studio Composer">
+          <img src="/assets/marea/marea-hero-waves.webp" width="1600" height="900" alt="Arte promocional de Marea Studio con ondas de audio en tonos azules y ámbar" loading="lazy" decoding="async">
+          <span class="project-preview-caption">MAREA STUDIO · COMPOSER</span>
+          <span class="project-preview-corner" aria-hidden="true">CREACIÓN MUSICAL</span>
+        </a>
+        <div class="project-brand">
+          <div class="vp-mark vp-mark--image" aria-hidden="true"><img src="/assets/marea/marea-icon.webp?v=20261005-marea-fixed-2" alt=""></div>
+          <div><h2>Marea Studio</h2><p>Composer</p></div>
+        </div>
+        <p class="project-copy">Marea Studio Composer ya está en Microsoft Store: creación musical local para Windows, editor de pistas y modelos de IA disponibles en el equipo.</p>
+        <div class="project-meta"><span>Windows</span><span>Música</span><span>IA local</span></div>
+        <nav class="project-milestones" aria-label="Noticias y comunidad de Marea Studio">
+          <a class="project-milestone" href="/novedades/marea-studio-ya-en-microsoft-store/">
+            <small>LANZAMIENTO OFICIAL</small>
+            <strong>Marea en Microsoft Store ↗</strong>
+          </a>
+          <a class="project-milestone" href="/foro/marea-studio/feedback-pruebas-ideas/">
+            <small>COMUNIDAD A90</small>
+            <strong>Pruebas y sugerencias ↗</strong>
+          </a>
+        </nav>
+        <div class="project-actions">
+          <a class="button project-main" href="/software/marea-studio/">Descubrir Marea Studio <span aria-hidden="true">↗</span></a>
+          <a class="icon-button" href="https://apps.microsoft.com/detail/9mz3j3tgxzgg?hl=es-ES&amp;gl=ES" target="_blank" rel="noopener noreferrer" aria-label="Instalar Marea Studio desde Microsoft Store">↗</a>
+        </div>
+          </section>
+        </div>
+        <div class="spotlight-controls" role="group" aria-label="Navegación de proyectos destacados">
+          <button type="button" class="spotlight-arrow" data-spotlight-prev aria-label="Proyecto anterior">‹</button>
+          <div class="spotlight-pagers">
+            <button type="button" class="spotlight-pager" data-spotlight-dot aria-label="Mostrar VaultPool" aria-current="true"><span aria-hidden="true"></span> VaultPool</button>
+            <button type="button" class="spotlight-pager" data-spotlight-dot aria-label="Mostrar Marea Studio" aria-current="false"><span aria-hidden="true"></span> Marea</button>
+          </div>
+          <button type="button" class="spotlight-arrow" data-spotlight-next aria-label="Proyecto siguiente">›</button>
         </div>
       </aside>
 
@@ -226,5 +269,5 @@
 
   <script src="/assets/app.js?v=20261009-gradient-frame-1" defer></script>
   <script src="/assets/home-feature.js?v=20261010-fallout-1" defer></script>
-<script src="/assets/home-mini-carousels.js?v=20261010-marea-store-1" defer></script></body>
+<script src="/assets/home-mini-carousels.js?v=20261010-marea-store-1" defer></script><script src="/assets/home-spotlight.js?v=20261011-v1" defer></script></body>
 </html>

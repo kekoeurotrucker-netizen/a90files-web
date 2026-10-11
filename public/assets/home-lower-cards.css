@@ -88,14 +88,16 @@
 .home .section-grid.a90-lower-modules .mini-cta{
   display:inline-flex;align-items:center;gap:4px;width:max-content;max-width:100%;
   min-height:29px;padding:6px 10px;
-  border:1px solid rgba(216,174,108,.68)!important;border-radius:7px;
-  background:rgba(8,35,44,.93)!important;box-shadow:none!important;
-  color:#f2d3a0;font-size:10px;font-weight:780;text-shadow:none;
-  transform:none!important;transition:border-color .17s ease,background .17s ease
+  border:1px solid #edb24d!important;border-radius:7px;
+  background:linear-gradient(112deg,#f9ba4a 0%,#e6a235 58%,#d8922b 100%)!important;
+  box-shadow:0 2px 6px rgba(0,0,0,.15)!important;
+  color:#261b0a!important;font-size:10px;font-weight:800;text-shadow:none!important;
+  transform:none!important;transition:filter .17s ease,background .17s ease
 }
 .home .section-grid.a90-lower-modules .mini-cta:hover{
-  background:rgba(26,53,56,.97)!important;border-color:#f0c58b!important;
-  color:#ffe1ab;filter:none!important;transform:none!important
+  background:linear-gradient(112deg,#ffd079,#f1b34c 70%,#e6a53b)!important;
+  border-color:#f5c269!important;color:#201604!important;
+  filter:brightness(1.055)!important;transform:none!important
 }
 /* Carousel controls are small and subdued. Keep navigation, remove duplicate counter. */
 .home .section-grid.a90-lower-modules .mini-controls{

@@ -217,3 +217,106 @@
 .home .project-panel--spotlight .vp-mark.vp-mark--image{overflow:visible;padding:0;border:0;background:transparent;box-shadow:none;text-shadow:none}
 .home .project-panel--spotlight .vp-mark.vp-mark--image::after{content:none}
 .home .project-panel--spotlight .vp-mark.vp-mark--image img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 7px 14px rgba(0,0,0,.32))}
+
+/* A90 · Two-project spotlight: VaultPool + Marea Studio.
+   The shared presentation intentionally softens the old neon treatment. */
+.home .project-panel--spotlight[data-project-spotlight]{
+  background:linear-gradient(160deg,#0b2731 0%,#071b24 64%,#07161d 100%)!important;
+  box-shadow:inset 0 1px 0 rgba(195,239,242,.035),0 12px 28px rgba(0,0,0,.22);
+}
+.home .project-panel--spotlight[data-project-spotlight]::after{
+  background:radial-gradient(ellipse at 92% 9%,rgba(48,145,165,.08),transparent 50%),
+    linear-gradient(180deg,transparent 10%,rgba(4,12,18,.25) 100%);
+}
+.home .project-panel--spotlight .spotlight-slides{
+  flex:1 1 auto;display:flex;flex-direction:column;min-height:0;min-width:0
+}
+.home .project-panel--spotlight .spotlight-slide{
+  display:flex;flex:1 1 auto;flex-direction:column;min-width:0;min-height:0
+}
+.home .project-panel--spotlight .spotlight-slide[hidden]{display:none!important}
+.home .project-panel--spotlight .spotlight-slide--marea .project-visual-preview img{
+  object-position:center center
+}
+.home .project-panel--spotlight .project-visual-preview--concept{
+  border-color:rgba(115,182,194,.32);
+  box-shadow:0 7px 19px rgba(0,0,0,.25)!important
+}
+.home .project-panel--spotlight .project-visual-preview--concept>img,
+.home .project-panel--spotlight .project-visual-preview>img{
+  filter:saturate(.78) contrast(1.02) brightness(.93);
+  transform:none;
+}
+.home .project-panel--spotlight .project-visual-preview--concept:hover>img,
+.home .project-panel--spotlight .project-visual-preview:hover>img{
+  filter:saturate(.84) contrast(1.03) brightness(.98);
+  transform:scale(1.016)
+}
+.home .project-panel--spotlight .project-visual-preview--concept .project-preview-corner{
+  border-color:rgba(205,166,108,.36);color:#edd0a0
+}
+.home .project-panel--spotlight .project-visual-preview--concept .project-preview-caption{
+  border-color:rgba(110,184,194,.23);color:#c4dadd
+}
+.home .project-panel--spotlight .project-milestones{gap:7px;margin-bottom:9px}
+.home .project-panel--spotlight .project-milestone{
+  min-height:39px;padding:6px 9px;
+  border:1px solid rgba(128,177,181,.17);
+  background:rgba(9,40,48,.40);
+  box-shadow:none!important
+}
+.home .project-panel--spotlight .project-milestone:hover{
+  border-color:rgba(205,169,112,.42);background:rgba(16,50,58,.59);transform:none
+}
+.home .project-panel--spotlight .project-milestone small{color:#d9b680}
+.home .project-panel--spotlight .project-state{
+  border-color:rgba(204,159,89,.36);color:#ead0a4;letter-spacing:.035em
+}
+.home .project-panel--spotlight .project-main{
+  background:rgba(20,68,77,.8);border-color:rgba(211,164,90,.66);box-shadow:none
+}
+.home .project-panel--spotlight .project-main:hover{
+  border-color:#e6bd79;background:rgba(29,79,85,.92)
+}
+/* Fixed-height, accessible navigation shared by both featured apps. */
+.home .project-panel--spotlight .spotlight-controls{
+  display:flex;flex:0 0 auto;justify-content:space-between;align-items:center;
+  min-height:29px;gap:8px;margin-top:9px;padding-top:7px;
+  border-top:1px solid rgba(111,169,182,.12)
+}
+.home .project-panel--spotlight .spotlight-pagers{
+  display:flex;align-items:center;justify-content:center;gap:9px;min-width:0
+}
+.home .project-panel--spotlight .spotlight-pager{
+  appearance:none;display:inline-flex;align-items:center;gap:6px;
+  padding:3px 4px;border:0;border-radius:5px;background:transparent;
+  color:#95acb1;font:750 10px/1.35 system-ui,sans-serif;cursor:pointer
+}
+.home .project-panel--spotlight .spotlight-pager span{
+  display:block;width:6px;height:6px;border-radius:50%;background:#597782
+}
+.home .project-panel--spotlight .spotlight-pager[aria-current="true"]{color:#e7c28c}
+.home .project-panel--spotlight .spotlight-pager[aria-current="true"] span{
+  width:12px;border-radius:5px;background:#e6b66f
+}
+.home .project-panel--spotlight .spotlight-arrow{
+  appearance:none;display:grid;place-items:center;flex:0 0 24px;
+  width:24px;height:23px;padding:0;border:1px solid rgba(170,146,107,.25);
+  border-radius:6px;background:transparent;color:#bdcfd3;font-size:15px;cursor:pointer
+}
+.home .project-panel--spotlight .spotlight-arrow:hover{
+  color:#f6d2a0;border-color:rgba(228,180,107,.7)
+}
+.home .project-panel--spotlight .spotlight-pager:focus-visible,
+.home .project-panel--spotlight .spotlight-arrow:focus-visible{
+  outline:2px solid #f0bb73;outline-offset:2px
+}
+@media(max-width:450px){
+  .home .project-panel--spotlight .spotlight-controls{margin-top:9px}
+  .home .project-panel--spotlight .spotlight-pagers{gap:5px}
+  .home .project-panel--spotlight .spotlight-pager{font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){
+  .home .project-panel--spotlight .spotlight-slide *,
+  .home .project-panel--spotlight .spotlight-pager{transition:none!important}
+}

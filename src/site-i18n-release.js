@@ -109,5 +109,14 @@ export const A90_EN_RELEASE = {
   "Ver la mininoticia completa": "Read the full update",
   "01 · INSTALACIONES": "01 · FACILITIES",
   "02 · PRIMERA INTERACCIÓN": "02 · FIRST INTERACTION",
-  "03 · VEHÍCULOS": "03 · VEHICLES"
+  "03 · VEHÍCULOS": "03 · VEHICLES",
+  "CREACIÓN MUSICAL": "MUSIC CREATION",
+  "Marea Studio Composer ya está en Microsoft Store: creación musical local para Windows, editor de pistas y modelos de IA disponibles en el equipo.": "Marea Studio Composer is now on Microsoft Store: local music creation for Windows, track editing and AI models available on your computer.",
+  "LANZAMIENTO OFICIAL": "OFFICIAL LAUNCH",
+  "Marea en Microsoft Store ↗": "Marea on Microsoft Store ↗",
+  "COMUNIDAD A90": "A90 COMMUNITY",
+  "Pruebas y sugerencias ↗": "Testing and feedback ↗",
+  "Descubrir Marea Studio": "Explore Marea Studio",
+  "Proyectos destacados: VaultPool y Marea Studio": "Featured projects: VaultPool and Marea Studio",
+  "Música": "Music"
 };
