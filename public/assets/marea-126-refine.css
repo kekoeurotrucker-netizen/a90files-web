@@ -30,25 +30,11 @@
 .m126-hero-actions .m126-store{background:linear-gradient(110deg,#f5bf65,#e3a039);color:#241908;border:1px solid #edbd6c}
 .m126-hero-actions .m126-secondary{border:1px solid rgba(133,192,202,.38);background:rgba(10,45,56,.7);color:#e0f3f4}
 .m126-hero-actions a:hover{filter:brightness(1.095);transform:translateY(-1px)}
-.m126-hero-art{position:relative;align-self:stretch;min-width:0;min-height:410px;overflow:hidden;isolation:isolate}
-.m126-hero-art::before{
- content:"";position:absolute;inset:0;z-index:-1;
- background:linear-gradient(90deg,#09212b 0%,rgba(8,30,39,.76) 30%,rgba(5,21,30,.69) 100%),
- url('/assets/marea/marea-hero-waves.webp') 55% bottom/auto 180% no-repeat;
- filter:saturate(.85) brightness(.83);
-}
-.m126-hero-art::after{
- content:"";position:absolute;inset:0;z-index:-1;
- background:radial-gradient(ellipse at 56% 52%,rgba(25,140,160,.20),transparent 58%),
- linear-gradient(0deg,rgba(3,15,22,.79),transparent 36%,transparent 78%,rgba(3,15,22,.25));
-}
-.m126-art-brand{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:27px;isolation:isolate}
-.m126-art-brand::before{
- content:"";position:absolute;z-index:-1;width:90%;height:50%;
- background:radial-gradient(ellipse,rgba(7,22,30,.85),rgba(7,22,30,.18) 62%,transparent 76%);
- filter:blur(12px)
-}
-.m126-art-brand img{display:block;width:min(100%,360px);height:auto;object-fit:contain;filter:drop-shadow(0 10px 23px rgba(0,10,15,.58))}
+
+.m126-hero-art{position:relative;align-self:stretch;display:flex;align-items:center;justify-content:center;min-width:0;min-height:410px;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse at center,rgba(12,67,85,.37),transparent 72%)}
+.m126-hero-art::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:2;background:linear-gradient(90deg,#09222d 0%,rgba(9,34,45,0) 22%),linear-gradient(0deg,#081b24 0%,transparent 16%)}
+.m126-art-brand{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-height:410px;overflow:hidden}
+.m126-art-brand img{display:block;width:min(115%,505px);max-width:none;height:auto;aspect-ratio:1;object-fit:contain;flex:none;filter:saturate(.97);-webkit-mask-image:radial-gradient(ellipse at center,#000 55%,transparent 75%);mask-image:radial-gradient(ellipse at center,#000 55%,transparent 75%)}
 .m126-intro{margin-top:0!important;color:#b9d2d6;font-size:14px;line-height:1.75}
 .m126-points{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px;margin:20px 0 31px;border-top:1px solid rgba(105,168,182,.2)}
 .m126-point{position:relative;min-width:0;padding:16px 11px 18px 17px!important;border:0!important;border-bottom:1px solid rgba(105,168,182,.20)!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
@@ -110,10 +96,10 @@
 @media(max-width:720px){
  .news-page--premium .m126-hero{grid-template-columns:1fr;min-height:auto}
  .m126-hero-copy{padding:30px 25px 5px;max-width:100%}
- .m126-hero-art{min-height:220px;height:220px}
+ .m126-hero-art{min-height:240px;height:240px}
   
- .m126-art-brand{padding:31px}
- .m126-art-brand img{width:min(76%,350px)}
+ .m126-art-brand{min-height:240px}
+ .m126-art-brand img{width:min(96%,315px)}
  .m126-hero-title{font-size:clamp(31px,7vw,45px)!important;margin-top:13px!important}
  .m126-hero-lead{font-size:12px!important}
  .m126-points{grid-template-columns:1fr}
