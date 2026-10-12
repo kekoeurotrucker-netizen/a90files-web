@@ -34,21 +34,3 @@
 .analytics-topbar-inner .a90-language-switcher{margin-left:auto}
 .analytics-topbar-inner .analytics-back{margin-left:8px}
 @media(max-width:510px){.analytics-topbar-inner .a90-language-switcher{margin-left:auto}.analytics-topbar-inner .analytics-back{font-size:10px;max-width:82px;line-height:1.25}}
-
-/* A90 flags-only language switcher: compact, direct selection (no ES/EN letters). */
-.a90-language-switcher--flags{
- display:inline-flex;align-items:center;justify-content:center;gap:5px;
- min-height:39px;padding:4px 7px;border:1px solid rgba(92,185,199,.34);
- border-radius:10px;background:rgba(9,34,43,.88);box-shadow:0 3px 14px rgba(0,0,0,.15)
-}
-.a90-language-switcher--flags button{
- appearance:none;display:inline-flex;align-items:center;justify-content:center;
- width:32px;height:29px;padding:3px;border:1px solid transparent;border-radius:6px;
- background:transparent;cursor:pointer;transition:background .18s,border-color .18s
-}
-.a90-language-switcher--flags button:hover,
-.a90-language-switcher--flags button:focus-visible{background:rgba(91,202,216,.13);border-color:rgba(96,205,222,.52)}
-.a90-language-switcher--flags button.is-selected{background:rgba(225,167,79,.11);border-color:rgba(231,174,89,.55)}
-.a90-language-switcher--flags .a90-language-divider{color:#a4bdc2;font:700 12px/1 ui-monospace,monospace}
-@media(max-width:760px){.a90-language-switcher--flags{min-height:35px;gap:3px;padding:3px 5px}.a90-language-switcher--flags button{width:29px;height:27px}}
-@media(prefers-reduced-motion:reduce){.a90-language-switcher--flags button{transition:none}}
