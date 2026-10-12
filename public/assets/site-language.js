@@ -66,23 +66,26 @@ function walk(root){
 function setupSwitcher(){
  const bar=document.querySelector('.topbar-inner,.analytics-topbar-inner');
  if(!bar||bar.querySelector('.a90-language-switcher'))return;
- const ui=document.createElement('details');ui.className='a90-language-switcher';
- ui.innerHTML='<summary aria-label="'+(english?'Choose language':'Elegir idioma')+'"><span class="a90-language-current">'+flag(selected)+'</span><strong>'+selected.toUpperCase()+'</strong><svg class="a90-language-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></summary><div class="a90-language-menu" role="group" aria-label="Languages"><button type="button" data-a90-lang="es">'+flag('es')+'<span>Español<small>Spanish</small></span></button><button type="button" data-a90-lang="en">'+flag('en')+'<span>English<small>Inglés</small></span></button></div>';
- ui.querySelectorAll('[data-a90-lang]').forEach(b=>{
+ const ui=document.createElement('div');
+ ui.className='a90-language-switcher a90-language-switcher--flags';
+ ui.setAttribute('role','group');
+ ui.setAttribute('aria-label',english?'Choose language':'Elegir idioma');
+ ui.innerHTML='<button type="button" data-a90-lang="es" aria-label="Español" title="Español">'+flag('es')+'</button><span class="a90-language-divider" aria-hidden="true">/</span><button type="button" data-a90-lang="en" aria-label="English" title="English">'+flag('en')+'</button>';
+ const menu=bar.querySelector('.menu-button,.analytics-back');
+ bar.insertBefore(ui,menu||null);
+ // Share the same account preference and navigation with inline article flag controls.
+ document.querySelectorAll('[data-a90-lang]').forEach(b=>{
    const lang=b.dataset.a90Lang;
    b.classList.toggle('is-selected',lang===selected);
    b.setAttribute('aria-pressed',String(lang===selected));
    b.addEventListener('click',()=>{
+     if(lang===selected)return;
      remember(lang);
-     // Save to account if logged in; navigation is not blocked by network/guest state.
+     // Account sync never blocks language navigation.
      fetch('/api/auth/language',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({language:lang}),keepalive:true}).catch(()=>{});
      location.assign(pathWithQuery(lang));
    });
  });
- const menu=bar.querySelector('.menu-button,.analytics-back');
- bar.insertBefore(ui,menu||null);
- document.addEventListener('click',event=>{if(!ui.contains(event.target))ui.removeAttribute('open')});
- document.addEventListener('keydown',event=>{if(event.key==='Escape')ui.removeAttribute('open')});
 }
 window.A90Locale={getLanguage:()=>selected,localizedPath,translateKey:key=>dictionary[key]||key};
 function init(){

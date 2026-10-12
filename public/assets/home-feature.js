@@ -29,7 +29,11 @@ let current=0,timer=null,userPaused=Boolean(reduce?.matches);
 
 function stop(){if(timer!==null){clearTimeout(timer);timer=null}}
 function setMoreState(enabled){if(!more)return;more.classList.toggle('is-disabled',!enabled);more.setAttribute('aria-disabled',String(!enabled));if(enabled){more.href='/novedades/#historico';more.title='Continuar desde la noticia 11'}else{more.removeAttribute('href');more.title='Se activará cuando haya más de 10 noticias'}}
-function syncMoreNews(){setMoreState(allSlides.length>MAX_SLIDES)}
+function syncMoreNews(){
+ // The front-page carousel intentionally shows 10 slides; the Novedades archive has additional articles.
+ // Never derive archive availability from the intentionally capped slide count.
+ setMoreState(true);
+}
 function canAuto(){return slides.length>1&&!document.hidden&&!userPaused}
 function start(){stop();if(canAuto())timer=window.setTimeout(()=>activate((current+1)%slides.length,false),slideDelayMs)}
 function syncToggle(){if(!toggle)return;toggle.textContent=userPaused?'▶':'Ⅱ';toggle.setAttribute('aria-label',userPaused?'Reanudar reproducción automática':'Pausar reproducción automática');toggle.setAttribute('aria-pressed',String(userPaused));}

@@ -118,3 +118,14 @@
 @media(prefers-reduced-motion:reduce){
  .m126-hero-actions a,.m126-shot-link img,.m126-doc{transition:none}
 }
+
+/* Miniature live language controls in the Marea editorial metadata. */
+.m126-hero-tags .m126-language-pair{display:inline-flex;align-items:center;gap:5px}
+.m126-language-pair button{
+ display:inline-grid;place-items:center;appearance:none;cursor:pointer;
+ padding:2px;border:1px solid transparent;border-radius:4px;background:transparent
+}
+.m126-language-pair button:hover,.m126-language-pair button:focus-visible{border-color:#83d6df;background:rgba(101,206,217,.1)}
+.m126-language-pair button.is-selected{border-color:rgba(235,178,95,.65)}
+.m126-language-pair .a90-language-flag{width:21px;height:15px}
+.m126-language-divider{font:normal 700 11px/1 ui-monospace,monospace;color:#b1cbd0}
