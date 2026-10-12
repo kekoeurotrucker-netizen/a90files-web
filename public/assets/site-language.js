@@ -67,7 +67,7 @@ function setupSwitcher(){
  const bar=document.querySelector('.topbar-inner,.analytics-topbar-inner');
  if(!bar||bar.querySelector('.a90-language-switcher'))return;
  const ui=document.createElement('details');ui.className='a90-language-switcher';
- ui.innerHTML='<summary aria-label="'+(english?'Choose language':'Elegir idioma')+'"><span class="a90-language-current">'+flag(selected)+'</span><strong>'+selected.toUpperCase()+'</strong><svg class="a90-language-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></summary><div class="a90-language-menu" role="group" aria-label="Languages"><button type="button" data-a90-lang="es">'+flag('es')+'<span>Español<small>Spanish</small></span></button><button type="button" data-a90-lang="en">'+flag('en')+'<span>English<small>Inglés</small></span></button></div>';
+ ui.innerHTML='<summary aria-label="'+(english?'Choose language':'Elegir idioma')+'"><span class="a90-language-current">'+flag(selected)+'</span><svg class="a90-language-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></summary><div class="a90-language-menu" role="group" aria-label="Languages"><button type="button" data-a90-lang="es">'+flag('es')+'<span>Español<small>Spanish</small></span></button><button type="button" data-a90-lang="en">'+flag('en')+'<span>English<small>Inglés</small></span></button></div>';
  ui.querySelectorAll('[data-a90-lang]').forEach(b=>{
    const lang=b.dataset.a90Lang;
    b.classList.toggle('is-selected',lang===selected);

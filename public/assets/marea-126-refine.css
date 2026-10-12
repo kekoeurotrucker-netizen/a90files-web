@@ -22,9 +22,9 @@
 .m126-hero-sub{margin:0 0 17px;color:#f0bb79;font-size:clamp(16px,1.45vw,21px);line-height:1.25;font-weight:760;letter-spacing:-.025em}
 .m126-hero-lead{margin:0 0 18px!important;max-width:505px;color:#b9d1d5;font-size:13px!important;line-height:1.8!important}
 .m126-hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 21px}
-.m126-hero-tags span{padding:0;color:#a8c8ce;font:750 9px/1.35 ui-monospace,monospace;letter-spacing:.045em}
-.m126-hero-tags span:not(:last-child)::after{content:"·";display:inline-block;margin-left:8px;color:#d6a960}
-.m126-hero-tags span:first-child{color:#f1be78}
+.m126-hero-tags > span{padding:0;color:#a8c8ce;font:750 9px/1.35 ui-monospace,monospace;letter-spacing:.045em}
+.m126-hero-tags > span:not(:last-child)::after{content:"·";display:inline-block;margin-left:8px;color:#d6a960}
+.m126-hero-tags > span:first-child{color:#f1be78}
 .m126-hero-actions{display:flex;flex-wrap:wrap;gap:9px}
 .m126-hero-actions a{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:40px;padding:10px 14px;border-radius:9px;font-size:11px;font-weight:800;text-decoration:none;transition:filter .2s ease,transform .2s ease}
 .m126-hero-actions .m126-store{background:linear-gradient(110deg,#f5bf65,#e3a039);color:#241908;border:1px solid #edbd6c}
@@ -120,9 +120,8 @@
 }
 
 
-/* Language availability in release metadata: show only the current page language. */
-.m126-hero-tags .m126-current-language{display:inline-flex;align-items:center;min-height:16px}
+/* Two supported languages shown on both translated versions of the Marea article. */
+.m126-hero-tags .m126-current-language{display:inline-flex;align-items:center;gap:6px;min-height:18px}
 .m126-current-language>span{display:inline-flex;align-items:center}
 .m126-current-language .a90-language-flag{width:22px;height:15px;display:block;overflow:hidden;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.25)}
-html[lang|="en"] .m126-flag-es{display:none!important}
-html:not([lang|="en"]) .m126-flag-en{display:none!important}
+.m126-current-language .m126-flag-separator{font:700 12px/1 ui-monospace,monospace;color:#a8c8ce}

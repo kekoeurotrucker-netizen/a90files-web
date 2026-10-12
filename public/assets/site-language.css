@@ -34,3 +34,8 @@
 .analytics-topbar-inner .a90-language-switcher{margin-left:auto}
 .analytics-topbar-inner .analytics-back{margin-left:8px}
 @media(max-width:510px){.analytics-topbar-inner .a90-language-switcher{margin-left:auto}.analytics-topbar-inner .analytics-back{font-size:10px;max-width:82px;line-height:1.25}}
+
+/* Flag-only header trigger; original dropdown and language persistence stay intact. */
+.a90-language-switcher > summary{min-width:58px;gap:8px;padding-inline:9px}
+@media(max-width:760px){.a90-language-switcher > summary{min-width:52px;gap:6px;padding-inline:7px}}
+@media(max-width:400px){.a90-language-switcher > summary{min-width:48px}}
