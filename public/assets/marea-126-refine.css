@@ -34,7 +34,7 @@
 .m126-hero-art::before{
  content:"";position:absolute;inset:0;z-index:-1;
  background:linear-gradient(90deg,#09212b 0%,rgba(8,30,39,.76) 30%,rgba(5,21,30,.69) 100%),
- url('/assets/marea/marea-hero-waves.webp') center 68%/cover no-repeat;
+ url('/assets/marea/marea-hero-waves.webp') 55% bottom/auto 180% no-repeat;
  filter:saturate(.85) brightness(.83);
 }
 .m126-hero-art::after{
