@@ -42,3 +42,36 @@ if(english){
  }
 }
 })();
+/* Compact screenshot filmstrip controls; the full-size lightbox above stays intact. */
+(()=>{
+ 'use strict';
+ const strip=document.querySelector('[data-marea-gallery]');
+ if(!strip)return;
+ const previous=document.querySelector('[data-m126-strip-prev]');
+ const next=document.querySelector('[data-m126-strip-next]');
+ const counter=document.querySelector('[data-m126-strip-count]');
+ const shots=[...strip.querySelectorAll('.m126-shot')];
+ if(shots.length===0)return;
+ const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+ const move=(direction)=>{
+  const first=shots[0];
+  const gap=parseFloat(getComputedStyle(strip).gap)||0;
+  const unit=first.getBoundingClientRect().width+gap;
+  strip.scrollBy({left:direction*unit*Math.max(1,Math.floor(strip.clientWidth/unit)-1),behavior:reduced?'instant':'smooth'});
+ };
+ const update=()=>{
+  if(!counter)return;
+  const left=strip.getBoundingClientRect().left;
+  let nearest=0,best=Infinity;
+  shots.forEach((shot,i)=>{
+   const dist=Math.abs(shot.getBoundingClientRect().left-left);
+   if(dist<best){best=dist;nearest=i;}
+  });
+  counter.textContent=String(nearest+1).padStart(2,'0')+' / '+String(shots.length).padStart(2,'0');
+ };
+ previous?.addEventListener('click',()=>move(-1));
+ next?.addEventListener('click',()=>move(1));
+ strip.addEventListener('scroll',update,{passive:true});
+ window.addEventListener('resize',update,{passive:true});
+ update();
+})();

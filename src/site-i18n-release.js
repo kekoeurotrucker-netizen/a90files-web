@@ -202,4 +202,21 @@ export const A90_EN_RELEASE = {
   "PDF en español · 6 páginas · modelos, grabación, MIDI, LMMS y soluciones": "PDF in Spanish · 6 pages · models, recording, MIDI, LMMS and troubleshooting",
   "DESCARGAS": "DOWNLOADS",
   "Novedades 1.3.26 ↗": "Version 1.3.26 news ↗"
+,
+  "La nueva versión ya está disponible: crea música sin descargar modelos, descubre Primeros pasos y trabaja con un editor más flexible, biblioteca organizada y exportación de audio.": "The new release is now available: create music without downloading models, explore Getting Started and work with a more flexible editor, an organized library and audio export.",
+  "♫ Obtener en Microsoft Store ↗": "♫ Get it on Microsoft Store ↗",
+  "Guías y manuales ↓": "Guides and manuals ↓",
+  "Explora Marea por dentro": "Explore Marea from the inside",
+  "09 CAPTURAS REALES · VERSIÓN 1.3.26": "09 REAL SCREENSHOTS · VERSION 1.3.26",
+  "Una pequeña muestra de cada área. Pulsa una miniatura para ampliarla y recorrer las nueve pantallas a tamaño completo.": "A compact preview of each area. Select any thumbnail to enlarge it and browse all nine screens at full size.",
+  "PANTALLAS DE LA APLICACIÓN · DESLIZA PARA VER MÁS": "APP SCREENS · SCROLL FOR MORE",
+  "Guía básica": "Basic guide",
+  "Guía avanzada": "Advanced guide",
+  "4 páginas · Tu primer loop, edición y exportación": "4 pages · Your first loop, editing and export",
+  "6 páginas · Modelos, grabación, MIDI y compatibilidad": "6 pages · Models, recording, MIDI and compatibility",
+  "Ver ambos manuales en el centro de descargas ↗": "Find both guides in the download center ↗",
+  "¿Tienes dudas? Hemos abierto dos guías prácticas y un tema de novedades en el foro:": "Questions? We have opened two practical guides and a discussion thread in the forum:",
+  "Debatir la 1.3.26 ↗": "Discuss version 1.3.26 ↗",
+  "MAKE YOUR OWN SOUND": "MAKE YOUR OWN SOUND",
+  "CREATE · MIX · EXPORT": "CREATE · MIX · EXPORT"
 };
