@@ -56,7 +56,7 @@
 .m126-filmstrip-tools{display:flex;align-items:center;gap:7px}
 .m126-filmstrip-tools button{appearance:none;display:grid;place-items:center;width:28px;height:27px;border:1px solid rgba(181,151,108,.46);border-radius:7px;background:#0c2934;color:#e3c49a;font-size:17px;cursor:pointer}
 .m126-filmstrip-tools button:hover{background:#163944;border-color:#e9b66d}
-.m126-filmstrip-count{color:#dbb680;font:790 10px/1 ui-monospace,monospace;min-width:36px;text-align:center}
+.m126-filmstrip-count{display:inline-block;flex:0 0 47px;white-space:nowrap;color:#dbb680;font:790 10px/1 ui-monospace,monospace;min-width:47px;text-align:center}
 .m126-gallery{display:flex!important;gap:8px;min-width:0;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;scrollbar-width:thin;scrollbar-color:#426d79 #071c25;padding:0 1px 6px;margin:0!important}
 .m126-shot{flex:0 0 156px;width:156px;min-width:0;margin:0!important;border:1px solid rgba(101,171,187,.24);border-radius:8px;overflow:hidden;background:#0c2630;scroll-snap-align:start;box-shadow:none}
 .m126-shot-link{display:block;position:relative;aspect-ratio:16/9;overflow:hidden;background:#0b2630}
