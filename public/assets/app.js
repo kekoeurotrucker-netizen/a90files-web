@@ -18,9 +18,51 @@ const softwareProjects=[
   {href:'/novedades/startwise-en-desarrollo/',name:'StartWise',meta:'Optimización de Windows · En desarrollo',icon:'/assets/startwise/startwise-icon.svg',key:'startwise'},
   {href:'/software/marea-studio/',name:'Marea Studio',meta:'Generación musical local · En desarrollo',icon:'/assets/marea/marea-icon.webp?v=20261005-marea-fixed-2',key:'marea'}
 ];
+const gameProjects=[
+  {href:'/juegos/project-trucker/',name:'Project Trucker 3D',meta:'Simulación europea · Pre-alpha',icon:'/assets/project-trucker/project-trucker-logo-300.webp',key:'project-trucker'},
+  {href:'/juegos/surviving-the-fallout/',name:'Surviving the Fallout',meta:'Supervivencia · Proyecto futuro',icon:'/assets/editorial/surviving-fallout.svg',key:'fallout'}
+];
 function makeProjectLink(project){const a=document.createElement('a');a.href=project.href;a.dataset.project=project.key;const icon=document.createElement('span');icon.className='software-nav-icon';if(project.icon){const img=document.createElement('img');img.src=project.icon;img.alt='';icon.append(img)}else{icon.textContent=project.mark};const copy=document.createElement('span');copy.className='software-nav-item-copy';const strong=document.createElement('strong');strong.textContent=project.name;const small=document.createElement('small');small.textContent=project.meta;copy.append(strong,small);a.append(icon,copy);return a}
 function enhanceSoftwareNavigation(){const path=location.pathname.replace(/^\/en(?=\/|$)/,'')||'/';document.querySelectorAll('.nav').forEach(nav=>{if(nav.querySelector('.software-nav'))return;const link=[...nav.children].find(el=>el.tagName==='A'&&new URL(el.getAttribute('href')||'',location.origin).pathname.replace(/^\/en(?=\/|$)/,'')==='/software/');if(!link)return;const details=document.createElement('details');details.className='software-nav';const summary=document.createElement('summary');summary.className='software-nav-trigger';if(path.startsWith('/software/'))summary.classList.add('active');summary.setAttribute('aria-label','Software: abrir proyectos');const label=document.createElement('span');label.textContent='Software';const chev=document.createElement('span');chev.className='software-nav-chevron';chev.setAttribute('aria-hidden','true');chev.textContent='⌄';summary.append(label,chev);const menu=document.createElement('div');menu.className='software-nav-menu';menu.setAttribute('aria-label','Proyectos de software');softwareProjects.forEach(p=>menu.append(makeProjectLink(p)));details.append(summary,menu);link.replaceWith(details)});if(mobileNav&&!mobileNav.querySelector('.mobile-software-nav')){const link=[...mobileNav.children].find(el=>el.tagName==='A'&&new URL(el.getAttribute('href')||'',location.origin).pathname.replace(/^\/en(?=\/|$)/,'')==='/software/');if(link){const details=document.createElement('details');details.className='mobile-software-nav';const summary=document.createElement('summary');summary.textContent='Software';const menu=document.createElement('div');menu.className='mobile-software-menu';softwareProjects.forEach(p=>{const a=document.createElement('a');a.href=p.href;a.textContent=p.name;menu.append(a)});details.append(summary,menu);link.replaceWith(details)}}}
 enhanceSoftwareNavigation();
+function enhanceGamesNavigation(){
+  const english=location.pathname.startsWith('/en/');
+  const path=location.pathname.replace(/^\/en(?=\/|$)/,'')||'/';
+  const label=english?'Games':'Juegos';
+  const gamesLink=node=>{
+    if(node.tagName!=='A')return false;
+    try{return new URL(node.getAttribute('href')||'',location.origin).pathname.replace(/^\/en(?=\/|$)/,'')==='/juegos/';}
+    catch{return false;}
+  };
+  document.querySelectorAll('.nav').forEach(nav=>{
+    if(nav.querySelector('.games-nav'))return;
+    const link=[...nav.children].find(gamesLink);
+    if(!link)return;
+    const details=document.createElement('details');details.className='software-nav games-nav';
+    const summary=document.createElement('summary');summary.className='software-nav-trigger';
+    if(path.startsWith('/juegos/'))summary.classList.add('active');
+    summary.setAttribute('aria-label',english?'Games: open game projects':'Juegos: abrir proyectos');
+    const title=document.createElement('span');title.textContent=label;
+    const chevron=document.createElement('span');chevron.className='software-nav-chevron';chevron.setAttribute('aria-hidden','true');chevron.textContent='⌄';
+    summary.append(title,chevron);
+    const menu=document.createElement('div');menu.className='software-nav-menu';menu.setAttribute('aria-label',english?'Game projects':'Proyectos de juegos');
+    gameProjects.forEach(project=>menu.append(makeProjectLink(project)));
+    const all=document.createElement('a');all.href='/juegos/';all.className='games-nav-all';all.textContent=english?'All games ↗':'Ver todos los juegos ↗';menu.append(all);
+    details.append(summary,menu);link.replaceWith(details);
+  });
+  if(mobileNav&&!mobileNav.querySelector('.mobile-games-nav')){
+    const link=[...mobileNav.children].find(gamesLink);
+    if(link){
+      const details=document.createElement('details');details.className='mobile-software-nav mobile-games-nav';
+      const summary=document.createElement('summary');summary.textContent=label;
+      const menu=document.createElement('div');menu.className='mobile-software-menu';
+      gameProjects.forEach(project=>{const a=document.createElement('a');a.href=project.href;a.textContent=project.name;menu.append(a);});
+      const all=document.createElement('a');all.href='/juegos/';all.textContent=english?'All games':'Todos los juegos';menu.append(all);
+      details.append(summary,menu);link.replaceWith(details);
+    }
+  }
+}
+enhanceGamesNavigation();
 function ensureDownloadsNav(){
   for(const nav of document.querySelectorAll('.nav,#mobile-nav')){
     if(nav.querySelector('a[href="/descargas/"],a[href="/en/descargas/"]'))continue;
