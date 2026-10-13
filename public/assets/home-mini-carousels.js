@@ -18,7 +18,7 @@ const translations=new Map(Object.entries({
 'Conocer Pilot Station':'Discover Pilot Station','Del transporte profesional a una nueva simulación 3D.':'From professional trucking to a new 3D simulation.',
 'Ver el proyecto':'View the project','Un proyecto futuro. Las bases ya están puestas.':'A future project. Its foundations are already in place.',
 'Descubrir el misterio':'Discover the mystery','Reproducir':'Play','▶ Reproducir':'▶ Play',
-'CENTRO DE AYUDA':'HELP CENTER','¿Necesitas una mano?':'Need a hand?',
+'CENTRO DE AYUDA':'HELP CENTER','¿Necesitas ayuda?':'Need help?',
 'Guías, incidencias y contacto con A 90 Files.':'Guides, issue reports and contact with A 90 Files.',
 'Ir a Soporte':'Visit Support','COMUNIDAD EN DIRECTO':'LIVE COMMUNITY',
 'Últimos posts':'Latest topics','LA CONVERSACIÓN CONTINÚA':'THE CONVERSATION CONTINUES',
