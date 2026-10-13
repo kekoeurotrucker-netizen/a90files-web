@@ -150,3 +150,15 @@
  .forum-comment-replies{margin-left:18px;padding-left:8px}
  .forum-comment-replies .forum-post{grid-template-columns:1fr}
 }
+
+/* Second-level forums within each A90 Files application. */
+.forum-app-subforums{padding:20px 25px 23px;border-bottom:1px solid rgba(105,174,196,.18);background:linear-gradient(135deg,rgba(16,66,83,.27),rgba(7,27,37,.23))}
+.forum-app-subforums>h2{font-size:16px;margin:0 0 13px;font-weight:750;color:#ecfaff;letter-spacing:-.01em}
+.forum-app-subforums-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.forum-app-subforum{display:flex;align-items:flex-start;gap:12px;padding:16px 14px;border:1px solid rgba(114,183,208,.25);border-radius:12px;background:linear-gradient(145deg,rgba(13,44,58,.96),rgba(4,27,38,.8));color:#d7f3f8;text-decoration:none;transition:background .18s,border-color .18s,transform .18s}
+.forum-app-subforum:hover{border-color:rgba(67,214,235,.64);background:rgba(19,70,90,.8);transform:translateY(-1px)}
+.forum-app-subforum-mark{display:grid;place-items:center;flex:0 0 34px;height:34px;border-radius:9px;background:rgba(58,170,205,.12);font-size:21px;color:#67deef}
+.forum-app-subforum>div{min-width:0}
+.forum-app-subforum strong{display:block;font-size:14px;margin-bottom:5px;color:#edfbff}
+.forum-app-subforum small{display:block;font-size:11px;line-height:1.5;color:#9dbac8}
+@media(max-width:650px){.forum-app-subforums{padding:15px}.forum-app-subforums-grid{grid-template-columns:1fr}}
