@@ -116,7 +116,7 @@ async function renderBoard({setPageTitle=true}={}){
   const head=el('header','forum-section-head');const left=el('div');const code=el('span','section-code',parent.slug==='normas-y-avisos'?'!':String(parent.name).slice(0,3).toUpperCase());const copy=el('div');copy.append(el('small','',parent.parent_id?'SUBFORO':'COMUNIDAD'));copy.append(el('h2','',parent.name));left.append(code,copy);head.append(left,el('span','section-note',parent.description||''));article.append(head);
   const list=el('div','subforum-list');const sub=children.get(String(parent.id))||[];const rows=sub.length?sub:[parent];
   rows.forEach(cat=>{
-    const st=stats[String(cat.id)]||{topics:0,last_post_at:null};const row=button('','subforum live-subforum',()=>{location.href=categoryHref(cat)});
+    const direct=stats[String(cat.id)]||{topics:0,last_post_at:null};const descendants=children.get(String(cat.id))||[];const st={topics:direct.topics+descendants.reduce((sum,x)=>sum+(stats[String(x.id)]?.topics||0),0),last_post_at:direct.last_post_at};for(const x of descendants){const t=stats[String(x.id)]?.last_post_at;if(t&&(!st.last_post_at||t>st.last_post_at))st.last_post_at=t}const row=button('','subforum live-subforum',()=>{location.href=categoryHref(cat)});
     row.removeAttribute('aria-label');const icon=el('span','subforum-icon',cat.is_locked?'🔒':'#');const main=el('div');main.append(el('strong','',cat.name),el('p','',cat.description||''));const meta=el('span','empty-state',st.topics?`${st.topics} tema${st.topics===1?'':'s'}${st.last_post_at?` · ${fmtDate(st.last_post_at)}`:''}`:'Sin temas');row.append(icon,main,meta);list.append(row);
   });
   article.append(list);board.append(article);
@@ -130,8 +130,20 @@ async function renderTopics(slug,page=1){
  target.replaceChildren();
  const view=el('section','forum-live-view');const head=el('header','forum-live-view-head');const titleWrap=el('div');titleWrap.append(linkButton('← Todos los foros','/foro/'),el('small','',data.category?.description||''),el('h1','',data.category?.name||'Foro'));
  const actions=el('div','forum-live-actions');actions.append(button('Nuevo tema','forum-live-primary',async()=>{const auth=await authState();if(!auth){openLogin();return}openComposer({mode:'topic',category:data.category})}));head.append(titleWrap,actions);view.append(head);
+ if(data.subcategories?.length){
+   const group=el('section','forum-app-subforums');
+   group.append(el('h2','','Secciones de '+(data.category?.name||'esta aplicación')));
+   const cards=el('div','forum-app-subforums-grid');
+   for(const cat of data.subcategories){
+     const a=el('a','forum-app-subforum');a.href=categoryHref(cat);
+     const marker=el('span','forum-app-subforum-mark',cat.is_locked?'🔒':'›');
+     const copy=el('div');copy.append(el('strong','',cat.name),el('small','',cat.description||''));
+     a.append(marker,copy);cards.append(a);
+   }
+   group.append(cards);view.append(group);
+ }
  const list=el('div','forum-topic-list');
- if(!data.topics?.length)list.append(status('Todavía no hay temas. Puedes abrir el primero cuando hayas iniciado sesión.','empty'));
+ if(!data.topics?.length&&!data.subcategories?.length)list.append(status('Todavía no hay temas. Puedes abrir el primero cuando hayas iniciado sesión.','empty'));
  for(const t of data.topics||[]){const a=el('a','forum-topic-row');a.href=topicHref(t,data.category);const icon=el('span','forum-topic-icon',t.is_pinned?'📌':t.is_locked?'🔒':'#');const main=el('div','forum-topic-main');const top=el('div','forum-topic-title');top.append(el('strong','',t.title));if(t.is_pinned)top.append(el('span','forum-chip','FIJADO'));if(t.is_locked)top.append(el('span','forum-chip','CERRADO'));main.append(top,el('small','',`${nameOf(t.author)} · ${roleName(t.author?.role)} · ${fmtDate(t.created_at)}`));const meta=el('div','forum-topic-meta');meta.append(el('b','',String(t.replies||0)),el('span','',` respuesta${t.replies===1?'':'s'}`),el('small','',fmtDate(t.last_post_at)));a.append(icon,main,meta);list.append(a)}
  view.append(list);
  const pager=el('nav','forum-live-pager');if(page>1)pager.append(linkButton('← Anterior',categoryHref(data.category)+'?p='+(page-1),'forum-live-secondary'));if(data.has_more)pager.append(linkButton('Siguiente →',categoryHref(data.category)+'?p='+(page+1),'forum-live-secondary'));view.append(pager);target.append(view);
