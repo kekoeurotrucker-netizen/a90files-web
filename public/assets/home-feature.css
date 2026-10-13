@@ -44,7 +44,7 @@
 .feature-news-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:58% 50%;filter:saturate(.84) brightness(.78)}
 .feature-news-slide--vaultpool .feature-news-photo img{object-position:55% 50%;object-fit:cover}
 .feature-news-slide--autominer .feature-news-photo img{object-position:46% 50%}
-.feature-news-slide--startwise .feature-news-photo img{object-position:52% 50%}
+.feature-news-slide--pilot-station .feature-news-photo img{object-position:52% 50%}
 .feature-news-slide--trucker .feature-news-photo img{object-position:center}
 .feature-news-slide--marea .feature-news-photo{inset:0 0 0 22%;background:radial-gradient(ellipse at 67% 48%,rgba(64,150,174,.30),transparent 69%),#071a22}
 .feature-news-slide--marea .feature-news-photo img{object-position:68% 50%;object-fit:cover;filter:saturate(.92) brightness(.68) contrast(1.04)}
