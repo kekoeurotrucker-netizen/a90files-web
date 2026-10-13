@@ -44,8 +44,8 @@
 .software-nav-icon img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;border-radius:7px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.28))}
 .software-nav-menu a[data-project="vaultpool"] .software-nav-icon{border-color:rgba(73,215,230,.34);background:radial-gradient(circle at 50% 45%,rgba(28,118,149,.28),rgba(5,25,33,.96) 72%)}
 .software-nav-menu a[data-project="autominer"] .software-nav-icon{border-color:rgba(84,185,214,.30);background:linear-gradient(145deg,rgba(13,53,67,.88),rgba(5,24,32,.96))}
-.software-nav-menu a[data-project="startwise"] .software-nav-icon{border-color:rgba(99,168,189,.25);background:linear-gradient(145deg,rgba(18,51,60,.82),rgba(7,28,35,.96))}
-.software-nav-menu a[data-project="startwise"] .software-nav-icon img{width:88%;height:88%;margin:auto;filter:drop-shadow(0 4px 9px rgba(0,0,0,.34)) brightness(1.08)}
+.software-nav-menu a[data-project="pilot-station"] .software-nav-icon{border-color:rgba(99,168,189,.25);background:linear-gradient(145deg,rgba(18,51,60,.82),rgba(7,28,35,.96))}
+.software-nav-menu a[data-project="pilot-station"] .software-nav-icon img{width:88%;height:88%;margin:auto;filter:drop-shadow(0 4px 9px rgba(0,0,0,.34)) brightness(1.08)}
 .software-nav-menu a[data-project="marea"] .software-nav-icon{border-color:rgba(73,215,230,.30);background:linear-gradient(145deg,rgba(10,45,57,.86),rgba(5,23,31,.96))}
 @media(max-width:620px){.marea-wordmark--logo img{width:min(330px,92%);max-height:88px}}
 
@@ -135,7 +135,7 @@
 }
 .software-nav-menu a[data-project="vaultpool"] .software-nav-icon img{max-width:36px;max-height:36px}
 .software-nav-menu a[data-project="autominer"] .software-nav-icon img{max-width:34px;max-height:34px}
-.software-nav-menu a[data-project="startwise"] .software-nav-icon img{max-width:31px;max-height:31px}
+.software-nav-menu a[data-project="pilot-station"] .software-nav-icon img{max-width:31px;max-height:31px}
 .software-nav-menu a[data-project="marea"] .software-nav-icon img{max-width:36px;max-height:36px}
 .software-nav-item-copy{
   min-width:0;
