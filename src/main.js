@@ -8,7 +8,7 @@ import {handleAnalyticsApi} from './analytics-api.js';
 import {handleCmsApi,loadPublishedArticle,renderPublicCmsArticle} from './cms-api.js';
 import {localizeEnglishHtml} from './site-i18n.js';
 
-const FORUM_BUILD='20261010-forum-bilingual-slugs-1';
+const FORUM_BUILD='20261013-app-documentation-1';
 const APP_BUILD='20261009-gradient-nav-1';
 const GLOBAL_BUILD='20261007-legal-1';
 const ANALYTICS_BUILD='20261009-pulse-1';
