@@ -1,2 +1,18 @@
 /* KookiKeeper editorial brand: navy, cyan, cookie orange. */
 .kooki-page{--kk-navy:#071b29;--kk-cyan:#47d6ea;--kk-orange:#ff9f43}.kooki-page .news-article-copy{background:linear-gradient(145deg,#081f2d,#111e28)}.kooki-page .news-article-copy h1 em{font-style:normal;color:#ffb36d}.kk-wordmark{display:flex;align-items:center;gap:12px;margin:0 0 23px;color:#f4fbff;font-size:24px;font-weight:900}.kk-wordmark b{display:grid;place-items:center;width:56px;height:56px;border:1px solid #bb7f48;border-radius:16px;background:#0d2836;color:#ffb36d;font-size:24px;letter-spacing:-.15em;padding-right:4px}.kk-wordmark em{font-style:normal;color:#ffb36d}.kk-panel{display:flex;align-items:center;justify-content:center;min-height:330px;padding:34px;background:radial-gradient(circle at 70% 25%,#6b413155,transparent 50%),linear-gradient(145deg,#071b29,#122b38);color:#ecfafe;text-align:center}.kk-panel strong{font-size:clamp(32px,4vw,56px);letter-spacing:-.07em}.kk-panel strong em{color:#ffad69;font-style:normal}.kk-panel p{margin-top:20px;font-size:18px}.kk-panel small{color:#8fe3ed;letter-spacing:.12em}.kk-news-art{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:8px;min-height:185px;padding:16px;background:linear-gradient(135deg,#071b29,#22313a);color:#fff;text-align:center}.kk-news-art b{color:#ffad69;font-size:44px;letter-spacing:-.15em}.kk-news-art span{font-weight:800}.kk-news-art small{color:#8fe3ed}@media(max-width:650px){.kk-panel{min-height:240px}.kk-news-art{min-height:125px}}
+/* KookiKeeper brand assets and responsive gallery */
+.kooki-page .kk-official-wordmark{display:block;width:min(100%,490px);height:auto;margin:0 0 22px;object-fit:contain;object-position:left}
+.kooki-page .kk-hero-image{position:relative;overflow:hidden;min-height:320px;background:#081929}
+.kooki-page .kk-hero-image>img{display:block;width:100%;height:100%;min-height:320px;object-fit:cover}
+.kooki-page .kk-hero-image figcaption{position:absolute;bottom:12px;left:12px;right:12px;border-radius:9px;padding:10px;background:rgba(4,16,25,.85);font-size:10px;color:#e6f5f9}
+.kooki-page .kk-gallery{padding-top:8px;scroll-margin-top:90px}
+.kooki-page .kk-gallery-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}
+.kooki-page .kk-gallery-grid figure{margin:0;min-width:0;overflow:hidden;border:1px solid rgba(107,198,218,.27);border-radius:14px;background:#091e2b}
+.kooki-page .kk-gallery-grid figure>a{display:flex;justify-content:center;align-items:center;overflow:hidden;aspect-ratio:16/9;background:#071b29}
+.kooki-page .kk-gallery-grid img{width:100%;height:100%;display:block;object-fit:contain;transition:transform .22s ease}
+.kooki-page .kk-gallery-grid a:hover img{transform:scale(1.028)}
+.kooki-page .kk-gallery-grid figcaption{padding:10px 12px;font-size:12px;color:#e0f6fa}
+.kooki-page .kk-gallery-grid .kk-gallery-feature{grid-column:1/-1}
+.kooki-page .kk-gallery-grid .kk-gallery-brand-assets>a{padding:14px}
+.kooki-page .kk-gallery p a{color:#7ee4f0}
+@media(max-width:650px){.kooki-page .kk-gallery-grid{grid-template-columns:1fr}.kooki-page .kk-gallery-grid .kk-gallery-feature{grid-column:auto}.kooki-page .kk-hero-image,.kooki-page .kk-hero-image>img{min-height:215px}}
