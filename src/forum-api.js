@@ -208,8 +208,12 @@ async function topics(request,env,url){
   if(!category)return respond({error:'Categoría no encontrada.'},404,s.refreshed);
 
   const path=`/rest/v1/forum_topics?category_id=eq.${category.id}&select=id,category_id,author_id,title,slug,slug_en,is_pinned,is_locked,created_at,updated_at,last_post_at&order=is_pinned.desc,last_post_at.desc&limit=${PAGE_SIZE+1}&offset=${offset}`;
-  const tr=await db(env,path,s.token);
+  const [tr,childrenRes]=await Promise.all([
+    db(env,path,s.token),
+    db(env,`/rest/v1/forum_categories?parent_id=eq.${category.id}&is_visible=eq.true&select=id,parent_id,slug,slug_en,name,description,is_locked,sort_order&order=sort_order.asc,id.asc`,s.token)
+  ]);
   if(!tr.res.ok)return respond({error:'No se pudieron cargar los temas.'},502,s.refreshed);
+  const subcategories=childrenRes.res.ok&&Array.isArray(childrenRes.body)?childrenRes.body:[];
   const raw=Array.isArray(tr.body)?tr.body:[];
   const hasMore=raw.length>PAGE_SIZE;
   const list=raw.slice(0,PAGE_SIZE);
@@ -221,7 +225,7 @@ async function topics(request,env,url){
     if(pr.res.ok&&Array.isArray(pr.body))for(const post of pr.body)counts[post.topic_id]=(counts[post.topic_id]||0)+1;
   }
   const result=list.map(t=>({...t,replies:Math.max(0,(counts[t.id]||0)-1),author:authors[t.author_id]||null}));
-  return respond({category,topics:result,page,has_more:hasMore},200,s.refreshed);
+  return respond({category,subcategories,topics:result,page,has_more:hasMore},200,s.refreshed);
 }
 
 async function topic(request,env,url){
