@@ -129,7 +129,11 @@ async function renderTopics(slug,page=1){
  const data=await api(`/api/forum/topics?category=${encodeURIComponent(slug)}&page=${page}`);setTitle(data.category?.name||'Foro');
  target.replaceChildren();
  const view=el('section','forum-live-view');const head=el('header','forum-live-view-head');const titleWrap=el('div');titleWrap.append(linkButton('← Todos los foros','/foro/'),el('small','',data.category?.description||''),el('h1','',data.category?.name||'Foro'));
- const actions=el('div','forum-live-actions');actions.append(button('Nuevo tema','forum-live-primary',async()=>{const auth=await authState();if(!auth){openLogin();return}openComposer({mode:'topic',category:data.category})}));head.append(titleWrap,actions);view.append(head);
+ const actions=el('div','forum-live-actions');
+ const reserved=Boolean(data.category?.is_locked)||['moderator','admin','super_admin'].includes(data.category?.min_role_to_post);
+ if(reserved){actions.append(el('span','forum-chip',data.category?.is_locked?'DOCUMENTACIÓN OFICIAL':'PUBLICACIÓN DEL EQUIPO'))}
+ else actions.append(button('Nuevo tema','forum-live-primary',async()=>{const auth=await authState();if(!auth){openLogin();return}openComposer({mode:'topic',category:data.category})}));
+ head.append(titleWrap,actions);view.append(head);
  if(data.subcategories?.length){
    const group=el('section','forum-app-subforums');
    group.append(el('h2','','Secciones de '+(data.category?.name||'esta aplicación')));
