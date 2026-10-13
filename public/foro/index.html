@@ -9,6 +9,25 @@
   <link rel="stylesheet" href="/assets/styles.css">
   <link rel="stylesheet" href="/assets/forum.css">
   <link rel="stylesheet" href="/assets/header-velocity.css?v=20261004-v3">
+
+<style>
+.a90-forum-app-index{margin:18px 0 22px;padding:21px;border:1px solid rgba(94,185,215,.27);border-radius:19px;background:linear-gradient(130deg,rgba(9,38,52,.97),rgba(6,23,37,.97));box-shadow:0 12px 34px rgba(0,0,0,.17)}
+.a90-forum-app-index-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-bottom:18px}
+.a90-forum-app-index-head small{display:block;color:#73d7e9;letter-spacing:.13em;font-size:10px;font-weight:800;margin-bottom:6px}
+.a90-forum-app-index-head h2{margin:0;font-size:clamp(20px,3vw,29px);color:#f1faff}
+.a90-forum-app-index-head p{margin:8px 0 0;color:#a0c0ce;font-size:12px;line-height:1.5}
+.a90-forum-app-index-head>a{padding:10px 14px;border-radius:10px;background:#0d4358;color:#ebfbff;border:1px solid rgba(102,213,241,.37);text-decoration:none;font-weight:700;font-size:12px}
+.a90-forum-app-index-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:11px}
+.a90-forum-app-index-card{display:grid;grid-template-rows:auto auto auto;align-content:start;min-width:0;gap:6px;padding:13px 11px;border-radius:12px;border:1px solid rgba(119,192,218,.23);background:rgba(4,26,38,.9);text-decoration:none;color:#eefaff;transition:border-color .15s,transform .15s,background .15s}
+.a90-forum-app-index-card:hover{border-color:#5bd9f0;background:#103b51;transform:translateY(-2px)}
+.a90-forum-app-index-card img{width:56px;height:56px;object-fit:contain;border-radius:10px}
+.a90-forum-app-index-card strong{display:block;font-size:14px;line-height:1.2;overflow-wrap:anywhere}
+.a90-forum-app-index-card span{color:#9cb8c7;font-size:10px;line-height:1.35}
+.a90-forum-app-index-note{margin:13px 0 0;color:#a2bdc9;font-size:11px;line-height:1.55}
+.a90-forum-app-index-note a{color:#82e3f3;font-weight:700}
+@media(max-width:900px){.a90-forum-app-index-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:530px){.a90-forum-app-index{padding:14px}.a90-forum-app-index-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.a90-forum-app-index-card img{width:42px;height:42px}}
+</style>
 </head>
 <body class="forum-page">
   <div class="ambient" aria-hidden="true"></div>
@@ -41,11 +60,11 @@
       <div class="forum-intro">
         <span class="forum-kicker">COMUNIDAD A 90</span>
         <h1>Foro</h1>
-        <p>Feedback, soporte, desarrollo y conversación sobre los proyectos y contenidos de A 90. El foro vive aparte de la portada y se accede desde el menú.</p>
+        <p>Accede al foro de cada aplicación: guías, políticas, novedades, soporte y feedback. También hay espacios para juegos y comunidad.</p>
         <div class="forum-summary">
           <span><b>7</b> categorías</span>
           <i></i>
-          <span><b>24</b> subforos preparados</span>
+          <span><b>5</b> aplicaciones con guías y soporte</span>
           <i></i>
           <span>Editor enriquecido activo</span>
         </div>
@@ -64,6 +83,15 @@
       </div>
     </section>
 
+<section class="a90-forum-app-index" aria-labelledby="a90-forum-app-index-title">
+<div class="a90-forum-app-index-head"><div><small>A 90 FILES · NUEVA ORGANIZACIÓN</small><h2 id="a90-forum-app-index-title">Foro de cada aplicación</h2><p>Acceso directo a las guías, novedades, feedback, soporte y políticas de cada proyecto.</p></div><a href="/guias/">Todas las guías ↗</a></div>
+<div class="a90-forum-app-index-grid"><a class="a90-forum-app-index-card" href="/foro/pilot-station/"><img src="/assets/pilot-station/pilot-station-official-icon.png" alt="" loading="lazy"><strong>Pilot Station</strong><span>Antes StartWise · Windows · Foro, guías y soporte ↗</span></a>
+<a class="a90-forum-app-index-card" href="/foro/vaultpool/"><img src="/assets/vaultpool/vaultpool-icon-20261005.png" alt="" loading="lazy"><strong>VaultPool Storage</strong><span>Almacenamiento multinube · Foro, guías y soporte ↗</span></a>
+<a class="a90-forum-app-index-card" href="/foro/marea-studio/"><img src="/assets/marea/marea-icon.webp" alt="" loading="lazy"><strong>Marea Studio</strong><span>Música e IA · Foro, guías y soporte ↗</span></a>
+<a class="a90-forum-app-index-card" href="/foro/kookikeeper/"><img src="/assets/kookikeeper/icon.webp" alt="" loading="lazy"><strong>KookiKeeper</strong><span>Sesiones del navegador · Foro, guías y soporte ↗</span></a>
+<a class="a90-forum-app-index-card" href="/foro/autominer/"><img src="/assets/autominer/autominer-icon.webp" alt="" loading="lazy"><strong>AutoMiner</strong><span>Rendimiento y desarrollo · Foro, guías y soporte ↗</span></a></div>
+<p class="a90-forum-app-index-note"><strong>Nuevo:</strong> <a href="/novedades/pilot-station/">StartWise ahora es Pilot Station — lee la noticia y mira el nuevo branding →</a></p>
+</section>
     <section id="forum-live-focus" class="forum-live-focus" aria-label="Contenido abierto del foro" hidden></section>
 
     <section class="forum-recent-grid" id="forum-recent-activity" aria-label="Actividad reciente del foro">
