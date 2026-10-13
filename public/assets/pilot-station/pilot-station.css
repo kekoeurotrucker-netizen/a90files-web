@@ -1,0 +1,37 @@
+
+/* Pilot Station official blue identity (13 Oct 2026). */
+.pilot-article{--pilot-ink:#081629;--pilot-cyan:#00b9fa;--pilot-glow:#00e5ff}
+.pilot-article .pilot-hero{border-color:rgba(22,164,255,.33)}
+.pilot-article .news-article-copy{background:radial-gradient(circle at 78% 3%,rgba(10,112,204,.22),transparent 60%),linear-gradient(145deg,#08182b,#06121d)}
+.pilot-article .news-article-copy h1 em{font-style:normal;color:#25caff;text-shadow:0 0 24px rgba(0,170,250,.22)}
+.pilot-official-logo{display:block;max-width:min(100%,470px);width:auto;height:auto;max-height:150px;object-fit:contain;object-position:left center;margin:0 0 22px}
+.pilot-hero-media{position:relative;overflow:hidden;background:#081629;min-height:300px}
+.pilot-hero-media>img{width:100%;height:100%;object-fit:cover;display:block;min-height:300px}
+.pilot-hero-media figcaption{color:#bbd8eb}
+.pilot-logo-feature{margin:23px 0;padding:22px;border:1px solid rgba(33,174,250,.26);border-radius:16px;background:#181818;text-align:center}
+.pilot-logo-feature img{display:block;width:min(100%,600px);height:auto;margin:auto}
+.pilot-logo-feature figcaption{padding-top:10px;color:#badcec;font-size:12px}
+.pilot-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:18px 0 34px}
+.pilot-gallery figure{min-width:0;margin:0;overflow:hidden;border:1px solid rgba(0,177,251,.2);border-radius:14px;background:linear-gradient(145deg,#061628,#112134)}
+.pilot-gallery figure:first-child{grid-column:1/-1}
+.pilot-gallery a{display:flex;aspect-ratio:16/9;justify-content:center;align-items:center;overflow:hidden;background:#081629}
+.pilot-gallery img{width:100%;height:100%;object-fit:contain;transition:transform .22s ease}
+.pilot-gallery a:hover img{transform:scale(1.025)}
+.pilot-gallery figcaption{padding:11px 14px;color:#d8eff9;font-size:12px}
+.pilot-gallery figure:last-child a{padding:18px}
+.pilot-product{min-height:100vh}
+.pilot-product .pilot-product-hero{padding:34px 0 30px;display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,0.95fr);align-items:center;gap:35px}
+.pilot-product .pilot-product-hero img{display:block;max-width:100%;height:auto;border-radius:14px}
+.pilot-product .pilot-official-logo{background:#181818;border-radius:14px;padding:10px;margin-bottom:20px}
+.pilot-product h1{font-size:clamp(33px,5vw,68px);letter-spacing:-.045em;line-height:1.07}
+.pilot-product h1 em{font-style:normal;color:#28c5ff}
+.pilot-product .pilot-product-intro{font-size:16px;line-height:1.7;color:#bfd6e4;max-width:620px}
+.pilot-product .pilot-status{display:inline-block;padding:8px 13px;border:1px solid rgba(0,174,248,.4);border-radius:30px;color:#98e8ff;background:#09273e;font-weight:700;font-size:11px}
+.pilot-product .pilot-links{display:flex;flex-wrap:wrap;gap:11px;margin-top:20px}
+.pilot-product .pilot-links a{padding:12px 16px;border-radius:10px;border:1px solid rgba(39,189,241,.32);background:#0c263c;color:#f0fbff;text-decoration:none;font-weight:700}
+.pilot-product .pilot-links a:hover{background:#15415e}
+.pilot-product .pilot-product-points{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;padding:25px 0 65px}
+.pilot-product .pilot-product-points section{padding:20px;border:1px solid rgba(55,154,215,.19);border-radius:14px;background:#0a1f2e}
+.pilot-product .pilot-product-points h2{font-size:19px;color:#f0fbff}
+.pilot-product .pilot-product-points p{font-size:13px;line-height:1.65;color:#a6c5d4}
+@media(max-width:740px){.pilot-gallery{grid-template-columns:1fr}.pilot-gallery figure:first-child{grid-column:auto}.pilot-product .pilot-product-hero,.pilot-product .pilot-product-points{grid-template-columns:1fr}.pilot-product .pilot-product-hero{gap:18px}.pilot-hero-media,.pilot-hero-media>img{min-height:200px}}
