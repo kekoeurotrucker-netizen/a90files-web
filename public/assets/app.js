@@ -15,7 +15,7 @@ addStylesheet('/assets/staff-notifications.css?v=20261005-1');
 const softwareProjects=[
   {href:'/software/vaultpool/',name:'VaultPool Storage',meta:'Multinube local · Windows',icon:'/assets/vaultpool/vaultpool-icon-20261005.png?v=1',key:'vaultpool'},
   {href:'/software/autominer/',name:'AutoMiner',meta:'Minería adaptativa · Próximamente',icon:'/assets/autominer/autominer-icon.webp',key:'autominer'},
-  {href:'/novedades/startwise-en-desarrollo/',name:'StartWise',meta:'Optimización de Windows · En desarrollo',icon:'/assets/startwise/startwise-icon.svg',key:'startwise'},
+  {href:'/software/pilot-station/',name:'Pilot Station',meta:'Inicio de Windows · Prototipo funcional',icon:'/assets/pilot-station/pilot-station-official-icon.png',key:'pilot-station'},
   {href:'/software/marea-studio/',name:'Marea Studio',meta:'Generación musical local · En desarrollo',icon:'/assets/marea/marea-icon.webp?v=20261005-marea-fixed-2',key:'marea'}
 ];
 const gameProjects=[
