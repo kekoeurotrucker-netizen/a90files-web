@@ -1,0 +1,20 @@
+/* A90 Files — reusable resources navigation for every application, 2026-10-13 */
+.a90-app-resources{margin:34px 0;padding:25px;border:1px solid rgba(84,177,199,.29);border-radius:18px;background:linear-gradient(140deg,rgba(9,40,55,.94),rgba(5,22,32,.97));box-shadow:0 16px 42px rgba(0,0,0,.15)}
+.a90-app-resources small{display:block;color:#79cbdc;font-size:10px;text-transform:uppercase;letter-spacing:.15em;font-weight:800;margin-bottom:8px}
+.a90-app-resources h2{margin:0 0 9px;color:#f1fbff;font-size:clamp(21px,2.6vw,30px);line-height:1.2}
+.a90-app-resources p{margin:0 0 20px;color:#afcad5;font-size:13px;line-height:1.65}
+.a90-app-resources-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+.a90-app-resources-grid a{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 13px;border:1px solid rgba(102,174,198,.23);border-radius:10px;background:#0d2937;color:#eafaff;text-decoration:none;font-weight:700;font-size:12px;line-height:1.45}
+.a90-app-resources-grid a:hover,.a90-app-resources-grid a:focus-visible{background:#153f51;border-color:#3dcde6;outline-color:#3dcde6}
+.a90-app-resources-grid a span{color:#77d8e9}
+.a90-guides{padding:36px 0 75px}.a90-guides>h1{margin:8px 0 10px;font-size:clamp(32px,5vw,57px);letter-spacing:-.04em}.a90-guides>p{max-width:760px;color:#a8c5d0;line-height:1.7}
+.a90-guides-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:30px}
+.a90-guide-card{padding:23px;border:1px solid rgba(85,180,204,.23);border-radius:16px;background:linear-gradient(145deg,#0b2b3a,#071d2b)}
+.a90-guide-card header{display:flex;align-items:center;gap:15px;margin-bottom:16px}
+.a90-guide-card img{width:62px;height:62px;object-fit:contain;border-radius:12px;background:#10232d;padding:4px}
+.a90-guide-card h2{color:#effaff;font-size:22px;line-height:1.2;margin:0 0 6px}
+.a90-guide-card header small{color:#91b6c6;font-size:11px}
+.a90-guide-card p{font-size:13px;line-height:1.65;color:#b3cfd9;min-height:44px}
+.a90-guide-card .a90-app-resources-grid{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:18px}
+@media(max-width:760px){.a90-app-resources-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.a90-guides-grid{grid-template-columns:1fr}}
+@media(max-width:440px){.a90-app-resources{padding:16px}.a90-app-resources-grid{grid-template-columns:1fr}.a90-guide-card .a90-app-resources-grid{grid-template-columns:1fr}}
