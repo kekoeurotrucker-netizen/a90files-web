@@ -19,7 +19,7 @@ if(list)get('published').then(data=>{
  if(!items.length)return;
  const fragment=document.createDocumentFragment();
  const seen=new Set([...list.querySelectorAll(':scope > a.news-card[href]')]
-  .map(card=>card.getAttribute('href')?.replace(/\\/+$/,'')+'/'));
+  .map(card=>card.getAttribute('href')?.replace(/\/+$/,'')+'/'));
  for(const item of items){
   if(!item?.slug||!(item.title_es||item.title_en))continue;
   const href=(english?'/en/':'/')+'articulos/'+encodeURIComponent(item.slug)+'/';
