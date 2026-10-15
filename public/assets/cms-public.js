@@ -18,20 +18,28 @@ if(list)get('published').then(data=>{
  const items=Array.isArray(data.articles)?data.articles:[];
  if(!items.length)return;
  const fragment=document.createDocumentFragment();
+ const seen=new Set([...list.querySelectorAll(':scope > a.news-card[href]')]
+  .map(card=>card.getAttribute('href')?.replace(/\\/+$/,'')+'/'));
  for(const item of items){
+  if(!item?.slug||!(item.title_es||item.title_en))continue;
+  const href=(english?'/en/':'/')+'articulos/'+encodeURIComponent(item.slug)+'/';
+  const published=item.published_at||item.created_at;
+  const date=new Date(published);
+  if(seen.has(href)||!Number.isFinite(date.getTime()))continue;
+  seen.add(href);
   const card=document.createElement('a');card.className='news-card news-card--cms';
-  if(item.published_at||item.created_at)card.dataset.publishedAt=item.published_at||item.created_at;
-  card.href=(english?'/en/':'/')+'articulos/'+encodeURIComponent(item.slug)+'/';
+  card.dataset.publishedAt=published;
+  card.href=href;
   if(item.cover_path&&item.cover_path.startsWith('/assets/')){
    const img=document.createElement('img');img.src=item.cover_path;img.alt='';img.loading='lazy';card.append(img);
   }
   const body=document.createElement('div');body.className='news-card-copy';
-  const time=document.createElement('time');time.textContent=new Date(item.published_at||item.created_at).toLocaleDateString(english?'en-GB':'es-ES',{day:'2-digit',month:'short',year:'numeric'});
+  const time=document.createElement('time');time.textContent=date.toLocaleDateString(english?'en-GB':'es-ES',{day:'2-digit',month:'short',year:'numeric',timeZone:'UTC'});
   const kicker=document.createElement('div');kicker.className='news-kicker';kicker.textContent=english?'A90 FILES · ARTICLE':'A90 FILES · ARTÍCULO';
   const h=document.createElement('h3');h.textContent=(english&&item.title_en)||item.title_es;
   const p=document.createElement('p');p.textContent=(english&&item.excerpt_en)||item.excerpt_es;
   body.append(time,kicker,h,p);card.append(body);fragment.append(card);
  }
- list.prepend(fragment);
+ if(fragment.childNodes.length)list.prepend(fragment);
 }).catch(()=>{}).finally(()=>document.dispatchEvent(new Event('a90:news-cms-ready')));
 })();
