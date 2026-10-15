@@ -222,3 +222,134 @@ body.home.a90-home-v4{display:block;min-height:100vh;overflow-x:hidden!important
 @media(max-width:420px){
  .home.a90-home-v4 .a90-help-actions .a90-button{white-space:normal;flex:1}
 }
+
+
+/* 2026-10-15 — fixed carousel slide geometry (all four cards).
+   Separate header, CONTENT and controls into actual grid tracks.
+   Flex min-content sizing previously let the copy/image spill over the footer. */
+.home.a90-home-v4 .a90-feature{
+  display:grid;
+  grid-template-rows:35px minmax(0,1fr) 36px;
+  min-height:0;
+}
+.home.a90-home-v4 .a90-feature-head{
+  grid-row:1;
+  min-height:0;
+  height:35px;
+}
+.home.a90-home-v4 .a90-feature-stage{
+  grid-row:2;
+  display:block;
+  min-width:0;
+  min-height:0;
+  height:100%;
+}
+.home.a90-home-v4 .a90-feature-slide{
+  display:grid;
+  grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);
+  align-items:stretch;
+  width:100%;
+  height:100%;
+  min-height:0;
+  gap:12px;
+  padding:12px;
+  box-sizing:border-box;
+}
+.home.a90-home-v4 .a90-feature-slide[hidden]{display:none!important}
+.home.a90-home-v4 .a90-feature-copy{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:flex-start;
+  gap:6px;
+  align-self:stretch;
+  min-height:0;
+  padding:0;
+  box-sizing:border-box;
+}
+.home.a90-home-v4 .a90-feature-copy .a90-state{flex:none}
+.home.a90-home-v4 .a90-feature-copy .a90-hero-icon{
+  width:48px;
+  height:48px;
+  margin:0;
+  flex:none;
+}
+.home.a90-home-v4 .a90-feature-copy .a90-pilot-wordmark{
+  height:53px;
+  width:min(250px,100%);
+  margin:0;
+  flex:none;
+}
+.home.a90-home-v4 .a90-feature-copy h1,
+.home.a90-home-v4 .a90-feature-copy h2{
+  margin:0;
+  font-size:clamp(29px,2.4vw,40px);
+  line-height:1.045;
+  letter-spacing:-.052em;
+}
+.home.a90-home-v4 .a90-feature-copy p{
+  margin:0;
+  line-height:1.48;
+  font-size:11.5px;
+}
+.home.a90-home-v4 .a90-feature-copy .a90-actions{
+  margin:3px 0 0;
+  gap:7px;
+}
+.home.a90-home-v4 .a90-feature-copy .a90-chips{
+  margin:0;
+  padding:0;
+  gap:5px;
+}
+.home.a90-home-v4 .a90-feature-image{
+  align-self:stretch;
+  min-height:0;
+  max-height:100%;
+  height:100%;
+  box-sizing:border-box;
+}
+.home.a90-home-v4 .a90-feature-footer{
+  grid-row:3;
+  align-self:stretch;
+  height:36px;
+  min-height:36px;
+  box-sizing:border-box;
+  position:relative;
+  z-index:1;
+  background:#071c2d;
+}
+@media(min-width:1101px){
+  .home.a90-home-v4 .a90-top-layout{height:382px}
+}
+@media(max-width:1100px){
+  .home.a90-home-v4 .a90-top-layout{height:auto}
+  .home.a90-home-v4 .a90-feature{grid-template-rows:35px auto 36px}
+  .home.a90-home-v4 .a90-feature-stage{height:auto;min-height:305px}
+  .home.a90-home-v4 .a90-feature-slide{height:auto;min-height:305px}
+  .home.a90-home-v4 .a90-feature-image{height:auto;max-height:none;min-height:0}
+}
+@media(max-width:600px){
+  .home.a90-home-v4 .a90-feature-stage{height:auto;min-height:0}
+  .home.a90-home-v4 .a90-feature-slide{
+    grid-template-columns:minmax(0,1fr);
+    height:auto;
+    min-height:0;
+    gap:10px;
+    padding:12px;
+  }
+  .home.a90-home-v4 .a90-feature-copy{align-self:auto;gap:7px}
+  .home.a90-home-v4 .a90-feature-copy h1,
+  .home.a90-home-v4 .a90-feature-copy h2{font-size:clamp(29px,8vw,35px)}
+  .home.a90-home-v4 .a90-feature-image{
+    height:auto;
+    width:100%;
+    min-height:190px;
+    max-height:none;
+    aspect-ratio:16/9;
+    align-self:auto;
+  }
+}
+@media(max-width:400px){
+  .home.a90-home-v4 .a90-feature-image{min-height:170px}
+  .home.a90-home-v4 .a90-feature-copy .a90-actions{flex-wrap:wrap}
+}
