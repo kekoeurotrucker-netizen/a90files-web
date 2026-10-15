@@ -326,3 +326,6 @@ body.home.a90-home-v3{display:block;min-height:100vh;overflow-x:hidden!important
  .home.a90-home-v3 .a90-promo-content>strong{font-size:29px}
  .home.a90-home-v3 .a90-feature-copy h1{font-size:35px}
 }
+
+/* True transparency means no blend operation or rectangular matte is needed. */
+.home.a90-home-v3 .a90-pilot-wordmark{mix-blend-mode:normal;background:transparent;filter:drop-shadow(0 6px 14px rgba(0,163,255,.25))}
