@@ -50,3 +50,20 @@
 @media(max-width:920px){.rt-hero{grid-template-columns:1fr}.rt-art{min-height:250px}.rt-reading{grid-template-columns:1fr}.rt-side{position:static}.rt-side a{display:inline-block;margin-right:12px}}
 @media(max-width:570px){.rt-page .rt-main{width:calc(100% - 20px)}.rt-hero{padding:19px}.rt-art{min-height:200px}.rt-forum-grid{grid-template-columns:1fr}.rt-hero h1{font-size:45px}.rt-art-inner strong{font-size:40px}}
 @media(prefers-reduced-motion:reduce){.rt-page *{scroll-behavior:auto!important;transition:none!important}}
+
+/* RoadTrip-ES editorial promo used by Novedades and Juegos listings. */
+.rt-news-promo{display:flex;align-items:center;justify-content:space-between;gap:17px;margin:0 0 20px;padding:14px 20px;border:1px solid rgba(66,163,227,.34);border-radius:14px;background:radial-gradient(ellipse at 90% 0%,rgba(248,176,81,.16),transparent 48%),linear-gradient(115deg,#0a253c,#0b2034);text-decoration:none;color:#eaf9ff}
+.rt-news-promo>div{min-width:0}
+.rt-news-promo small{display:block;font-size:10px;font-weight:850;color:#ffc782;letter-spacing:.1em;margin-bottom:5px}
+.rt-news-promo strong{display:block;font-size:clamp(17px,2vw,24px);font-weight:850;letter-spacing:-.028em}
+.rt-news-promo p{font-size:12px;color:#a7cfdf;margin:6px 0 0}
+.rt-news-promo>span{flex:none;border:1px solid rgba(68,183,243,.4);border-radius:9px;padding:9px 13px;color:#88dfff;background:rgba(8,48,69,.45);font-size:11px;font-weight:800}
+.rt-news-promo:hover{border-color:#6ad8fc}
+.rt-news-card{border-color:rgba(61,172,224,.4)!important}
+.rt-news-card-art{position:relative;overflow:hidden;min-height:175px;background:radial-gradient(circle at 64% 16%,rgba(255,186,85,.3),transparent 40%),linear-gradient(150deg,#153a5e,#07192b);display:grid;place-content:center;text-align:center;padding:18px}
+.rt-news-card-art:before{content:"";position:absolute;left:0;right:0;bottom:-30%;height:60%;transform:perspective(200px) rotateX(42deg);background:linear-gradient(90deg,#06121c 20%,#173450 21% 40%,#071c2f 48% 52%,#173450 60% 79%,#06121c 80%);opacity:.8}
+.rt-news-card-art strong{position:relative;z-index:1;color:#f4fbff;font-weight:900;font-size:clamp(18px,2vw,27px);text-shadow:0 4px 15px #051322}
+.rt-news-card-art strong span{color:#ffc47b}
+.rt-news-card-art small{position:relative;z-index:1;font-size:9px;color:#b7edff;letter-spacing:.1em;margin-top:7px;font-weight:800}
+.rt-game-art{height:170px;min-height:170px}
+@media(max-width:700px){.rt-news-promo{flex-direction:column;align-items:flex-start}.rt-news-promo>span{align-self:flex-start}.rt-news-card-art{min-height:135px}}
