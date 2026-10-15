@@ -13,17 +13,16 @@ const stamp=text=>{
   return mm===undefined?0:Date.UTC(Number(m[3]),mm,Number(m[1]));
 };
 const normalize=url=>url?.startsWith('/')?url.replace(/\/+$/,'')+'/':'';
-const get=(element,href,title,date)=>{
-  const key=normalize(href);const when=stamp(date);
+const get=(element,href,title,date,exactDate)=>{
+  const key=normalize(href);const precise=exactDate?Date.parse(exactDate):NaN;const when=Number.isFinite(precise)?precise:stamp(date);
   return key&&title&&when?{element,href:key,title:title.trim(),stamp:when}:null;
 };
 let pending=false;
 let cmsReady=false;
 let lastScrolledHref='';
-let hasCmsLoaded=false;
 const fallback=setTimeout(()=>{cmsReady=true;later()},4200);
 document.addEventListener('a90:news-cms-ready',()=>{
-  hasCmsLoaded=true;cmsReady=true;clearTimeout(fallback);later();
+  cmsReady=true;clearTimeout(fallback);later();
 },{once:true});
 const update=()=>{
   pending=false;
@@ -35,7 +34,7 @@ const update=()=>{
   const logistic=document.querySelector('.news-lt-mini');
   if(logistic)list.push(get(logistic,logistic.querySelector('.news-lt-mini-read')?.getAttribute('href'),logistic.querySelector('h2')?.textContent?.replace(/\s+/g,' '),logistic.querySelector('.news-lt-mini-label')?.textContent));
   for(const card of grid.querySelectorAll(':scope > .news-card')){
-    list.push(get(card,card.getAttribute('href'),card.querySelector('h3')?.textContent,card.querySelector('time')?.textContent));
+    list.push(get(card,card.getAttribute('href'),card.querySelector('h3')?.textContent,card.querySelector('time')?.textContent,card.dataset.publishedAt));
   }
   const unique=new Map();
   for(const record of list){
