@@ -35,3 +35,7 @@
 .pilot-product .pilot-product-points h2{font-size:19px;color:#f0fbff}
 .pilot-product .pilot-product-points p{font-size:13px;line-height:1.65;color:#a6c5d4}
 @media(max-width:740px){.pilot-gallery{grid-template-columns:1fr}.pilot-gallery figure:first-child{grid-column:auto}.pilot-product .pilot-product-hero,.pilot-product .pilot-product-points{grid-template-columns:1fr}.pilot-product .pilot-product-hero{gap:18px}.pilot-hero-media,.pilot-hero-media>img{min-height:200px}}
+
+/* Transparent approved logo on the actual dark-navy surface — no charcoal matte. */
+.pilot-product .pilot-official-logo{background:transparent;padding:0;border-radius:0;filter:drop-shadow(0 6px 17px rgba(0,148,252,.18))}
+.pilot-logo-feature{background:linear-gradient(135deg,#071a2c,#0b2740)}
