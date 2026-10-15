@@ -191,7 +191,7 @@ async function injectGlobalUi(response,force=false,pathname=''){
   if(!html.includes('</body>')&&!html.includes('</head>'))return response;
   // CMS assets only on homepage four-module row and news index (legacy pages remain unchanged).
   if((html.includes('a90-lower-modules')||html.includes('class="news-grid"'))&&!html.includes('/assets/cms-public.js'))
-    html=html.replace('</body>','<script src="/assets/cms-public.js?v=20261015-anchor-ready-1" defer></script></body>');
+    html=html.replace('</body>','<script src="/assets/cms-public.js?v=20261015-anchor-ready-2" defer></script></body>');
   html=injectLegalFooter(html);
   // Lightweight shared theme on public interior routes only, never the home or admin.
   // One stylesheet means later individual page redesigns can override it freely.
