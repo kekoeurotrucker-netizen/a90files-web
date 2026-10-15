@@ -32,5 +32,5 @@ if(list)get('published').then(data=>{
   body.append(time,kicker,h,p);card.append(body);fragment.append(card);
  }
  list.prepend(fragment);
-}).catch(()=>{});
+}).catch(()=>{}).finally(()=>document.dispatchEvent(new Event('a90:news-cms-ready')));
 })();
