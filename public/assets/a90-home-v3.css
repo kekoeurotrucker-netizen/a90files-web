@@ -137,3 +137,13 @@ body.home.a90-home-v3{display:block;min-height:100vh;overflow-x:hidden!important
 @media(max-width:680px){.home.a90-home-v3 .shell{width:calc(100% - 26px)}.home.a90-home-v3 .a90-dashboard{padding-top:13px}.home.a90-home-v3 .a90-feature-slide{grid-template-columns:1fr;min-height:0;padding:16px}.home.a90-home-v3 .a90-feature{min-height:0}.home.a90-home-v3 .a90-feature-copy{padding:0}.home.a90-home-v3 .a90-feature-copy h1,.home.a90-home-v3 .a90-feature-copy h2{font-size:35px}.home.a90-home-v3 .a90-pilot-wordmark{height:72px;width:min(295px,100%)}.home.a90-home-v3 .a90-feature-copy p{font-size:13px;margin:10px 0}.home.a90-home-v3 .a90-feature-image{min-height:200px;aspect-ratio:16/9}.home.a90-home-v3 .a90-feature-head{padding:12px 14px}.home.a90-home-v3 .a90-rail{grid-template-columns:1fr}.home.a90-home-v3 .a90-project-track{grid-auto-columns:calc((100% - 12px)/2)}.home.a90-home-v3 .a90-section-head{align-items:flex-start;flex-direction:column}.home.a90-home-v3 .a90-project-section,.home.a90-home-v3 .a90-lower-grid>.a90-card{padding:14px}.home.a90-home-v3 .a90-game-tiles>a{height:185px}.home.a90-home-v3 .a90-help{flex-wrap:wrap;padding:17px}.home.a90-home-v3 .a90-help-actions{width:100%}.home.a90-home-v3 .a90-help-actions>a{flex:1}.home.a90-home-v3 .a90-download-line{gap:7px}.home.a90-home-v3 .a90-download-line>a{font-size:9px;padding:7px}}
 @media(max-width:420px){.home.a90-home-v3 .a90-project-track{grid-auto-columns:84%}.home.a90-home-v3 .a90-game-tiles{grid-template-columns:1fr}.home.a90-home-v3 .a90-game-tiles>a{height:185px}.home.a90-home-v3 .a90-feature-copy h1,.home.a90-home-v3 .a90-feature-copy h2{font-size:31px}.home.a90-home-v3 .a90-feature-image{min-height:180px}.home.a90-home-v3 .a90-button{font-size:11px;padding:10px}.home.a90-home-v3 .a90-project-tile{min-height:200px}.home.a90-home-v3 .a90-help-mark{width:47px;height:47px;flex-basis:47px;font-size:26px}.home.a90-home-v3 .a90-feature-head>a{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.home.a90-home-v3 *, .home.a90-home-v3 *::before,.home.a90-home-v3 *::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* Keep functional project search reachable on narrow screens without crowding navigation. */
+@media(max-width:900px){
+ .home.a90-home-v3 .topbar-inner{flex-wrap:wrap;gap:10px}
+ .home.a90-home-v3 .a90-top-tools{order:9;width:100%;display:flex!important;gap:8px;margin:0 0 9px}
+ .home.a90-home-v3 .a90-top-tools .a90-site-search{flex:1;min-width:0}
+ .home.a90-home-v3 .a90-top-tools .a90-search-field{flex:1;min-width:0}
+ .home.a90-home-v3 .a90-top-tools input{width:100%}
+ .home.a90-home-v3 .a90-header-guides{flex:none}
+}
