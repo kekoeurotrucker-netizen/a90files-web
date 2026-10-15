@@ -353,3 +353,11 @@ body.home.a90-home-v4{display:block;min-height:100vh;overflow-x:hidden!important
   .home.a90-home-v4 .a90-feature-image{min-height:170px}
   .home.a90-home-v4 .a90-feature-copy .a90-actions{flex-wrap:wrap}
 }
+
+/* RoadTrip-ES: text emblem in latest news; no misleading game screenshot. */
+.home.a90-home-v4 .a90-info-grid .a90-news-entry>.a90-news-rt{
+  display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;
+  border:1px solid rgba(253,191,103,.4);border-radius:7px;
+  background:linear-gradient(135deg,#123f61,#0c253b);
+  color:#ffcc87;font-weight:900;font-size:12px;letter-spacing:-.06em;
+}
