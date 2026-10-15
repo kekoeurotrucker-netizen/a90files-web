@@ -201,7 +201,9 @@ if(recentNews){
     })
   ]).then(results=>{
     const additional=results.filter(r=>r.status==='fulfilled').flatMap(r=>r.value);
-    if(additional.length)render([...additional,...existing]);
+    // Never re-add retired static news if the live editorial feed loaded.
+    const fallback=results[0].status==='fulfilled'?[]:existing;
+    if(additional.length||fallback.length)render([...additional,...fallback]);
   }).catch(()=>{});
   // Ticker scrolls slowly like the original, but always allows normal wheel/touch/keyboard scrolling.
   // No automatic motion on touch screens, focused elements, hidden tabs or reduced-motion devices.
@@ -212,13 +214,16 @@ if(recentNews){
     recentNews.addEventListener('touchstart',pause,{passive:true});
     recentNews.addEventListener('keydown',pause);
     recentNews.addEventListener('pointerdown',pause);
-    let last=0;
+    let last=0,direction=1;
     const animate=time=>{
       if(!recentNews.isConnected)return;
       if(last&&time-last>=90){
         if(document.visibilityState==='visible'&&!recentNews.matches(':hover')&&!recentNews.matches(':focus-within')&&Date.now()>holdUntil&&recentNews.scrollHeight>recentNews.clientHeight+2){
-          if(recentNews.scrollTop>=recentNews.scrollHeight-recentNews.clientHeight-2)recentNews.scrollTop=0;
-          else recentNews.scrollTop+=0.7;
+          const max=recentNews.scrollHeight-recentNews.clientHeight;
+          if(recentNews.scrollTop>=max-1)direction=-1;
+          else if(recentNews.scrollTop<=1)direction=1;
+          // Reverse rather than jumping to scrollTop=0 at the end.
+          recentNews.scrollTop=Math.max(0,Math.min(max,recentNews.scrollTop+direction*0.7));
         }
         last=time;
       }else if(!last)last=time;
