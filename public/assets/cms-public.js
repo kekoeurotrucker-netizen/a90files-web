@@ -20,6 +20,7 @@ if(list)get('published').then(data=>{
  const fragment=document.createDocumentFragment();
  for(const item of items){
   const card=document.createElement('a');card.className='news-card news-card--cms';
+  if(item.published_at||item.created_at)card.dataset.publishedAt=item.published_at||item.created_at;
   card.href=(english?'/en/':'/')+'articulos/'+encodeURIComponent(item.slug)+'/';
   if(item.cover_path&&item.cover_path.startsWith('/assets/')){
    const img=document.createElement('img');img.src=item.cover_path;img.alt='';img.loading='lazy';card.append(img);
