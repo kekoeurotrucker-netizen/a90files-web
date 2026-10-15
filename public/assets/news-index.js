@@ -17,7 +17,14 @@ const get=(element,href,title,date)=>{
   const key=normalize(href);const when=stamp(date);
   return key&&title&&when?{element,href:key,title:title.trim(),stamp:when}:null;
 };
-let scrollDone=false,pending=false;
+let pending=false;
+let cmsReady=false;
+let lastScrolledHref='';
+let hasCmsLoaded=false;
+const fallback=setTimeout(()=>{cmsReady=true;later()},4200);
+document.addEventListener('a90:news-cms-ready',()=>{
+  hasCmsLoaded=true;cmsReady=true;clearTimeout(fallback);later();
+},{once:true});
 const update=()=>{
   pending=false;
   const list=[];
@@ -42,10 +49,14 @@ const update=()=>{
   if(!eleventh)return;
   eleventh.id='historico';
   eleventh.style.scrollMarginTop='88px';
-  // Do not jump when merely browsing the page; only the "Ver más" anchor uses this.
-  if(location.hash==='#historico'&&!scrollDone){
-    scrollDone=true;
-    requestAnimationFrame(()=>requestAnimationFrame(()=>eleventh.scrollIntoView({block:'start',behavior:'auto'})));
+  // Wait for async CMS insertion before positioning the 11th article.
+  // If the CMS updates after the fallback, realign once only when the 11th changes.
+  if(location.hash==='#historico' && cmsReady && eleventh){
+    const href=normalize(eleventh.getAttribute('href')||eleventh.querySelector('a[href]')?.getAttribute('href'));
+    if(href!==lastScrolledHref){
+      lastScrolledHref=href;
+      requestAnimationFrame(()=>requestAnimationFrame(()=>eleventh.scrollIntoView({block:'start',behavior:'auto'})));
+    }
   }
 };
 const later=()=>{if(pending)return;pending=true;queueMicrotask(update)};
@@ -54,7 +65,7 @@ observer.observe(grid,{childList:true}); // CMS prepends cards after the authore
 later();
 window.addEventListener('hashchange',()=>{
   if(location.hash==='#historico'){
-    scrollDone=false;
+    lastScrolledHref='';
     later();
   }
 });
