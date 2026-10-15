@@ -1,0 +1,95 @@
+/* A 90 Files / shared interior visual bridge · 2026-10-15.
+   Gentle aesthetic inheritance from home v4 only; DO NOT change page grids,
+   editorial components, forum behavior, sizes or download logic. Loaded only
+   on public inner routes by the worker, never on homepage/admin/API. */
+:root{
+  --bg:#061421;
+  --bg2:#071b2b;
+  --panel:#0c2438;
+  --panel2:#091b2c;
+  --text:#f1f9ff;
+  --muted:#a3bdcd;
+  --line:rgba(71,152,209,.23);
+  --cyan:#31cffa;
+  --cyan2:#81e0ff;
+  --blue:#318bdf;
+  --amber:#f6b963;
+}
+body{
+  color:#eef8ff;
+  background:
+    radial-gradient(ellipse 52% 39% at 83% -14%,rgba(18,91,175,.11),transparent 77%),
+    radial-gradient(ellipse 24% 25% at 4% 4%,rgba(255,186,95,.035),transparent 75%),
+    linear-gradient(180deg,#06121f,#071421 53%,#050e18) !important;
+}
+body .ambient, body .support-ambient{
+  opacity:.2;
+  pointer-events:none;
+}
+body .topbar{
+  background:linear-gradient(90deg,rgba(5,15,27,.97),rgba(9,26,43,.97) 52%,rgba(6,19,33,.97))!important;
+  border-bottom:1px solid rgba(49,157,222,.26)!important;
+  box-shadow:0 9px 25px rgba(0,0,0,.15);
+}
+body .topbar .brand-mark{
+  color:#f6fcff;
+  background:linear-gradient(137deg,#20d1fc,#2a7fe3 61%,#ffbb6e)!important;
+  border-color:rgba(92,202,245,.46);
+  box-shadow:0 0 22px rgba(41,155,226,.15),inset 0 1px rgba(255,255,255,.16);
+}
+body .topbar .brand-copy strong{color:#f4faff}
+body .topbar .brand-copy small{color:#8eaec8}
+body .topbar .nav :is(a,summary){color:#b9d1e4}
+body .topbar .nav :is(a,summary):hover{color:#fff;background:rgba(42,135,214,.12)}
+body .topbar .nav a.active,
+body .topbar .nav a[aria-current=page]{
+  color:#e9faff;
+  border-color:rgba(65,182,228,.29);
+  background:linear-gradient(110deg,rgba(30,142,214,.19),rgba(242,171,78,.09));
+  box-shadow:inset 0 0 0 1px rgba(80,178,231,.14);
+}
+body .mobile-nav{background:linear-gradient(150deg,#081b2c,#061526);border-color:rgba(67,161,222,.27)}
+body :is(.software-hero,.news-section-hero,.news-article-hero,.support-hero,.dl-hero,.forum-hero){
+  border-color:rgba(67,166,225,.25);
+}
+body :is(.software-card,.news-card,.news-featured,.dl-project,.dl-entry,.support-route,.support-card,.forum-panel,.forum-section,.guide-card,.resource-card,.news-article-copy,.news-article-media,.news-article-body,.rt-content,.rt-side){
+  border-color:rgba(72,153,210,.25);
+  box-shadow:0 13px 32px rgba(0,0,0,.19);
+}
+body :is(.software-card,.news-card,.support-route,.guide-card):hover{
+  border-color:rgba(84,198,245,.52);
+}
+body :is(.software-hero h1 em,.news-section-hero h1 em,.dl-hero h1 em,.support-hero h1 em){
+  font-style:normal;
+  background:linear-gradient(92deg,#5bd4fa,#91c8e4 48%,#f8bd6c 94%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+body :is(.button.primary,.dl-primary,.support-primary){
+  background:linear-gradient(105deg,#2bcdf5,#82c1e8 54%,#f5b565)!important;
+  border-color:rgba(103,194,240,.38)!important;
+  color:#071522!important;
+  box-shadow:0 8px 24px rgba(29,120,198,.13);
+}
+body :is(.button.secondary,.dl-secondary,.support-secondary){
+  border-color:rgba(78,170,226,.33);
+  color:#dfedff;
+}
+body :is(.news-kicker,.support-overline,.support-kicker,.dl-kicker,.forum-kicker,.eyebrow){
+  color:#85d7f5;
+}
+body :is(.news-card time,.news-meta,.software-card-meta,.dl-crumb,.support-breadcrumbs){
+  color:#adcbda;
+}
+body .footer{
+  border-top-color:rgba(64,156,209,.2);
+}
+body .footer a:hover{color:#8ce7fc}
+body :is(a,button,input,summary):focus-visible{
+  outline:2px solid #65dcff;
+  outline-offset:3px;
+}
+@media(prefers-reduced-motion:reduce){
+  body :is(.software-card,.news-card,.support-route){transition:none!important;animation:none!important}
+}
