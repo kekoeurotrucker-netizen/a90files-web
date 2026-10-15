@@ -122,7 +122,7 @@ export default {
       const headers=new Headers(original.headers);
       headers.set('Content-Type','text/html; charset=utf-8');
       headers.set('Cache-Control','no-cache, no-store, must-revalidate');
-      return hardenStatic(await injectGlobalUi(new Response(html,{status:original.status,statusText:original.statusText,headers}),true));
+      return hardenStatic(await injectGlobalUi(new Response(html,{status:original.status,statusText:original.statusText,headers}),true,url.pathname));
     }
 
     const health=await handleHealth(request,env,url);
@@ -166,7 +166,7 @@ export default {
     const response=await authWorker.fetch(request,env,ctx);
     if(url.pathname.startsWith('/api/'))return hardenApi(response);
     const pageRoute=url.pathname==='/'||url.pathname.endsWith('/');
-    return hardenStatic(await injectGlobalUi(response,pageRoute));
+    return hardenStatic(await injectGlobalUi(response,pageRoute,url.pathname));
   }
 };
 
@@ -184,7 +184,7 @@ function injectLegalFooter(html){
   return html.slice(0,start)+footer+html.slice(end);
 }
 
-async function injectGlobalUi(response,force=false){
+async function injectGlobalUi(response,force=false,pathname=''){
   const type=response.headers.get('Content-Type')||'';
   if(!force&&!type.includes('text/html'))return response;
   let html=await response.text();
@@ -193,6 +193,12 @@ async function injectGlobalUi(response,force=false){
   if((html.includes('a90-lower-modules')||html.includes('class="news-grid"'))&&!html.includes('/assets/cms-public.js'))
     html=html.replace('</body>','<script src="/assets/cms-public.js?v=20261010-cms-1" defer></script></body>');
   html=injectLegalFooter(html);
+  // Lightweight shared theme on public interior routes only, never the home or admin.
+  // One stylesheet means later individual page redesigns can override it freely.
+  if(/^\/(?:software|juegos|novedades|descargas|soporte|foro|guias|canal|radar|arcade|actualidad|aviso-legal|privacidad|cookies|licencias)(?:\/|$)/.test(pathname)
+    && !html.includes('/assets/a90-interior-touch.css')){
+    html=html.replace('</head>','<link rel="stylesheet" href="/assets/a90-interior-touch.css?v=20261015-inherit-1">\n</head>');
+  }
   // Refresh the authored header stylesheet version for immediate visibility on every page.
   html=html.replace(/(\/assets\/header-velocity\.css\?v=)[^"']+/g,'$1'+'20261009-gradient-nav-1');
   const appScript=`<script src="/assets/app.js?v=${APP_BUILD}" defer></script>`;
