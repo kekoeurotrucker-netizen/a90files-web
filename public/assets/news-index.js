@@ -43,6 +43,17 @@ const update=()=>{
     if(!old||record.stamp>old.stamp)unique.set(record.href,record);
   }
   const sorted=[...unique.values()].sort((a,b)=>b.stamp-a.stamp||a.title.localeCompare(b.title,'es'));
+  // Keep the card grid chronological too, regardless of the order in static HTML
+  // or the moment a CMS article arrives. Never move the featured sections.
+  const cards=[...grid.querySelectorAll(':scope > .news-card')];
+  const ranking=new Map(sorted.map((record,index)=>[record.href,index]));
+  const ordered=[...cards].sort((a,b)=>{
+    const first=ranking.get(normalize(a.getAttribute('href')))??Infinity;
+    const second=ranking.get(normalize(b.getAttribute('href')))??Infinity;
+    return first-second; // stable sort preserves the position of undated cards
+  });
+  // Avoid an infinite MutationObserver loop: move nodes only if order changed.
+  if(ordered.some((card,index)=>card!==cards[index]))grid.append(...ordered);
   const eleventh=sorted[10]?.element;
   document.querySelectorAll('#historico').forEach(el=>el.removeAttribute('id'));
   if(!eleventh)return;
