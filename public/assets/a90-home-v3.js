@@ -95,4 +95,137 @@ if(feed){
    }
  }).catch(()=>forumFallback('La actividad del foro no se puede consultar ahora.')).finally(()=>clearTimeout(timeout));
 }
+
+// A90 latest news realtime: merge all dated editorial pieces with published CMS posts.
+const recentNews=root.querySelector('[data-a90-news-list]');
+if(recentNews){
+  const countEl=root.querySelector('[data-a90-news-count]');
+  const monthIndex={ene:0,jan:0,feb:1,mar:2,abr:3,apr:3,may:4,jun:5,jul:6,ago:7,aug:7,sep:8,oct:9,nov:10,dic:11,dec:11};
+  const parseDate=text=>{
+    if(!text)return 0;
+    const m=String(text).toLowerCase().match(/(\d{1,2})\s+([a-záéíóúñ]{3,})\.?\s+(\d{4})/i);
+    if(!m)return 0;
+    const key=m[2].normalize('NFD').replace(/[\u0300-\u036f]/g,'').slice(0,3);
+    const month=monthIndex[key];
+    if(month===undefined)return 0;
+    const d=Date.UTC(Number(m[3]),month,Number(m[1]));
+    return Number.isFinite(d)?d:0;
+  };
+  const existing=[...recentNews.querySelectorAll('a[href]')].map(a=>({
+    href:a.getAttribute('href'),title:a.querySelector('strong')?.textContent?.trim()||'',
+    date:a.querySelector('small')?.textContent?.trim()||'',stamp:parseDate(a.querySelector('small')?.textContent),
+    icon:a.querySelector('img')?.getAttribute('src')||'',legacy:true
+  }));
+  const specialIcons={
+    '/novedades/pilot-station/':'/assets/pilot-station/pilot-station-official-icon.png',
+    '/novedades/kookikeeper-proximamente-microsoft-store/':'/assets/kookikeeper/icon.webp',
+    '/novedades/roadtrip-es-windows-espanol/':'',
+    '/novedades/marea-studio-1-3-26/':'/assets/marea/marea-icon.webp',
+    '/novedades/marea-studio-ya-en-microsoft-store/':'/assets/marea/marea-icon.webp',
+    '/novedades/logistic-trucker-primeras-capturas-3d/':'/assets/project-trucker/project-trucker-logo-300.webp'
+  };
+  const displayDate=stamp=>new Intl.DateTimeFormat('es-ES',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}).format(new Date(stamp));
+  function render(items){
+    const unique=new Map();
+    // Respect the actual publication timestamp, never invent dates for undated features.
+    for(const item of items){
+      if(!item?.href||!item?.title||!item.stamp||!item.href.startsWith('/'))continue;
+      const key=item.href.replace(/\/+$/,'')+'/';
+      const old=unique.get(key);
+      if(!old||item.stamp>old.stamp)unique.set(key,item);
+    }
+    const latest=[...unique.values()].sort((a,b)=>b.stamp-a.stamp||a.title.localeCompare(b.title,'es')).slice(0,10);
+    if(!latest.length)return;
+    const list=document.createDocumentFragment();
+    for(const item of latest){
+      const a=document.createElement('a');a.className='a90-news-entry';a.href=item.href;
+      const icon=specialIcons[item.href]!==undefined?specialIcons[item.href]:item.icon||'';
+      if(icon&&icon.startsWith('/assets/')){
+        const img=document.createElement('img');img.src=icon;img.alt='';img.loading='lazy';a.append(img);
+      }else{
+        const mark=document.createElement('span');mark.className='a90-news-rt';mark.setAttribute('aria-hidden','true');mark.textContent=item.href.includes('roadtrip')?'RT':'A90';a.append(mark);
+      }
+      const body=document.createElement('span');
+      const title=document.createElement('strong');title.textContent=item.title;
+      const date=document.createElement('small');date.textContent=item.date||displayDate(item.stamp);
+      const arrow=document.createElement('b');arrow.textContent='↗';arrow.setAttribute('aria-hidden','true');
+      body.append(title,date);a.append(body,arrow);list.append(a);
+    }
+    recentNews.replaceChildren(list);
+    if(countEl)countEl.textContent=latest.length+' artículos';
+    recentNews.scrollTop=0;
+  }
+  Promise.allSettled([
+    fetch('/novedades/',{cache:'no-store',credentials:'same-origin'}).then(async r=>{
+      if(!r.ok)throw new Error('News index unavailable');
+      const doc=new DOMParser().parseFromString(await r.text(),'text/html');
+      const items=[];
+      for(const card of doc.querySelectorAll('.news-grid > .news-card')){
+        const href=card.getAttribute('href')||'';
+        const title=card.querySelector('h3')?.textContent?.trim()||'';
+        const date=card.querySelector('time')?.textContent?.trim()||'';
+        const stamp=parseDate(date);
+        const icon=card.querySelector('img')?.getAttribute('src')||'';
+        if(stamp&&href&&title)items.push({href,title,date,stamp,icon});
+      }
+      const featured=doc.querySelector('.news-featured');
+      if(featured){
+        const href=featured.querySelector('a[href]')?.getAttribute('href');
+        const title=featured.querySelector('h2')?.textContent?.trim();
+        const date=featured.querySelector('.news-kicker')?.textContent||'';
+        if(href&&title&&parseDate(date))items.push({href,title,date:displayDate(parseDate(date)),stamp:parseDate(date)});
+      }
+      const lt=doc.querySelector('.news-lt-mini');
+      if(lt){
+        const href=lt.querySelector('a[href]')?.getAttribute('href');
+        const title=lt.querySelector('h2')?.textContent?.trim().replace(/\s+/g,' ')||'';
+        const date=lt.querySelector('.news-lt-mini-label')?.textContent||'';
+        if(href&&title&&parseDate(date))items.push({href,title,date:displayDate(parseDate(date)),stamp:parseDate(date)});
+      }
+      const promo=doc.querySelector('.rt-news-promo');
+      if(promo){
+        const href=promo.getAttribute('href'),title=promo.querySelector('strong')?.textContent?.trim();
+        const date=promo.querySelector('small')?.textContent||'';
+        if(href&&title&&parseDate(date))items.push({href,title,date:displayDate(parseDate(date)),stamp:parseDate(date)});
+      }
+      return items;
+    }),
+    fetch('/api/cms/published',{cache:'no-store',credentials:'same-origin'}).then(async r=>{
+      if(!r.ok)throw new Error('CMS news unavailable');
+      const data=await r.json();
+      return (Array.isArray(data.articles)?data.articles:[]).map(article=>{
+        const stamp=Date.parse(article.published_at||article.created_at||'')||0;
+        return {href:'/articulos/'+encodeURIComponent(article.slug)+'/',title:article.title_es||'',
+          date:stamp?displayDate(stamp):'',stamp,icon:article.cover_path?.startsWith('/assets/')?article.cover_path:''};
+      }).filter(article=>article.stamp&&article.title);
+    })
+  ]).then(results=>{
+    const additional=results.filter(r=>r.status==='fulfilled').flatMap(r=>r.value);
+    if(additional.length)render([...additional,...existing]);
+  }).catch(()=>{});
+  // Ticker scrolls slowly like the original, but always allows normal wheel/touch/keyboard scrolling.
+  // No automatic motion on touch screens, focused elements, hidden tabs or reduced-motion devices.
+  if(!reduce&&window.matchMedia?.('(hover: hover) and (pointer: fine)')?.matches){
+    let holdUntil=0;
+    const pause=()=>{holdUntil=Date.now()+12000};
+    recentNews.addEventListener('wheel',pause,{passive:true});
+    recentNews.addEventListener('touchstart',pause,{passive:true});
+    recentNews.addEventListener('keydown',pause);
+    recentNews.addEventListener('pointerdown',pause);
+    let last=0;
+    const animate=time=>{
+      if(!recentNews.isConnected)return;
+      if(last&&time-last>=90){
+        if(document.visibilityState==='visible'&&!recentNews.matches(':hover')&&!recentNews.matches(':focus-within')&&Date.now()>holdUntil&&recentNews.scrollHeight>recentNews.clientHeight+2){
+          if(recentNews.scrollTop>=recentNews.scrollHeight-recentNews.clientHeight-2)recentNews.scrollTop=0;
+          else recentNews.scrollTop+=0.7;
+        }
+        last=time;
+      }else if(!last)last=time;
+      requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+  }
+}
+
 })();
