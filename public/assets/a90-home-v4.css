@@ -206,3 +206,19 @@ body.home.a90-home-v4{display:block;min-height:100vh;overflow-x:hidden!important
  .home.a90-home-v4 .a90-end-grid .a90-channel{grid-template-columns:1fr 88px}
 }
 @media(prefers-reduced-motion:reduce){.home.a90-home-v4 *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* Ayuda comunitaria: tercera acción sin perder el diseño compacto. */
+.home.a90-home-v4 .a90-help-actions{gap:6px;flex-shrink:0}
+.home.a90-home-v4 .a90-help-actions .a90-button{padding:7px 9px;font-size:9px;white-space:nowrap}
+.home.a90-home-v4 .a90-help-forum{border-color:rgba(255,190,100,.46)!important;color:#ffd295!important}
+@media(max-width:1350px){
+ .home.a90-home-v4 .a90-help{flex-wrap:wrap}
+ .home.a90-home-v4 .a90-help-actions{margin-left:55px}
+}
+@media(max-width:850px){
+ .home.a90-home-v4 .a90-help{flex-wrap:wrap}
+ .home.a90-home-v4 .a90-help-actions{margin-left:0;width:100%;flex-shrink:1}
+}
+@media(max-width:420px){
+ .home.a90-home-v4 .a90-help-actions .a90-button{white-space:normal;flex:1}
+}
