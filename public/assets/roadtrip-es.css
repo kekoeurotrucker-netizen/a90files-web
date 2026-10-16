@@ -67,3 +67,20 @@
 .rt-news-card-art small{position:relative;z-index:1;font-size:9px;color:#b7edff;letter-spacing:.1em;margin-top:7px;font-weight:800}
 .rt-game-art{height:170px;min-height:170px}
 @media(max-width:700px){.rt-news-promo{flex-direction:column;align-items:flex-start}.rt-news-promo>span{align-self:flex-start}.rt-news-card-art{min-height:135px}}
+
+/* RoadTrip-ES: verified imagery from the local port reference, not translated builds. */
+.rt-hero-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.rt-hero-icon{width:64px;height:64px;object-fit:contain;border:1px solid rgba(82,188,245,.35);border-radius:14px;background:#07192b;box-shadow:0 4px 21px rgba(0,0,0,.28)}
+.rt-art--screenshot{background:#061a28}
+.rt-art--screenshot:before,.rt-art--screenshot:after{display:none}
+.rt-art-screenshot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(.85) brightness(.65)}
+.rt-art--screenshot .rt-art-inner{inset:14px 15px auto;text-shadow:0 3px 15px #071524}
+.rt-art--screenshot .rt-art-inner strong{font-size:clamp(30px,3.2vw,46px)}
+.rt-art--screenshot .rt-art-label{max-width:calc(100% - 28px);letter-spacing:.05em}
+.rt-reference-note{border-left:2px solid rgba(72,203,243,.65);padding:10px 14px;background:rgba(41,131,183,.1);border-radius:0 8px 8px 0;font-size:12px!important}
+.rt-news-card-art--photo{display:block;padding:0}
+.rt-news-card-art--photo:before{display:none}
+.rt-news-cover{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.88) brightness(.9)}
+.rt-news-cover-label{position:absolute;left:10px;bottom:10px;max-width:calc(100% - 20px);padding:5px 7px;background:rgba(4,21,33,.8);border:1px solid rgba(104,216,251,.55);border-radius:5px;color:#e3f7ff;font-size:9px;font-weight:800;letter-spacing:.06em}
+.rt-news-promo-icon{flex:none;width:62px;height:62px;object-fit:cover;border-radius:11px;border:1px solid rgba(84,184,238,.4)}
+@media(max-width:700px){.rt-news-promo-icon{width:52px;height:52px}.rt-hero-icon{width:52px;height:52px}}
