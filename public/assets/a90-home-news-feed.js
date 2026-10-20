@@ -17,7 +17,7 @@ const icons={
  '/novedades/kookikeeper-proximamente-microsoft-store/':'/assets/kookikeeper/icon.webp',
  '/novedades/roadtrip-es-windows-espanol/':'/assets/roadtrip-es/roadtrip-recomp-icon.png',
  '/novedades/vaultpool-v3-estable-nuevas-nubes/':'/assets/vaultpool/vaultpool-icon-20261005.png',
- '/novedades/metal-gear-msx2-port-windows-espanol/':'/assets/metal-gear-msx2/port-windows-sala-ascensor.png',
+ '/novedades/metal-gear-msx2-port-windows-espanol/':'/assets/metal-gear-msx2/metal-gear-msx2-editorial-art.png',
  '/novedades/marea-studio-1-3-26/':'/assets/marea/marea-icon.webp',
  '/novedades/marea-studio-ya-en-microsoft-store/':'/assets/marea/marea-icon.webp',
  '/novedades/logistic-trucker-primeras-capturas-3d/':'/assets/project-trucker/project-trucker-logo-300.webp',
@@ -145,7 +145,7 @@ function headline(item){
  return[clip(words.slice(0,cut).join(' '),35),clip(words.slice(cut).join(' '),34)];
 }
 function makeSlide(item,i){
- const slide=node('article','a90-feature-slide'+(i===0?' is-active':''));
+ const slide=node('article','a90-feature-slide'+(item.href==='/novedades/metal-gear-msx2-port-windows-espanol/'?' a90-feature-slide--metal-gear':'')+(i===0?' is-active':''));
  slide.setAttribute('data-a90-main-slide','');
  slide.dataset.newsHref=item.href;
  slide.dataset.newsTitle=item.title;
@@ -180,7 +180,7 @@ function makeSlide(item,i){
  const visual=node('a','a90-feature-image');
  visual.href=item.href;visual.setAttribute('aria-label','Leer noticia: '+item.title);
  const image=node('img');
- image.src=item.cover||item.icon||'/assets/brand/a90-velocity.svg';
+ image.src=item.href==='/novedades/metal-gear-msx2-port-windows-espanol/'?'/assets/metal-gear-msx2/metal-gear-msx2-editorial-art.png':(item.cover||item.icon||'/assets/brand/a90-velocity.svg');
  image.alt='Imagen de la noticia: '+item.title;
  image.loading=i?'lazy':'eager';if(i===0)image.fetchPriority='high';
  visual.append(image);

@@ -46,3 +46,16 @@
 @media(max-width:940px){.mg90-hero{grid-template-columns:1fr}.mg90-key-art{min-height:345px}.mg90-art-monitor img{max-height:400px}}
 @media(max-width:600px){.mg90-hero h1{font-size:58px}.mg90-hero-copy{padding:24px 17px}.mg90-screens,.mg90-points{grid-template-columns:1fr}.mg90-article{padding:19px}.mg90-hero-actions .mg90-button{flex:1 1 150px}.mg90-key-art{padding:19px}.mg90-key-art-bottom strong{font-size:31px}}
 @media(prefers-reduced-motion:reduce){.mg90-screens img{transition:none}}
+/* Arte editorial de Metal Gear MSX2: póster aprobado, sin ventanas de depuración en portada. */
+.mg90-poster{margin:0;display:flex;flex-direction:column;justify-content:center;align-items:center;min-width:0;border:1px solid rgba(57,162,211,.34);border-radius:18px;overflow:hidden;background:#061422;box-shadow:0 16px 45px rgba(0,0,0,.3)}
+.mg90-poster img{display:block;width:min(100%,560px);height:auto;max-height:560px;object-fit:contain}
+.mg90-poster figcaption{width:100%;box-sizing:border-box;padding:11px;text-align:center;background:#071b2a;border-top:1px solid rgba(58,139,170,.35);font-weight:800;letter-spacing:.08em;font-size:9px;color:#9bc7d8}
+.mg90-art-feature figure{margin:18px auto;max-width:880px;border:1px solid #2a728c;background:#061623;border-radius:16px;overflow:hidden}
+.mg90-art-feature figure img{display:block;width:100%;height:auto;object-fit:contain}
+.mg90-art-feature figcaption{font-size:10px;text-align:center;font-weight:800;letter-spacing:.1em;color:#9acddb;padding:12px;background:#071d2e}
+.mg90-debug{margin:16px 0;border:1px solid #28516b;background:#081d2d;border-radius:11px;padding:14px}
+.mg90-debug summary{cursor:pointer;font-size:12px;font-weight:750;color:#80d7ee;line-height:1.6}
+.mg90-debug .mg90-screens{margin:15px 0 0}
+.mg90-debug .mg90-screens img{object-position:top left}
+@media(max-width:940px){.mg90-poster img{max-height:480px}}
+@media(max-width:650px){.mg90-poster img{max-height:none}}

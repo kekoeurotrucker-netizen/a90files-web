@@ -450,3 +450,8 @@ body.home.a90-home-v4{display:block;min-height:100vh;overflow-x:hidden!important
   .home.a90-home-v4 .a90-info-grid>.a90-card{height:auto;min-height:0}
   .home.a90-home-v4 .a90-info-grid>.a90-news-panel{height:250px}
 }
+
+/* Metal Gear MSX2: cartel completo y no capturas técnicas en la portada. */
+.home.a90-home-v4 .a90-feature-slide--metal-gear .a90-feature-image{background:#061422}
+.home.a90-home-v4 .a90-feature-slide--metal-gear .a90-feature-image img{object-fit:contain;object-position:center;filter:none}
+.home.a90-home-v4 .a90-feature-slide--metal-gear .a90-hero-icon{object-fit:cover;object-position:center;border-radius:7px}
