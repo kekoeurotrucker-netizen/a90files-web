@@ -152,7 +152,8 @@ function addQuery(path,params){
 
 function providerEnabled(settings,provider){
   const external=settings?.external||{};
-  if(provider==='x') return Boolean(external.x||external.twitter);
+  // Never enable the OAuth 2.0 X flow from the legacy OAuth 1.0a Twitter flag.
+  if(provider==='x') return external.x===true;
   return Boolean(external[provider]);
 }
 

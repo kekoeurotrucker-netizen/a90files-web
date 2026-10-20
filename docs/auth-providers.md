@@ -59,3 +59,24 @@ No se expone como inicio de sesión general funcional para cuentas personales. L
 - La sesión de A 90 Files usa cookies `HttpOnly`, `Secure` y `SameSite=Lax`.
 - OAuth usa PKCE y un estado de retorno limitado a rutas internas.
 - No publicar capturas que muestren secretos. Si ocurre, rotarlos inmediatamente.
+
+## Comprobación real de producción — 20/10/2026
+
+Consultadas las rutas públicas `/api/auth/providers` y `/api/auth/extra-providers`:
+
+| Método | Estado | Para completarlo |
+|---|---|---|
+| Correo | Activo | Mantener envío de confirmaciones y recuperación de cuentas. |
+| Google | Activo | Comprobar login de extremo a extremo con una cuenta de pruebas. |
+| GitHub | Activo | Comprobar login de extremo a extremo con una cuenta de pruebas. |
+| Discord | Pendiente | Completar el onboarding del Developer Portal, crear aplicación de tipo OAuth2, establecer callback Supabase y configurar client ID y secret en Authentication → Providers. |
+| Facebook | Pendiente | Activar cuenta Meta for Developers, crear app, configurar Facebook Login para web y política de privacidad. |
+| X | Pendiente | Completar acceso al X Developer Portal, crear proyecto/app **OAuth 2.0**, registrar callback y rellenar credenciales X OAuth2 en Supabase. |
+| Apple | Pendiente | Cuenta Apple Developer, Services ID, identificadores, clave privada y secreto de cliente autorizado. |
+| Instagram | No se ofrece | No es un método de login general para usuarios personales. |
+
+**El backend comprueba la activación real de cada proveedor**. El formulario de A 90 Files oculta las opciones no operativas. Los códigos de correo son verificaciones temporales y no reemplazan el registro oficial de aplicaciones OAuth. No declarar ningún proveedor como disponible hasta que cambie su estado en Supabase y se valide un inicio y cierre de sesión reales.
+
+**Precaución sobre X:** el indicador `external.twitter` corresponde al antiguo flujo OAuth 1.0a y **no** habilita el proveedor `x` de OAuth 2.0. La web exige `external.x===true`, coherente con la llamada a `/auth/v1/authorize?provider=x`. No reutilizar credenciales OAuth1 en la configuración OAuth2.
+
+Se ha comprobado que el portal de Discord muestra el onboarding inicial en la sesión existente. No se ha creado una app OAuth ni se han guardado secretos. En Meta for Developers hay sesión Facebook iniciada, pero no está confirmado el registro como desarrollador. No se han modificado los permisos de ninguna cuenta ni automatizado verificaciones personales.
