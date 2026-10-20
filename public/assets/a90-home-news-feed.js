@@ -17,6 +17,7 @@ const icons={
  '/novedades/kookikeeper-proximamente-microsoft-store/':'/assets/kookikeeper/icon.webp',
  '/novedades/roadtrip-es-windows-espanol/':'/assets/roadtrip-es/roadtrip-recomp-icon.png',
  '/novedades/vaultpool-v3-estable-nuevas-nubes/':'/assets/vaultpool/vaultpool-icon-20261005.png',
+ '/novedades/metal-gear-msx2-port-windows-espanol/':'/assets/metal-gear-msx2/port-windows-sala-ascensor.png',
  '/novedades/marea-studio-1-3-26/':'/assets/marea/marea-icon.webp',
  '/novedades/marea-studio-ya-en-microsoft-store/':'/assets/marea/marea-icon.webp',
  '/novedades/logistic-trucker-primeras-capturas-3d/':'/assets/project-trucker/project-trucker-logo-300.webp',
@@ -24,6 +25,7 @@ const icons={
 };
 const projectLinks={
  '/novedades/vaultpool-v3-estable-nuevas-nubes/':'/software/vaultpool/',
+ '/novedades/metal-gear-msx2-port-windows-espanol/':'/juegos/metal-gear-msx2/',
  '/novedades/pilot-station/':'/software/pilot-station/',
  '/novedades/roadtrip-es-windows-espanol/':'/juegos/',
  '/novedades/kookikeeper-proximamente-microsoft-store/':'/software/kookikeeper/',
@@ -31,6 +33,7 @@ const projectLinks={
 };
 const friendlyHeadlines={
  '/novedades/vaultpool-v3-estable-nuevas-nubes/':['VaultPool V3.','Más nubes.'],
+ '/novedades/metal-gear-msx2-port-windows-espanol/':['Metal Gear MSX2.','Port para Windows.'],
  '/novedades/pilot-station/':['Tu inicio.','Bajo control.'],
  '/novedades/roadtrip-es-windows-espanol/':['RoadTrip-ES.','En español.'],
  '/novedades/kookikeeper-proximamente-microsoft-store/':['KookiKeeper.','Tus sesiones.'],
