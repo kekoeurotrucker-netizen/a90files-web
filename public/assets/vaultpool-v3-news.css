@@ -1,0 +1,44 @@
+.vp3-page{background:radial-gradient(ellipse at 45% 0,rgba(27,83,126,.29),transparent 46%),#06111c;color:#ecf8ff}
+.vp3-main{max-width:1370px}.vp3-hero{display:grid;grid-template-columns:minmax(0,.91fr) minmax(0,1.09fr);gap:17px;align-items:stretch}
+.vp3-hero-copy,.vp3-hero-image,.vp3-article{border:1px solid rgba(98,188,225,.29);border-radius:20px;background:linear-gradient(155deg,#0d2a42,#071725);box-shadow:0 16px 42px rgba(0,0,0,.22)}
+.vp3-hero-copy{padding:clamp(24px,3.8vw,45px);display:flex;flex-direction:column;justify-content:center;gap:0}
+.vp3-kicker,.vp3-section-kicker{font-size:10px;letter-spacing:.15em;font-weight:850;color:#7bddf1}
+.vp3-pulse{display:inline-block;width:7px;height:7px;border-radius:50%;background:#e6ac66;margin-right:8px;box-shadow:0 0 10px #f4b66190}
+.vp3-brand{display:flex;align-items:center;gap:12px;margin:23px 0 5px;font-size:13px;font-weight:900;letter-spacing:.05em;color:white}
+.vp3-brand img{width:57px;height:57px;object-fit:contain}.vp3-brand em{font-weight:450;font-style:normal;color:#91cedd}
+.vp3-hero h1{font-size:clamp(43px,5vw,72px);line-height:.96;letter-spacing:-.064em;margin:12px 0 21px;color:#fff}
+.vp3-hero h1 span{color:#f2b76b}.vp3-hero h1 small{display:block;font-size:.43em;line-height:1.2;letter-spacing:-.023em;color:#dfecf4;margin-top:12px}
+.vp3-intro{font-size:14px;line-height:1.8;color:#b9d4e0;margin:0 0 19px}.vp3-hero strong{color:#edf9ff}
+.vp3-status{font-size:12px;line-height:1.65;color:#c3dbe2;border-left:3px solid #e6ae69;background:rgba(234,179,105,.08);padding:11px 14px;margin-bottom:16px;border-radius:0 9px 9px 0}
+.vp3-actions{display:flex;flex-wrap:wrap;gap:9px;margin:9px 0 18px}
+.vp3-btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;text-decoration:none!important;border-radius:10px;border:1px solid #4b92b2;color:#e5f5fc!important;padding:10px 15px;font-weight:800;font-size:12px;background:#103148;transition:transform .15s,border-color .15s}
+.vp3-btn--primary{color:#041727!important;background:linear-gradient(105deg,#34c8ef,#f4ba71);border-color:transparent}
+.vp3-btn:hover{transform:translateY(-2px);border-color:#65d5fa}
+.vp3-tags{display:flex;flex-wrap:wrap;gap:7px}.vp3-tags span{font-size:10px;color:#a9d3e2;border:1px solid #235777;border-radius:22px;padding:6px 11px}
+.vp3-hero-image{position:relative;margin:0;overflow:hidden;min-height:420px;background:#051727}
+.vp3-hero-image img{width:100%;height:100%;object-fit:cover;object-position:43% center;display:block}
+.vp3-hero-image figcaption{position:absolute;inset:auto 15px 15px;background:rgba(4,20,32,.92);border:1px solid #4582a0;color:#d5eaf6;padding:10px 13px;border-radius:7px;font-size:11px}.vp3-hero-image figcaption b{color:#f8c180}
+.vp3-reading{margin:20px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 18px;border-top:1px solid #28546b;border-bottom:1px solid #28546b;color:#95c7d7;font-size:10px;letter-spacing:.12em}
+.vp3-reading nav{display:flex;flex-wrap:wrap;gap:16px}.vp3-reading a{color:#d5f3fc;text-decoration:none;font-weight:700;letter-spacing:0}
+.vp3-article{max-width:1120px;margin:0 auto 48px;padding:clamp(22px,4vw,48px)}
+.vp3-section{padding-bottom:25px;margin-bottom:32px;border-bottom:1px solid rgba(101,166,199,.2);scroll-margin-top:96px}
+.vp3-section h2{font-size:clamp(28px,3vw,37px);line-height:1.15;letter-spacing:-.04em;color:#fff;margin:12px 0 17px}
+.vp3-section p,.vp3-last{color:#b6d0dc;font-size:14px;line-height:1.85}.vp3-section p strong,.vp3-last strong{color:#f8faff}
+.vp3-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:22px 0}
+.vp3-gallery figure{min-width:0;margin:0;border:1px solid #35647d;background:#0a1f32;border-radius:12px;overflow:hidden}
+.vp3-gallery a{display:block;aspect-ratio:4/3;overflow:hidden}.vp3-gallery img{width:100%;height:100%;object-fit:cover;object-position:top left;transition:transform .15s}.vp3-gallery a:hover img{transform:scale(1.025)}
+.vp3-gallery figcaption{display:flex;flex-direction:column;gap:4px;padding:12px;font-size:12px;color:#e9f8fb}.vp3-gallery figcaption small{font-size:10px;color:#95b8c5}
+.vp3-disclaimer,.vp3-note{padding:12px 15px;background:#102a3e;border-left:2px solid #edb56c;border-radius:0 8px 8px 0;font-size:12px!important}
+.vp3-features{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin:20px 0}
+.vp3-features>div{position:relative;padding:18px 18px 17px;background:#0e2a40;border:1px solid #26546b;border-radius:12px}
+.vp3-features>div>span{display:inline-grid;place-items:center;font-size:22px;color:#65d3f4;width:33px;height:35px;border-radius:8px;background:#15364b}
+.vp3-features h3{font-size:17px;margin:13px 0 6px;color:white}.vp3-features p{font-size:12px;margin:0}
+.vp3-providers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:22px 0}
+.vp3-providers>div{display:flex;flex-direction:column;min-width:0;gap:8px;background:linear-gradient(145deg,#10334d,#0b2335);border:1px solid #2c6880;border-radius:12px;padding:17px}
+.vp3-providers>div>b{display:inline-grid;place-items:center;width:40px;height:37px;color:#f6bd76;background:#0a1e2f;border:1px solid #27617f;border-radius:9px;font:900 11px/1 monospace}
+.vp3-providers strong{font-size:14px;color:#fff;line-height:1.35}.vp3-providers small{font-size:11px;color:#a2c9d5;line-height:1.55}
+.vp3-providers>div.vp3-providers--wide{grid-column:span 2}
+.vp3-feedback{border:1px solid #3f8ba5;border-radius:16px;background:linear-gradient(130deg,#15384d,#0a2234);padding:26px}.vp3-last{font-size:11px;border-left:3px solid #ecb66d;padding:9px 15px}
+@media(max-width:1000px){.vp3-hero{grid-template-columns:1fr}.vp3-hero-image{max-height:520px;min-height:280px}.vp3-providers{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:660px){.vp3-hero-copy{padding:24px 19px}.vp3-hero h1{font-size:48px}.vp3-gallery{grid-template-columns:1fr}.vp3-gallery a{aspect-ratio:16/9}.vp3-features{grid-template-columns:1fr}.vp3-providers>div.vp3-providers--wide{grid-column:span 1}.vp3-reading{gap:7px}.vp3-reading nav{gap:11px}.vp3-article{padding:19px}.vp3-feedback{padding:17px}.vp3-actions .vp3-btn{flex:1 1 170px}}
+@media(prefers-reduced-motion:reduce){.vp3-btn,.vp3-gallery img{transition:none}}

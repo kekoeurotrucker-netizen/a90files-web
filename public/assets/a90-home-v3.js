@@ -120,6 +120,7 @@ if(recentNews){
     '/novedades/pilot-station/':'/assets/pilot-station/pilot-station-official-icon.png',
     '/novedades/kookikeeper-proximamente-microsoft-store/':'/assets/kookikeeper/icon.webp',
     '/novedades/roadtrip-es-windows-espanol/':'/assets/roadtrip-es/roadtrip-recomp-icon.png',
+    '/novedades/vaultpool-v3-estable-nuevas-nubes/':'/assets/vaultpool/vaultpool-icon-20261005.png',
     '/novedades/marea-studio-1-3-26/':'/assets/marea/marea-icon.webp',
     '/novedades/marea-studio-ya-en-microsoft-store/':'/assets/marea/marea-icon.webp',
     '/novedades/logistic-trucker-primeras-capturas-3d/':'/assets/project-trucker/project-trucker-logo-300.webp'
