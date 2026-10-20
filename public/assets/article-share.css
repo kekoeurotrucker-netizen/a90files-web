@@ -41,3 +41,19 @@
 @media(max-width:780px){.a90-share{padding:17px}.a90-share__actions{flex-basis:100%}.a90-share__controls{justify-content:flex-start}.a90-share__status{text-align:left}.a90-share__fallback{margin-left:0}.cms-reading .a90-share{margin:0 12px 12px}}
 @media(max-width:440px){.a90-share{margin:15px 0 20px;padding:15px 12px}.a90-share__button{min-height:40px;padding:8px 10px;font-size:11px}.a90-share__intro{max-width:100%}.a90-share__mark{font-size:17px}}
 @media(prefers-reduced-motion:reduce){.a90-share__button{transition:none}.a90-share__button:hover{transform:none}}
+
+/* Compact sharing bar: no misleading extra action. */
+.a90-share{align-items:center;gap:10px 16px;padding:13px 16px;margin:15px 0 20px;border-radius:11px;box-shadow:none}
+.a90-share::before{width:48px}
+.a90-share__info{flex:0 0 auto;min-width:0}
+.a90-share__eyebrow,.a90-share__intro{display:none!important}
+.a90-share__title{font-size:12px;letter-spacing:.01em;color:#c7e6ef}
+.a90-share__actions{flex:1 1 370px;min-width:0}
+.a90-share__controls{justify-content:flex-end;gap:6px}
+.a90-share__button{min-height:34px;padding:7px 10px;font-size:11px;border-radius:8px;gap:6px}
+.a90-share__mark{min-width:15px;font-size:15px}
+.a90-share__button--facebook .a90-share__mark{font-size:17px}
+.a90-share__button--whatsapp .a90-share__mark{height:16px;font-size:9px}
+.a90-share__button--copy{background:#203341;border-color:rgba(245,182,103,.48)}
+@media(max-width:780px){.a90-share{gap:8px;padding:12px}.a90-share__actions{flex-basis:100%}.a90-share__controls{justify-content:flex-start}}
+@media(max-width:440px){.a90-share{margin:12px 0 16px;padding:11px}.a90-share__button{min-height:35px;padding:7px 8px;font-size:10px}}

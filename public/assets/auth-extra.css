@@ -18,3 +18,7 @@
 .a90-account-button{position:relative}
 .a90-account-notification-badge{position:absolute;top:-5px;right:-5px;display:grid;place-items:center;min-width:16px;height:16px;padding:0 4px;border:2px solid #071419;border-radius:999px;background:#efb45d;color:#071419;font-size:7.5px;font-weight:900;line-height:1;box-shadow:0 0 10px rgba(239,180,93,.28)}
 .a90-account-notification-badge[hidden]{display:none!important}
+
+/* Hide unconfigured providers until their OAuth provider is active. */
+.a90-social-grid .provider-item[hidden],#foro-login .provider-grid .provider-item[hidden]{display:none!important}
+#foro-login .provider-grid .provider-item:not(.provider-email):not(.is-provider-ready){display:none!important}

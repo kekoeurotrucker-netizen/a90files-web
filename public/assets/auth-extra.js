@@ -29,71 +29,29 @@ async function fetchExtra(){
 }
 
 function ensureModalButtons(extra){
-  const grid=$('.a90-social-grid');
-  if(!grid)return;
-
-  if(!grid.querySelector('[data-extra-oauth="apple"]')){
-    const apple=document.createElement('button');
-    apple.type='button';
-    apple.className='provider-item provider-apple';
-    apple.dataset.extraOauth='apple';
-    apple.textContent='Apple';
-    grid.appendChild(apple);
-    apple.addEventListener('click',()=>startApple(extra));
-  }
-
-  if(!grid.querySelector('[data-extra-oauth="instagram"]')){
-    const ig=document.createElement('button');
-    ig.type='button';
-    ig.className='provider-item provider-instagram provider-extra-pending';
-    ig.dataset.extraOauth='instagram';
-    ig.textContent='Instagram';
-    ig.title='Instagram: solo cuentas profesionales mediante la API actual de Meta';
-    grid.appendChild(ig);
-    ig.addEventListener('click',()=>{
-      showMessage('Instagram no ofrece ahora un inicio de sesión general para cuentas personales compatible con este sistema. La API oficial de Meta con Instagram Login está orientada a cuentas profesionales (Business/Creator), así que no vamos a fingir un acceso que la mayoría no podría usar.','error');
-    });
-  }
-
-  const apple=grid.querySelector('[data-extra-oauth="apple"]');
-  const ready=!!extra?.providers?.apple;
-  apple?.classList.toggle('is-provider-ready',ready);
-  apple?.classList.toggle('provider-extra-pending',!ready);
-  if(apple) apple.title=ready?'Continuar con Apple':'Apple preparado · falta configurar Sign in with Apple en Supabase';
+ const grid=$('.a90-social-grid');
+ if(!grid||!extra?.providers?.apple)return;
+ if(!grid.querySelector('[data-extra-oauth="apple"]')){
+  const apple=document.createElement('button');
+  apple.type='button';apple.className='provider-item provider-apple is-provider-ready';
+  apple.dataset.extraOauth='apple';apple.textContent='Apple';
+  apple.title='Continuar con Apple';
+  grid.appendChild(apple);apple.addEventListener('click',()=>startApple(extra));
+ }
 }
-
 function ensureForumButtons(extra){
-  const grid=$('#foro-login .provider-grid');
-  if(!grid)return;
-
-  if(!grid.querySelector('.provider-apple')){
-    const apple=document.createElement('span');
-    apple.className='provider-item provider-apple';
-    apple.textContent='Apple';
-    apple.setAttribute('role','button');
-    apple.setAttribute('tabindex','0');
-    const act=()=>startApple(extra);
-    apple.addEventListener('click',act);
-    apple.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();act()}});
-    grid.appendChild(apple);
-  }
-
-  if(!grid.querySelector('.provider-instagram')){
-    const ig=document.createElement('span');
-    ig.className='provider-item provider-instagram provider-extra-pending';
-    ig.textContent='Instagram';
-    ig.setAttribute('role','button');
-    ig.setAttribute('tabindex','0');
-    const act=()=>{
-      window.A90Auth?.open?.();
-      setTimeout(()=>showMessage('Instagram queda visible como opción futura, pero la API oficial actual de Meta solo sirve para cuentas profesionales. No lo activaremos como login general hasta que exista una vía válida para usuarios normales.','error'),30);
-    };
-    ig.addEventListener('click',act);
-    ig.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();act()}});
-    grid.appendChild(ig);
-  }
+ const grid=$('#foro-login .provider-grid');
+ if(!grid||!extra?.providers?.apple)return;
+ if(!grid.querySelector('.provider-apple')){
+  const apple=document.createElement('span');
+  apple.className='provider-item provider-apple is-provider-ready';
+  apple.textContent='Apple';apple.setAttribute('role','button');apple.setAttribute('tabindex','0');
+  const act=()=>startApple(extra);
+  apple.addEventListener('click',act);
+  apple.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();act()}});
+  grid.appendChild(apple);
+ }
 }
-
 function startApple(extra){
   const ready=!!extra?.providers?.apple;
   if(!ready){

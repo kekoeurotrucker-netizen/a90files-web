@@ -14,12 +14,10 @@
     eyebrow:'A 90 FILES / SHARE',title:'Share this article',
     intro:'Share this story with your community.',
     copy:'Copy link',copied:'Link copied',failed:'Select and copy the link:',
-    native:'Share…'
   }:{
     eyebrow:'A 90 FILES / COMPARTE',title:'Comparte esta noticia',
     intro:'Ayúdanos a dar a conocer los proyectos de A 90 Files.',
     copy:'Copiar enlace',copied:'Enlace copiado',failed:'Selecciona y copia este enlace:',
-    native:'Más opciones…'
   };
 
   // Compartimos la URL pública limpia: sin parámetros de campaña ni anclas.
@@ -121,16 +119,7 @@
     }
   });
   controls.append(copy);
-  if(typeof navigator.share==='function'){
-    const native=elem('button','a90-share__button a90-share__button--native');
-    native.type='button';
-    native.append(elem('span','a90-share__mark','↗'),elem('span','a90-share__name',labels.native));
-    native.addEventListener('click',async()=>{
-      try{await navigator.share({title,url})}
-      catch(error){if(error?.name!=='AbortError')status.textContent=labels.failed}
-    });
-    controls.append(native);
-  }
+
 
   const actions=elem('div','a90-share__actions');
   actions.append(controls,status);
