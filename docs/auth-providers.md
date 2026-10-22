@@ -79,4 +79,23 @@ Consultadas las rutas públicas `/api/auth/providers` y `/api/auth/extra-provide
 
 **Precaución sobre X:** el indicador `external.twitter` corresponde al antiguo flujo OAuth 1.0a y **no** habilita el proveedor `x` de OAuth 2.0. La web exige `external.x===true`, coherente con la llamada a `/auth/v1/authorize?provider=x`. No reutilizar credenciales OAuth1 en la configuración OAuth2.
 
-Se ha comprobado que el portal de Discord muestra el onboarding inicial en la sesión existente. No se ha creado una app OAuth ni se han guardado secretos. En Meta for Developers hay sesión Facebook iniciada, pero no está confirmado el registro como desarrollador. No se han modificado los permisos de ninguna cuenta ni automatizado verificaciones personales.
+## Actualización operativa — 22/10/2026
+
+- **Discord:** la aplicación **a90 files** ya existe en Discord Developer Portal (Client ID público `1562249193081405510`). Callback de Supabase configurado. Para obtener un Client Secret válido se inició el proceso de renovación, pero Discord exige MFA de la cuenta: autenticador o código al móvil. No se ha completado esa verificación ni se ha activado Discord en Supabase. No copiar secretos a este repositorio.
+- **X / Twitter:** preparado el formulario inicial del programa de desarrolladores (nombre A90 Files y descripción de uso para login exclusivamente). No se envió ni se aceptaron los acuerdos legales. Es imprescindible una aplicación OAuth **2.0** con Client ID/Secret nuevos; no usar las claves antiguas de Twitter 1.0a. Documentación oficial: https://supabase.com/docs/guides/auth/social-login/auth-twitter.
+- **Facebook:** falta completar el registro/autenticación en Meta for Developers y crear una aplicación con Facebook Login para web. No hay credenciales OAuth.
+- **Apple:** se inició el proceso de cuenta Apple para A90 Files, pero aún no consta una membresía Developer y sus identificadores, clave de firma y credenciales web. No habilitar antes de comprobarlos.
+- **Supabase:** proyecto `a90files-forum`, ID `ugwdxcmmxeqzoxgdofkd`. Conectar proveedores en Authentication → Sign In / Providers. Los secretos se guardan solo en Supabase, nunca en Git ni en texto público.
+- **Producción:** correo, Google y GitHub habilitados; Discord, Facebook, X y Apple deshabilitados. Google/GitHub producen inicio PKCE y los cuatro restantes fallan cerrados; falta prueba interactiva real de cada proveedor al habilitarlo.
+- **Seguridad:** ninguna verificación MFA, CAPTCHA o aceptación de términos de terceros debe automatizarse sin intervención del titular.
+
+### Prueba read-only de los proveedores
+
+Ejecutar con Node 18+ desde el repositorio:
+
+```bash
+node scripts/check-oauth-readiness.mjs
+```
+
+Comprueba estado de proveedor, rutas y redirecciones OAuth, PKCE y error controlado de proveedores inactivos. No inicia sesión, no sigue redirecciones ni registra cookies. Al activar un proveedor, repetir esta prueba y después completar inicio y cierre de sesión interactivos.
+
