@@ -1,7 +1,6 @@
 import authWorker from './index.js';
 import {handleForumApi} from './forum-api.js';
 import {handleModApi} from './mod-api-secure.js';
-import {handleExtraAuth} from './oauth-extra.js';
 import {handleHealth} from './health.js';
 import {handleSecurityAuth} from './security-auth-api.js';
 import {handleAnalyticsApi} from './analytics-api.js';
@@ -133,9 +132,6 @@ export default {
       if(url.pathname==='/api/auth/mfa/enroll'&&request.method==='POST')return hardenApi(await normalizeMfaEnrollResponse(secureAuth));
       return hardenApi(secureAuth);
     }
-
-    const extraAuth=await handleExtraAuth(request,env,url);
-    if(extraAuth)return hardenApi(extraAuth);
 
     if(url.pathname.startsWith('/api/cms/')){
       if(!['GET','POST'].includes(request.method))return hardenApi(json({error:'Método no permitido.'},405));

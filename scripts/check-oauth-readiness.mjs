@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 const origin = (process.env.A90_ORIGIN || 'https://a90files-web.a90files.workers.dev').replace(/\/$/, '');
 const supabase = (process.env.A90_SUPABASE_ORIGIN || 'https://ugwdxcmmxeqzoxgdofkd.supabase.co').replace(/\/$/, '');
 const callback = origin + '/api/auth/oauth/callback';
-const providers = ['google', 'github', 'discord', 'facebook', 'x', 'apple'];
+const providers = ['google', 'github', 'discord', 'facebook', 'x'];
 let passed = 0;
 let failed = 0;
 
@@ -23,7 +23,7 @@ function locationOf(response) {
   catch { return null; }
 }
 
-let standard, extra;
+let standard;
 try {
   const response = await get('/api/auth/providers');
   check(response.ok, 'Provider status endpoint');
@@ -33,18 +33,8 @@ try {
   console.error('FAIL status endpoint: ' + error.message);
   process.exit(1);
 }
-try {
-  const response = await get('/api/auth/extra-providers');
-  check(response.ok, 'Apple status endpoint');
-  extra = await response.json();
-  check(extra.available === true, 'Supabase extra-provider status available');
-} catch (error) {
-  console.error('FAIL extra-provider endpoint: ' + error.message);
-  process.exit(1);
-}
-
 for (const provider of providers) {
-  const enabled = provider === 'apple' ? extra.providers?.apple === true : standard.providers?.[provider] === true;
+  const enabled = standard.providers?.[provider] === true;
   try {
     const response = await get('/api/auth/oauth/start?provider=' + provider + '&return=%2Fforo%2F');
     const location = locationOf(response);
