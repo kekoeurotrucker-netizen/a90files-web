@@ -103,3 +103,12 @@ Comprueba estado de proveedor, rutas y redirecciones OAuth, PKCE y error control
 **Facebook:** pendiente de iniciar sesión/alta en Meta for Developers y crear una aplicación para Facebook Login con callback `https://ugwdxcmmxeqzoxgdofkd.supabase.co/auth/v1/callback`.
 
 **Discord:** guardar el Client ID y secreto en Supabase no garantiza que Auth lo aplique. El panel llegó a mostrar ENABLED, pero las pruebas públicas `external.discord` siguen indicando false; verificar más adelante, sin declarar operativo el acceso.
+
+## Verificación OAuth 2.0 — 22/10/2026 (actualización)
+
+- **X**: alta de desarrollador completada en la cuenta A90 Files; aplicación de X número `33564577` configurada como aplicación web confidencial, con permisos mínimos de lectura, petición de correo y callback `https://ugwdxcmmxeqzoxgdofkd.supabase.co/auth/v1/callback`. Se guardaron Client ID y Client Secret **solo en Supabase**, no en GitHub. El panel ya muestra X OAuth 2.0 habilitado.
+- **Detección de X**: la respuesta pública de Supabase `/auth/v1/settings` puede omitir `external.x` aun cuando `/auth/v1/authorize?provider=x` redirige correctamente a `https://x.com/i/oauth2/authorize`. La web valida ese flujo OAuth 2.0 con PKCE y `redirect: manual` antes de mostrar el botón, en lugar de confiar en el indicador legado `external.twitter`. Si la comprobación falla, el proveedor sigue deshabilitado.
+- **Discord**: la API pública de A 90 Files ya confirma Discord habilitado y el inicio de PKCE redirige a Supabase. Falta prueba humana completa de inicio y cierre de sesión.
+- **Facebook**: permanece pendiente la autenticación en Meta for Developers y la creación/configuración de la aplicación.
+- **Apple**: retirado del producto por decisión del propietario.
+- Las páginas públicas de privacidad y aviso legal utilizadas en X están disponibles, pero el aviso legal aún contiene datos de identificación del titular pendientes de completar antes de considerar la documentación legal definitiva.

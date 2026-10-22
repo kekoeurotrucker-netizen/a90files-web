@@ -18,7 +18,7 @@ export default {
 
     try{
       if(url.pathname==='/api/auth/session'&&request.method==='GET') return session(request,env);
-      if(url.pathname==='/api/auth/providers'&&request.method==='GET') return providers(env);
+      if(url.pathname==='/api/auth/providers'&&request.method==='GET') return providers(env,url);
       if(url.pathname==='/api/auth/oauth/start'&&request.method==='GET') return oauthStart(request,env,url);
       if(url.pathname==='/api/auth/oauth/callback'&&request.method==='GET') return oauthCallback(request,env,url);
       if(url.pathname==='/api/auth/login'&&request.method==='POST') return login(request,env);
@@ -150,11 +150,32 @@ function addQuery(path,params){
   return u.pathname+u.search;
 }
 
-function providerEnabled(settings,provider){
-  const external=settings?.external||{};
-  // Never enable the OAuth 2.0 X flow from the legacy OAuth 1.0a Twitter flag.
-  if(provider==='x') return external.x===true;
-  return Boolean(external[provider]);
+async function providerEnabled(settings,provider,env,url){
+  // X OAuth 2.0 can be configured even when /auth/v1/settings omits external.x.
+  // Do not reuse external.twitter: that flag belongs to legacy OAuth 1.0a.
+  if(provider==='x') return xOauth2Ready(env,url);
+  return Boolean(settings?.external?.[provider]);
+}
+
+async function xOauth2Ready(env,url){
+  try {
+    const authorize=new URL(env.SUPABASE_URL+'/auth/v1/authorize');
+    authorize.searchParams.set('provider','x');
+    authorize.searchParams.set('redirect_to',url.origin+'/api/auth/oauth/callback');
+    authorize.searchParams.set('code_challenge',await sha256Base64Url(randomBase64Url(48)));
+    authorize.searchParams.set('code_challenge_method','s256');
+    const res=await fetch(authorize.toString(),{
+      headers:authHeaders(env),
+      redirect:'manual'
+    });
+    if(res.status!==302&&res.status!==303)return false;
+    const dest=new URL(res.headers.get('Location')||'',env.SUPABASE_URL);
+    return dest.protocol==='https:'
+      && (dest.hostname==='x.com'||dest.hostname==='twitter.com')
+      && dest.pathname==='/i/oauth2/authorize'
+      && dest.searchParams.has('client_id')
+      && dest.searchParams.get('response_type')==='code';
+  }catch{return false}
 }
 
 async function getProviderSettings(env){
@@ -163,10 +184,10 @@ async function getProviderSettings(env){
   return body;
 }
 
-async function providers(env){
+async function providers(env,url){
   const settings=await getProviderSettings(env);
   const result={};
-  for(const provider of SOCIAL_PROVIDERS) result[provider]=settings?providerEnabled(settings,provider):false;
+  for(const provider of SOCIAL_PROVIDERS) result[provider]=settings?await providerEnabled(settings,provider,env,url):false;
   return json({email:true,providers:result,available:Boolean(settings)});
 }
 
@@ -194,7 +215,7 @@ async function oauthStart(request,env,url){
 
   const settings=await getProviderSettings(env);
   if(!settings) return redirect(addQuery(returnPath,{auth_error:'provider_check_failed',provider}));
-  if(!providerEnabled(settings,provider)) return redirect(addQuery(returnPath,{auth_error:'provider_disabled',provider}));
+  if(!await providerEnabled(settings,provider,env,url)) return redirect(addQuery(returnPath,{auth_error:'provider_disabled',provider}));
 
   const verifier=randomBase64Url(48);
   const challenge=await sha256Base64Url(verifier);
