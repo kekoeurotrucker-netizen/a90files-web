@@ -24,6 +24,11 @@ export default {
   async fetch(request,env,ctx){
     const url=new URL(request.url);
 
+    // Google Search Console ownership file is plain verification content, not an HTML page.
+    // Skip global HTML decoration to preserve the exact token and avoid consumed bodies.
+    if(url.pathname==='/googlea9d7b5c986112bff.html' && (request.method==='GET'||request.method==='HEAD'))
+      return hardenStatic(await env.ASSETS.fetch(request));
+
     // CMS public articles have independent ES/EN copy (never auto-translate user drafts).
     if(request.method==='GET'){
       const matched=url.pathname.match(/^\/(en\/)?articulos\/([a-z0-9]+(?:-[a-z0-9]+)*)\/?$/);
