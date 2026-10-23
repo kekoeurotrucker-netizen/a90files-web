@@ -27,7 +27,7 @@ export default {
     // Google Search Console file: serve the exact verification text directly, as plaintext.
     // This avoids Cloudflare static HTML rewrites or global page injection.
     if(url.pathname==='/googlea9d7b5c986112bff.html' && (request.method==='GET'||request.method==='HEAD'))
-      return hardenStatic(new Response(request.method==='HEAD'?null:'google-site-verification: googlea9d7b5c986112bff.html\\n',{status:200,headers:{'Content-Type':'text/plain; charset=utf-8','Cache-Control':'public, max-age=300'}}));
+      return hardenStatic(new Response(request.method==='HEAD'?null:'google-site-verification: googlea9d7b5c986112bff.html\n',{status:200,headers:{'Content-Type':'text/plain; charset=utf-8','Cache-Control':'public, max-age=300'}}));
 
     // CMS public articles have independent ES/EN copy (never auto-translate user drafts).
     if(request.method==='GET'){
