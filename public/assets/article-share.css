@@ -57,3 +57,39 @@
 .a90-share__button--copy{background:#203341;border-color:rgba(245,182,103,.48)}
 @media(max-width:780px){.a90-share{gap:8px;padding:12px}.a90-share__actions{flex-basis:100%}.a90-share__controls{justify-content:flex-start}}
 @media(max-width:440px){.a90-share{margin:12px 0 16px;padding:11px}.a90-share__button{min-height:35px;padding:7px 8px;font-size:10px}}
+
+/* 2026-10-23 · Identidad A90: controles editoriales con iconografía vectorial. */
+.a90-share{
+  gap:14px 22px;padding:19px 22px;border-radius:18px;
+  border-color:rgba(129,195,219,.26);
+  background:linear-gradient(135deg,rgba(12,36,52,.98),rgba(6,22,35,.98));
+  box-shadow:0 16px 34px rgba(0,9,18,.2),inset 0 1px 0 rgba(200,239,255,.08)
+}
+.a90-share::before{width:95px;left:21px;background:linear-gradient(90deg,#77d8ee,#e9b777)}
+.a90-share__info{flex:0 1 190px}
+.a90-share__eyebrow{display:block!important;font-size:9px}
+.a90-share__title{font-size:15px;color:#f0f9fc}
+.a90-share__actions{flex:1 1 450px}
+.a90-share__controls{gap:9px}
+.a90-share__button{
+  min-height:43px;padding:10px 13px;gap:9px;border-radius:12px;
+  border:1px solid rgba(153,207,225,.23);
+  color:#e8f4fb!important;background:rgba(255,255,255,.035);
+  font-size:12px;font-weight:720;box-shadow:inset 0 1px 0 rgba(255,255,255,.045);
+  transition:transform .2s ease,background .2s ease,border-color .2s ease,box-shadow .2s ease
+}
+.a90-share__button:hover{transform:translateY(-2px);background:rgba(114,196,225,.13);border-color:rgba(140,220,244,.6);box-shadow:0 7px 18px rgba(0,0,0,.18)}
+.a90-share__button--x,.a90-share__button--facebook,.a90-share__button--copy{background:rgba(255,255,255,.035);border-color:rgba(153,207,225,.23)}
+.a90-share__button--copy{color:#f8d19a!important;border-color:rgba(231,177,106,.34)}
+.a90-share__button--copy:hover{background:rgba(243,182,97,.12);border-color:#e7bb7b}
+.a90-share__mark{min-width:21px;width:21px;height:21px;display:inline-grid;place-items:center;border:0!important;border-radius:0}
+.a90-share__icon{width:20px;height:20px;display:block;flex-shrink:0}
+.a90-share__button--facebook .a90-share__mark,.a90-share__button--whatsapp .a90-share__mark,.a90-share__button--linkedin .a90-share__mark{font-size:inherit;height:21px}
+.a90-share__button--x .a90-share__icon{width:17px;height:17px}
+.a90-share__button--whatsapp .a90-share__icon{color:#73e0ac}
+.a90-share__button--telegram .a90-share__icon{color:#81d9fa}
+.a90-share__button--facebook .a90-share__icon{color:#9ebfff}
+.a90-share__button--linkedin .a90-share__icon{color:#91cdfa}
+.a90-share__button--copy .a90-share__icon{color:#f4c98b}
+@media(max-width:780px){.a90-share{padding:17px}.a90-share__info{flex-basis:100%}.a90-share__controls{justify-content:flex-start}}
+@media(max-width:520px){.a90-share{padding:15px 13px}.a90-share__controls{gap:7px}.a90-share__button{flex:1 1 auto;min-height:43px;padding:10px}.a90-share__button--copy{flex-basis:100%}.a90-share__name{font-size:11px}}
