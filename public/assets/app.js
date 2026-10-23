@@ -141,6 +141,6 @@ initHomeNewsSlider();
 
 /* Compartir todas las noticias estáticas y los artículos del CMS. */
 if(/^\/(?:en\/)?(?:novedades|actualidad|articulos)\/[^/]+\/?$/.test(location.pathname)){
-  addStylesheet('/assets/article-share.css?v=20261023-visual-2');
+  addStylesheet('/assets/article-share.css?v=20261023-icons-3');
   addScript('/assets/article-share.js?v=20261023-cards-2');
 }
