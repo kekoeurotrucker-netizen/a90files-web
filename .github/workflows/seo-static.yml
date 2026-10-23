@@ -1,0 +1,20 @@
+name: SEO static integrity
+on:
+  pull_request:
+    paths:
+      - 'public/**'
+      - 'scripts/check_seo.py'
+      - '.github/workflows/seo-static.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check sitemap, robots and canonical metadata
+        run: python3 scripts/check_seo.py
