@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#061524">
+<title>Metal Gear MSX2 (1987): ingeniería inversa para descifrar un clásico — A 90 Files</title>
+<meta name="description" content="Diario de investigación de A 90 Files: desensamblado Z80, comparaciones con openMSX, pruebas de colisiones, enemigos, rutas, diálogos y nuestro camino para comprender Metal Gear MSX2 (1987).">
+<link rel="canonical" href="https://a90files-web.a90files.workers.dev/novedades/metal-gear-msx2-ingenieria-inversa-descubrimientos/">
+<meta property="og:type" content="article"><meta property="og:title" content="Metal Gear MSX2: nuestro intento de descifrarlo hasta el último byte">
+<meta property="og:description" content="Ingeniería inversa del Z80, pruebas reales y descubrimientos documentados en nuestro camino hacia una reproducción fiel en Windows.">
+<meta property="og:url" content="https://a90files-web.a90files.workers.dev/novedades/metal-gear-msx2-ingenieria-inversa-descubrimientos/">
+<meta property="og:image" content="https://a90files-web.a90files.workers.dev/assets/metal-gear-msx2/metal-gear-investigacion-cover.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://a90files-web.a90files.workers.dev/assets/metal-gear-msx2/metal-gear-investigacion-cover.webp">
+<link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/assets/styles.css"><link rel="stylesheet" href="/assets/theme-petrol-amber.css?v=20261001-visual-3">
+<link rel="stylesheet" href="/assets/news.css?v=20261001-visual-3"><link rel="stylesheet" href="/assets/news-premium.css?v=20261004-1">
+<link rel="stylesheet" href="/assets/header-velocity.css?v=20261004-v3">
+<link rel="stylesheet" href="/assets/metal-gear-msx2/metal-gear-news.css?v=20261020-2">
+<style>.mg90-poster img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}.mg90-poster{align-self:center}.mg90-research-shot{margin:28px 0;padding:12px;border:1px solid rgba(113,201,180,.25);border-radius:15px;background:rgba(3,15,25,.65)}.mg90-research-shot img{display:block;width:100%;height:auto;border-radius:9px}.mg90-research-shot figcaption{padding:12px 5px 3px;color:#c3d9d9;line-height:1.55}.mg90-evidence{border-left:3px solid #65c4a1;padding:15px 20px;background:rgba(35,95,84,.16);border-radius:0 12px 12px 0}.mg90-article h3{margin-top:24px}</style>
+</head>
+<body class="news-page news-page--premium mg90">
+<header class="topbar"><div class="topbar-inner shell"><a class="brand" href="/" aria-label="A 90 Files, inicio"><span class="brand-mark">A90</span><span class="brand-copy"><strong>A 90 Files</strong><small>ESTUDIO DIGITAL</small></span></a><nav class="nav" aria-label="Navegación principal"><a href="/">Inicio</a><a href="/software/">Software</a><a href="/juegos/">Juegos</a><a href="/canal/">Canal</a><a href="/descargas/">Descargas</a><a class="active" href="/novedades/">Novedades</a><a href="/soporte/">Soporte</a><a href="/foro/">Foro</a></nav><button class="menu-button" type="button" aria-controls="mobile-nav" aria-expanded="false">Menú</button></div></header>
+<nav id="mobile-nav" class="mobile-nav" hidden aria-label="Navegación móvil"><a href="/">Inicio</a><a href="/software/">Software</a><a href="/juegos/">Juegos</a><a href="/novedades/">Novedades</a><a href="/foro/">Foro</a></nav>
+<main class="news-main shell">
+<div class="news-breadcrumbs"><a href="/">Inicio</a> / <a href="/novedades/">Novedades</a> / Diario de ingeniería inversa de Metal Gear MSX2</div>
+<section class="mg90-hero">
+<div class="mg90-hero-copy">
+<div class="mg90-eyebrow">● 23 OCT 2026 · INGENIERÍA INVERSA · MSX2 / WINDOWS</div>
+<span class="mg90-platform">A 90 FILES <b>PORTS LAB</b></span>
+<h1>METAL GEAR<br><em>BAJO EL MICROSCOPIO</em></h1>
+<p class="mg90-subtitle">Nuestra aventura para descifrar el original de MSX2 de 1987, rutina a rutina.</p>
+<p>¿Cómo decidía un guardia que había visto a Snake? ¿Qué hace realmente una puerta, un proyectil o un mensaje de radio? Estamos investigando el <strong>Metal Gear original de MSX2 (1987)</strong> mediante <strong>ingeniería inversa del Z80</strong>, pruebas comparativas y miles de pasos automatizados. Nuestro propósito es comprender su funcionamiento hasta el último detalle comprobable y reproducirlo fielmente en un port no oficial para Windows.</p>
+<div class="mg90-hero-actions"><a class="mg90-button main" href="#hallazgos">Leer los descubrimientos ↓</a><a class="mg90-button" href="#capturas">Ver pruebas reales ↓</a></div>
+<div class="mg90-tags"><span>1987 · MSX2 original</span><span>Z80 / openMSX</span><span>Windows</span><span>Investigación en curso</span></div>
+</div>
+<figure class="mg90-poster"><img src="/assets/metal-gear-msx2/metal-gear-investigacion-cover.webp" width="1200" height="676" alt="Ilustración editorial: un monitor MSX2 de época frente a la investigación moderna de un escenario de infiltración" loading="eager" fetchpriority="high"><figcaption>ILUSTRACIÓN EDITORIAL · LAS CAPTURAS AUTÉNTICAS ESTÁN EN EL ARTÍCULO</figcaption></figure>
+</section>
+<div class="mg90-subnav"><span>CUADERNO DE INGENIERÍA INVERSA / A90 FILES</span><nav aria-label="Índice del artículo"><a href="#mision">Método ↓</a><a href="#hallazgos">Hallazgos ↓</a><a href="#capturas">Capturas ↓</a><a href="#siguiente">Próximos pasos ↓</a></nav></div>
+<article class="mg90-article" id="article-content">
+<section id="mision" class="mg90-section">
+<div class="mg90-step">01 / POR QUÉ ESTE JUEGO</div>
+<h2>No estamos mirando el juego desde fuera: estamos siguiendo sus instrucciones</h2>
+<p>Nuestra referencia es el <strong>Metal Gear de MSX2 de 1987</strong>, no la versión NES ni los títulos posteriores de <em>Metal Gear Solid</em>. Queremos saber qué ocurre realmente bajo los píxeles: cómo se actualizan las posiciones, cuándo nace una bala, qué estado cambia al entrar en una habitación y qué condiciones activan un diálogo.</p>
+<p>Para ello cruzamos el <strong>desensamblado Z80</strong> con el juego ejecutado en <strong>openMSX</strong>. Observamos memoria, direcciones y condiciones concretas, anotamos hipótesis, montamos casos controlados y comprobamos si el motor nativo de Windows reproduce el resultado. Una coincidencia visual no basta: también nos interesan los límites de colisión, los tiempos, los estados y las excepciones.</p>
+<p>El objetivo del 100 % es una <strong>meta de investigación</strong>, no una afirmación de que lo hayamos descifrado todo. Cada descubrimiento ha de dejar una prueba que permita repetirlo.</p>
+</section>
+<section id="hallazgos" class="mg90-section">
+<div class="mg90-step">02 / INVESTIGACIÓN Y PROGRAMACIÓN</div>
+<h2>Lo que hemos conseguido aislar y cómo lo ponemos a prueba</h2>
+<div class="mg90-points">
+<div><b>01</b><h3>Mapas, puertas y colisiones</h3><p>Seguimos las transiciones entre habitaciones, los límites de paso y las coordenadas reales. Una ruta aparentemente obvia puede ser imposible por la geometría de un corredor: por eso contrastamos trayectorias en el original antes de corregir Windows.</p></div>
+<div><b>02</b><h3>Enemigos y proyectiles</h3><p>Estudiamos patrullas, contacto, daño e invulnerabilidad temporal. Para el proyectil identificado como 0x2F documentamos salidas de rutina, sondas de tiles, bordes y prioridades de contacto; una prueba preparada no se confunde con una validación completa.</p></div>
+<div><b>03</b><h3>Radio, diálogos y localización</h3><p>Relacionamos identificadores de mensajes japoneses con sus condiciones de llamada, paginación y efectos sobre la partida. La traducción española debe respetar tanto el significado como los estados y límites de la interfaz original.</p></div>
+<div><b>04</b><h3>VDP y sonido PSG</h3><p>Comparamos patrones gráficos, sprites, prioridades de efectos y señales sonoras. No basta con que el sonido se parezca: analizamos qué ocurre cuando coinciden alerta, daño, radio y guardado.</p></div>
+<div><b>05</b><h3>Campaña automatizada</h3><p>Las pruebas recorren salas, recogen objetos y comprueban que Snake sobreviva sin crear estados imposibles. Los checkpoints anteriores incluyen una ruta de CARD2 y una llegada viva al sector oeste de la sala 8; la entrada por el este seguía sin resolverse.</p></div>
+<div><b>06</b><h3>Motor nativo y regresiones</h3><p>En un checkpoint documentado se superaron 48 de 48 pruebas Windows, 61 de 61 Python y 14 de 14 comprobaciones previas, dentro de su alcance. Esas cifras no equivalen a tener superada la campaña completa.</p></div>
+</div>
+</section>
+<section id="capturas" class="mg90-section">
+<div class="mg90-step">03 / PRUEBAS DOCUMENTADAS · CAPTURAS REALES</div>
+<h2>Dos pantallas, una misma pregunta: ¿se comportan igual?</h2>
+<p>Estas imágenes proceden de nuestro trabajo de desarrollo, no de una recreación publicitaria. Son capturas auténticas de herramientas y del prototipo en pruebas. Las mostramos directamente en el cuerpo del artículo para que se vea qué estamos examinando.</p>
+<figure class="mg90-research-shot"><a href="/assets/metal-gear-msx2/port-windows-openmsx-comparativa.png" target="_blank" rel="noopener noreferrer"><img src="/assets/metal-gear-msx2/port-windows-openmsx-comparativa.png" alt="Captura real del laboratorio con Windows y openMSX comparando la habitación 121" width="1080" height="760" loading="lazy"></a><figcaption><strong>Captura real 01 · Windows frente a openMSX, sala 121.</strong> La comparación del punto de partida ayuda a identificar diferencias de escenario, posición, visualización y estado antes de investigar situaciones más complejas. Prueba del 19 de octubre de 2026.</figcaption></figure>
+<p>Una prueba rigurosa empieza con un escenario reproducible. Anotamos la habitación, coordenadas, objetos y condiciones de partida. Después reproducimos una secuencia en el original y contrastamos el resultado con Windows. Si hay una diferencia, volvemos al Z80 o a los datos para buscar su causa, en vez de taparla con una excepción arbitraria.</p>
+<figure class="mg90-research-shot"><a href="/assets/metal-gear-msx2/port-windows-sala-ascensor.png" target="_blank" rel="noopener noreferrer"><img src="/assets/metal-gear-msx2/port-windows-sala-ascensor.png" alt="Captura auténtica del prototipo Windows en una escena de ascensor con diagnóstico de desarrollo" width="1100" height="820" loading="lazy"></a><figcaption><strong>Captura real 02 · Laboratorio nativo: sala y ascensor.</strong> Imagen del 20 de octubre de 2026, con información de depuración utilizada para investigar transiciones y comportamiento del motor. No corresponde a una versión final.</figcaption></figure>
+<aside class="mg90-evidence"><strong>Cómo leer nuestras cifras</strong><p>Un PASS demuestra únicamente el caso concreto que se probó. Superar decenas de regresiones no significa que todas las habitaciones, rutas, jefes, diálogos y combinaciones de inventario estén ya descifrados. Publicaremos nuevos resultados con su contexto, versión y limitaciones.</p></aside>
+</section>
+<section class="mg90-section">
+<div class="mg90-step">04 / RESULTADOS Y LÍMITES</div><h2>En qué punto estamos realmente</h2>
+<p>Ya existe un motor nativo Windows, traducción española en evolución y una batería de pruebas que ha permitido comprobar rutas, objetos, daños, puertas, eventos, gráficos y audio. Entre los hitos anteriores figuran la ruta de CARD2 desde la sala 157 hacia la 3 y pruebas automatizadas en la azotea y el entorno de la sala 8, algunas con Snake sobreviviendo miles de pasos.</p>
+<p>Pero la campaña completa <strong>no está acreditada de principio a fin</strong>. Permanecen investigaciones abiertas en la captura y prisión, conexiones de ciertas salas, enemigos, integración de diálogos y casos límite del guardado y restauración. Cuando una prueba no se puede ejecutar, la registramos como pendiente, no como superada.</p>
+<h3>Algunos hitos concretos del cuaderno</h3>
+<ul>
+<li><strong>Ruta de CARD2:</strong> se reprodujo una secuencia de regreso por las salas 157 → 36 → 34 → 32 → 28 → 3, conservando vida en la prueba Windows documentada.</li>
+<li><strong>Azotea y sala 8:</strong> una campaña automatizada de referencia superó 5.254 pasos y llegó con Snake vivo al lado oeste de la sala 8; eso no validó la entrada este ni el evento completo de captura.</li>
+<li><strong>Captura y prisión:</strong> se investiga la cadena de sala 8, prisión 165, escape hacia 164 y recuperación de equipo en 168; el guardado F5/F9 durante escenas narrativas exige pruebas específicas.</li>
+<li><strong>Enemigos y jefes:</strong> se comparan situaciones de Shoot Gunner, Machine Gun Kid, Fire Trooper y Arnold, diferenciando comportamientos observados de integraciones aún pendientes.</li>
+<li><strong>Traducción:</strong> se estudian identificadores japoneses, mensajes de radio, paginación, acentos, caracteres especiales y disparadores para que la versión española no altere la progresión.</li>
+<li><strong>Sonido y gráficos:</strong> el análisis de PSG y VDP se cruza con efectos de daño, alerta, dibujos de sprites y prioridades de eventos.</li>
+</ul>
+<p>Son ejemplos de <strong>checkpoints históricos del proyecto</strong>, no un parte de cierre ni una fotografía de todas las ramas del código a fecha de hoy. Seguimos sometiendo cada integración a nuevas regresiones.</p>
+<p>No existe por ahora una descarga pública de un port completo. Los resultados citados pertenecen a checkpoints de desarrollo, no a una certificación global de fidelidad.</p>
+<aside class="mg90-warning"><strong>Preservación y derechos</strong><p>Proyecto independiente y no oficial, sin afiliación ni autorización declarada de Konami. No alojamos ni compartimos la ROM original ni pedimos a la comunidad que suba imágenes ISO, volcados o archivos comerciales. Las aportaciones deben ser documentos, observaciones o materiales que se puedan compartir legalmente.</p></aside>
+</section>
+<section id="siguiente" class="mg90-section">
+<div class="mg90-step">05 / PLAN DE INVESTIGACIÓN</div><h2>¿Cómo pensamos acercarnos al 100 %?</h2>
+<p>La meta no es alcanzar un porcentaje inventado, sino construir un registro de comportamientos contrastados y resolver sistemáticamente lo que aún no sabemos.</p>
+<ol><li><strong>Inventariar los sistemas:</strong> mapas, transiciones, inventario, armas, IA, jefes, diálogos, radio, audio, gráficos y estados narrativos.</li><li><strong>Aislar cada duda:</strong> formular qué debería pasar, localizar la rutina o los datos originales y diseñar una prueba repetible.</li><li><strong>Comparar MSX2 y Windows:</strong> registrar entradas y salidas, límites, tiempos, daño, coordenadas y transiciones.</li><li><strong>Corregir sin falsear:</strong> integrar únicamente comportamientos sustentados por evidencia y añadir regresiones para evitar que un arreglo rompa otro sistema.</li><li><strong>Validar campañas completas:</strong> recorrer las rutas legítimas con distintos estados y comprobar no solo la llegada, sino la supervivencia y la coherencia de la historia.</li><li><strong>Publicar el cuaderno:</strong> compartir descubrimientos, capturas y dificultades con fecha y alcance, sin afirmar que lo pendiente ya está resuelto.</li></ol>
+<p>Trabajamos mediante un coordinador principal y especialistas en traducción, gráficos, sonido, enemigos, mapas, QA, Z80 y campaña automatizada. Esa división nos permite investigar detalles en paralelo y reunirlos en un único motor sometido a nuevas pruebas.</p>
+<p><strong>El mejor final de esta historia no sería simplemente abrir un ejecutable de Windows: sería poder explicar por qué hace cada cosa que hace el juego de 1987.</strong></p>
+</section>
+<section id="comunidad" class="mg90-section mg90-community">
+<div class="mg90-step">06 / COLABORA CON LA MEMORIA DEL JUEGO</div>
+<h2>Queremos escuchar a quienes conocieron el original</h2>
+<p>¿Recuerdas una mecánica especial, un comportamiento de los guardias, un efecto de radio o un diálogo importante? Tu experiencia puede ayudarnos a contrastar detalles y a documentar mejor el juego de 1987.</p>
+<div class="mg90-hero-actions"><a class="mg90-button main" href="/foro/preservacion-videojuegos/metal-gear-msx2-1987-como-preservamos-el-original-y-preparamos-el-port-para-windows/">Participa en Preservación ↗</a><a class="mg90-button" href="/foro/ports-a90-avances/metal-gear-msx2-diario-del-port-windows-y-traduccion-espanola/">Ver diario del port ↗</a></div>
+</section>
+</article>
+</main>
+<footer class="footer shell"><span>© <span id="year"></span> A 90 Files · Proyecto no oficial</span><nav><a href="/juegos/metal-gear-msx2/">Ficha del port</a><a href="/foro/preservacion-videojuegos/">Preservación</a></nav></footer>
+<script src="/assets/app.js?v=20261020-share-1" defer></script>
+</body></html>
