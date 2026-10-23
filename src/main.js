@@ -6,6 +6,7 @@ import {handleSecurityAuth} from './security-auth-api.js';
 import {handleAnalyticsApi} from './analytics-api.js';
 import {handleCmsApi,loadPublishedArticle,renderPublicCmsArticle} from './cms-api.js';
 import {localizeEnglishHtml} from './site-i18n.js';
+import {enhanceSeo,enhanceEnglishSeo,enhanceCmsArticleSeo} from './seo.js';
 
 const FORUM_BUILD='20261013-app-documentation-1';
 const APP_BUILD='20261013-apps-guide-menu-2';
@@ -38,7 +39,7 @@ export default {
         const language=matched[1]?'en':'es';
         const canonical=language==='en'?'/en/articulos/'+matched[2]+'/':'/articulos/'+matched[2]+'/';
         if(url.pathname!==canonical)return Response.redirect(new URL(canonical,url.origin).toString(),301);
-        const html=renderPublicCmsArticle(article,language,url);
+        const html=enhanceCmsArticleSeo(renderPublicCmsArticle(article,language,url),article,language,url);
         return hardenStatic(new Response(html,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'public, max-age=90'}}));
       }
     }
@@ -56,7 +57,7 @@ export default {
       }
       const source=await this.fetch(canonicalRequest,env,ctx);
       if(!source.ok || !(source.headers.get('Content-Type')||'').includes('text/html')) return source;
-      const localized=localizeEnglishHtml(await source.text(),url.href);
+      const localized=enhanceEnglishSeo(localizeEnglishHtml(await source.text(),url.href),url.href);
       const headers=new Headers(source.headers);
       headers.delete('Content-Length');
       headers.delete('Content-Encoding');
@@ -194,6 +195,7 @@ async function injectGlobalUi(response,force=false,pathname=''){
   if((html.includes('a90-lower-modules')||html.includes('class="news-grid"'))&&!html.includes('/assets/cms-public.js'))
     html=html.replace('</body>','<script src="/assets/cms-public.js?v=20261015-anchor-ready-2" defer></script></body>');
   html=injectLegalFooter(html);
+  html=enhanceSeo(html,pathname);
   // Lightweight shared theme on public interior routes only, never the home or admin.
   // One stylesheet means later individual page redesigns can override it freely.
   if(/^\/(?:software|juegos|novedades|descargas|soporte|foro|guias|canal|radar|arcade|actualidad|aviso-legal|privacidad|cookies|licencias)(?:\/|$)/.test(pathname)
