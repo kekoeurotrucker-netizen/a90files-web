@@ -32,6 +32,7 @@ const projectLinks={
  '/novedades/marea-studio-1-3-26/':'/software/marea-studio/'
 };
 const friendlyHeadlines={
+ '/novedades/metal-gear-msx2-ingenieria-inversa-descubrimientos/':['Metal Gear (1987).','Descifrándolo al 100 %.'],
  '/novedades/vaultpool-v3-estable-nuevas-nubes/':['VaultPool V3.','Más nubes.'],
  '/novedades/metal-gear-msx2-port-windows-espanol/':['Metal Gear MSX2.','Port para Windows.'],
  '/novedades/pilot-station/':['Tu inicio.','Bajo control.'],
