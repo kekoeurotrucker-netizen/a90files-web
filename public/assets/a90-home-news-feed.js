@@ -188,7 +188,7 @@ function makeSlide(item,i){
  slide.append(copy,visual);
  return slide;
 }
-let slides=[],dots=[],index=0,timer=null,paused=false;
+let slides=[],dots=[],index=0,timer=null;
 function draw(indexNext){
  if(!slides.length)return;
  index=(indexNext+slides.length)%slides.length;
@@ -205,7 +205,7 @@ function draw(indexNext){
  if(count)count.textContent=String(index+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');
 }
 function stop(){if(timer){clearInterval(timer);timer=null}}
-function start(){stop();if(slides.length>1&&!reduce&&!paused&&!document.hidden)timer=setInterval(()=>draw(index+1),10000)}
+function start(){stop();if(slides.length>1&&!reduce&&!document.hidden)timer=setInterval(()=>draw(index+1),10000)}
 function go(next){draw(next);start()}
 carousel.querySelector('[data-a90-main-prev]')?.addEventListener('click',()=>go(index-1));
 carousel.querySelector('[data-a90-main-next]')?.addEventListener('click',()=>go(index+1));
@@ -213,10 +213,7 @@ dotBar.addEventListener('click',e=>{
  const dot=e.target.closest('[data-a90-main-dot]');
  if(dot&&dotBar.contains(dot))go(dots.indexOf(dot));
 });
-carousel.addEventListener('mouseenter',()=>{paused=true;stop()});
-carousel.addEventListener('mouseleave',()=>{paused=false;start()});
-carousel.addEventListener('focusin',()=>{paused=true;stop()});
-carousel.addEventListener('focusout',e=>{if(!carousel.contains(e.relatedTarget)){paused=false;start()}});
+// Avance automático incluso con el ratón encima o tras usar las flechas.
 carousel.addEventListener('keydown',e=>{
  if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();go(index+(e.key==='ArrowRight'?1:-1))}
 });
