@@ -32,6 +32,17 @@ const RELATED={
  '/juegos/metal-gear-msx2/':[['Investigación sobre el Metal Gear de 1987','/novedades/metal-gear-msx2-port-windows-espanol/'],['Otros proyectos de videojuegos','/juegos/'],['Foro de la comunidad','/foro/']],
  '/guias/':[['Almacenamiento multinube en Windows','/guias/almacenamiento-multinube-windows/'],['Protección de sesiones del navegador','/guias/recuperar-sesiones-navegador/'],['Centro de soporte','/soporte/']]
 };
+const EN_TITLES={
+ '/':'A 90 Files | Windows Software, Games and Guides',
+ '/software/':'Windows Software | VaultPool, KookiKeeper and More — A 90 Files',
+ '/juegos/':'Games and Preservation Projects for Windows | A 90 Files',
+ '/novedades/':'Software and Game Development News | A 90 Files',
+ '/software/vaultpool/':'VaultPool Storage | Multi-Cloud Management for Windows',
+ '/software/kookikeeper/':'KookiKeeper | Browser Session Management Project for Windows',
+ '/software/marea-studio/':'Marea Studio Composer | Music Production on Windows',
+ '/juegos/metal-gear-msx2/':'Metal Gear MSX2 (1987) | Unofficial Windows Port Research',
+ '/canal/':'A 90 por Hora | Trucks, Truckvlogs and Driving Simulators'
+};
 const EN_DESCRIPTIONS={
  '/':'A 90 Files develops Windows software, cloud storage tools, games and retro-game preservation projects. Explore our updates and guides.',
  '/software/':'Windows software by A 90 Files: VaultPool, KookiKeeper, Marea Studio, AutoMiner and other projects in development.',
@@ -163,7 +174,8 @@ export function enhanceSeo(html,pathname,origin=SITE){
 export function enhanceEnglishSeo(html,requestUrl){
  const u=new URL(requestUrl),route=u.pathname.replace(/^\/en(?=\/|$)/,'')||'/';
  const canonical=getCanonical(html)||u.href;
- const title=titleOf(html);
+ const title=EN_TITLES[route]||titleOf(html);
+ if(EN_TITLES[route])html=html.replace(/<title[^>]*>[\s\S]*?<\/title>/i,'<title>'+encode(title)+'</title>');
  const description=EN_DESCRIPTIONS[route]||getMeta(html,'description');
  if(EN_DESCRIPTIONS[route])html=replaceMeta(html,'name','description',description);
  for(const [key,value] of Object.entries({
