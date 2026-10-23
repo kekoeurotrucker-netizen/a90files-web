@@ -6,17 +6,14 @@ import {enhanceSeo,enhanceEnglishSeo,enhanceCmsArticleSeo} from '../src/seo.js';
 
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../public');
 const base='https://a90files-web.a90files.workers.dev';
-const routes=[
- '/', '/software/', '/juegos/', '/novedades/', '/guias/', '/foro/',
- '/software/vaultpool/', '/software/kookikeeper/', '/software/marea-studio/',
- '/software/pilot-station/', '/juegos/metal-gear-msx2/',
- '/guias/almacenamiento-multinube-windows/', '/guias/recuperar-sesiones-navegador/',
- '/novedades/metal-gear-msx2-port-windows-espanol/'
-];
+const sitemap=readFileSync(path.join(root,'sitemap.xml'),'utf8');
+const routes=[...sitemap.matchAll(/<loc>https:\/\/a90files-web\.a90files\.workers\.dev(\/[^<]*)<\/loc>/g)].map(match=>match[1]);
+assert.equal(routes.length,39,'Sitemap must list 39 content URLs');
 let pass=0;
 for(const route of routes){
  const filename=path.join(root,route,'index.html');
  const source=readFileSync(filename,'utf8');
+ assert(!/<meta[^>]*(?:name=["']robots["'][^>]*content=["']noindex|http-equiv=["']refresh)/i.test(source),route+' must not be an index-excluded redirect');
  const updated=enhanceSeo(source,route);
  assert(updated.includes('<meta property="og:url" content="'+base+route+'">'),route+' og:url');
  assert(updated.includes('name="twitter:card"'),route+' twitter card');
@@ -45,6 +42,8 @@ for(const route of routes){
 const html=enhanceSeo(readFileSync(path.join(root,'software/vaultpool/index.html'),'utf8'),'/software/vaultpool/');
 const localized=enhanceEnglishSeo(html.replace(/<link rel="canonical"[^>]*>/,'<link rel="canonical" href="'+base+'/en/software/vaultpool/">').replace(/<title>[^<]*<\/title>/,'<title>VaultPool Storage for Windows</title>'),base+'/en/software/vaultpool/');
 assert(localized.includes('property="og:url" content="'+base+'/en/software/vaultpool/"'));
+assert(localized.includes('<title>VaultPool Storage | Multi-Cloud Management for Windows</title>'));
+assert(localized.includes('name="twitter:title" content="VaultPool Storage | Multi-Cloud Management for Windows"'));
 assert(localized.includes('name="description" content="VaultPool Storage for Windows'));
 const obj=JSON.parse(localized.match(/<script id="a90-seo-jsonld" type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
 assert.equal(obj['@graph'].find(n=>n['@type']==='WebPage').inLanguage,'en-GB');
