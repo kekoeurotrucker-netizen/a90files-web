@@ -93,3 +93,8 @@
 .a90-share__button--copy .a90-share__icon{color:#f4c98b}
 @media(max-width:780px){.a90-share{padding:17px}.a90-share__info{flex-basis:100%}.a90-share__controls{justify-content:flex-start}}
 @media(max-width:520px){.a90-share{padding:15px 13px}.a90-share__controls{gap:7px}.a90-share__button{flex:1 1 auto;min-height:43px;padding:10px}.a90-share__button--copy{flex-basis:100%}.a90-share__name{font-size:11px}}
+
+/* Compartir: iconos sin rótulos; conservar texto en Copiar enlace. */
+.a90-share__button:not(.a90-share__button--copy){width:44px;min-width:44px;padding:10px;flex:0 0 44px}
+.a90-share__button:not(.a90-share__button--copy) .a90-share__name{display:none!important}
+@media(max-width:520px){.a90-share__button:not(.a90-share__button--copy){flex:0 0 44px}}
