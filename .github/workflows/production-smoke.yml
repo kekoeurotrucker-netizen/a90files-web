@@ -166,7 +166,7 @@ jobs:
           echo '13/13 Responsive A90 homepage assets and carousel'
           request homepage_style "$BASE_URL/assets/a90-home-v3.css"
           grep -q 'a90-home-v3' "$tmp/homepage_style.body"
-          request homepage_script "$BASE_URL/assets/a90-home-v3.js"
+          request homepage_script "$BASE_URL/assets/a90-home-news-feed.js"
           grep -q 'data-a90-main-slide' "$tmp/homepage_script.body"
           grep -q 'data-a90-project-track' "$tmp/home_with_teaser.body"
           echo 'Production smoke tests passed.'
