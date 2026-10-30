@@ -25,6 +25,12 @@
 .m128-hotfix h2{margin:6px 0 12px!important;color:#fff2d9!important;font-size:clamp(23px,3vw,32px)!important}
 .m128-hotfix ol{padding-left:21px;margin:18px 0;color:#ccdee0}
 .m128-hotfix li{margin:10px 0;line-height:1.65}
+.m128-stability{border-color:rgba(94,217,224,.63);background:radial-gradient(ellipse at 100% 0%,rgba(81,205,221,.15),transparent 49%),linear-gradient(140deg,#103140,#0a1b27);box-shadow:0 12px 35px rgba(0,0,0,.18)}
+.m128-stability .m128-story-kicker{color:#91e4ed}
+.m128-stability h2{color:#e9fdff!important}
+.m128-stability p{line-height:1.72}
+.m128-stability code{overflow-wrap:anywhere;color:#f8cb91}
+.m128-stability-footer{margin-bottom:0!important;padding-top:12px;border-top:1px solid rgba(122,216,226,.26);color:#f7cc87;font-weight:800}
 .m128-note{margin:24px 0;padding:16px 18px;border-left:3px solid #67d2df;border-radius:7px;background:rgba(9,44,56,.87);color:#c5d9df;font-size:12px;line-height:1.75}
 .m128-cta{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0 34px}
 .m128-cta a{display:inline-flex;padding:10px 16px;border-radius:9px;border:1px solid #74aebb;background:#102f3a;color:#ecfbff;text-decoration:none;font-size:12px;font-weight:790}

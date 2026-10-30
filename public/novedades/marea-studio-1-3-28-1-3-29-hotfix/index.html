@@ -3,44 +3,53 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#061924">
-<title>Marea Studio Composer 1.3.28: Producción y hotfix 1.3.29 para remixes — A 90 Files</title>
-<meta name="description" content="Marea Studio Composer 1.3.28 estrena Producción, piano roll, sampler, mezclador, efectos VST3 y exportación de pistas. La 1.3.29 mejora Remix: importar canciones o YouTube, exportar y separar pistas. Capturas reales y guías PDF.">
+<title>Marea Studio 1.3.30: PyTorch corregido, Producción y Remix — A 90 Files</title>
+<meta name="description" content="Marea Studio Composer 1.3.30 corrige un fallo de dependencias de PyTorch que afectaba a la generación y Remix. Conserva las novedades 1.3.28 y 1.3.29, proyectos y modelos. Capturas reales y guías.">
 <link rel="canonical" href="https://a90files-web.a90files.workers.dev/novedades/marea-studio-1-3-28-1-3-29-hotfix/">
 <link rel="icon" href="/favicon.ico">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://a90files-web.a90files.workers.dev/novedades/marea-studio-1-3-28-1-3-29-hotfix/">
-<meta property="og:title" content="Marea 1.3.28 lo cambia todo en Producción. El hotfix 1.3.29 remata los remixes.">
-<meta property="og:description" content="Nuevo piano roll, sampler, VST3 y mezclador; después, remixes más directos con importación, descarga y separación. Capturas reales y manuales.">
+<meta property="og:title" content="Marea Studio 1.3.30: el hotfix que devuelve PyTorch al barco">
+<meta property="og:description" content="Tras Producción 1.3.28 y Remix 1.3.29, la 1.3.30 restaura dependencias omitidas de PyTorch. Sin reinstalar modelos ni perder proyectos.">
 <meta property="og:image" content="https://a90files-web.a90files.workers.dev/assets/marea/marea-1-3-28-29-cover-20261030.jpg">
 <meta property="og:image:width" content="1600"><meta property="og:image:height" content="900">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Marea 1.3.28 + hotfix 1.3.29: del piano roll al remix">
-<meta name="twitter:description" content="Producción completa, sampler, VST3 y exportación por pistas; remixes más fáciles con la corrección 1.3.29.">
+<meta name="twitter:title" content="Marea 1.3.30: PyTorch vuelve a funcionar; todo lo nuevo de Producción y Remix">
+<meta name="twitter:description" content="Solucionadas las dependencias ausentes en el empaquetado. Guías, capturas y lo que cambiaron las versiones 1.3.28 y 1.3.29.">
 <meta name="twitter:image" content="https://a90files-web.a90files.workers.dev/assets/marea/marea-1-3-28-29-cover-20261030.jpg">
 <link rel="stylesheet" href="/assets/styles.css"><link rel="stylesheet" href="/assets/theme-petrol-amber.css?v=20261001-visual-3">
 <link rel="stylesheet" href="/assets/news.css?v=20261001-visual-3"><link rel="stylesheet" href="/assets/news-premium.css?v=20261004-1">
 <link rel="stylesheet" href="/assets/header-velocity.css?v=20261004-v3">
 <link rel="stylesheet" href="/assets/marea-126-refine.css?v=20261012-both-langs-2">
 <link rel="stylesheet" href="/assets/marea-128-hotfix.css?v=20261030-1">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Marea Studio Composer 1.3.28: Producción y hotfix 1.3.29 para remixes","description":"Actualización del estudio musical Marea y mejoras posteriores del flujo Remix.","datePublished":"2026-10-30","dateModified":"2026-10-30","inLanguage":"es","author":{"@type":"Organization","name":"A 90 Files"},"publisher":{"@type":"Organization","name":"A 90 Files"},"image":["https://a90files-web.a90files.workers.dev/assets/marea/marea-1-3-28-29-cover-20261030.jpg"],"mainEntityOfPage":"https://a90files-web.a90files.workers.dev/novedades/marea-studio-1-3-28-1-3-29-hotfix/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","headline":"Marea Studio Composer 1.3.30: PyTorch corregido tras Producción 1.3.28 y Remix 1.3.29","description":"La 1.3.30 restaura dependencias omitidas de PyTorch y añade controles de empaquetado sin sustituir las novedades anteriores.","datePublished":"2026-10-30","dateModified":"2026-10-30","inLanguage":"es","author":{"@type":"Organization","name":"A 90 Files"},"publisher":{"@type":"Organization","name":"A 90 Files"},"image":["https://a90files-web.a90files.workers.dev/assets/marea/marea-1-3-28-29-cover-20261030.jpg"],"mainEntityOfPage":"https://a90files-web.a90files.workers.dev/novedades/marea-studio-1-3-28-1-3-29-hotfix/"}</script>
 </head>
 <body class="news-page news-page--premium">
 <header class="topbar"><div class="topbar-inner shell"><a class="brand" href="/" aria-label="A 90 Files inicio"><span class="brand-mark">A90</span><span class="brand-copy"><strong>A 90 Files</strong><small>ESTUDIO DIGITAL</small></span></a><nav class="nav" aria-label="Navegación principal"><a href="/">Inicio</a><a href="/software/">Software</a><a href="/juegos/">Juegos</a><a href="/canal/">Canal</a><a href="/descargas/">Descargas</a><a class="active" href="/novedades/">Novedades</a><a href="/soporte/">Soporte</a><a href="/foro/">Foro</a></nav><button class="menu-button" type="button" aria-expanded="false" aria-controls="mobile-nav">Menú</button></div></header>
 <nav class="mobile-nav" id="mobile-nav" hidden><a href="/">Inicio</a><a href="/software/">Software</a><a href="/juegos/">Juegos</a><a href="/novedades/">Novedades</a><a href="/foro/">Foro</a></nav>
 <main class="news-main shell">
-<div class="news-breadcrumbs"><a href="/">Inicio</a> / <a href="/novedades/">Novedades</a> / Marea 1.3.28 + hotfix 1.3.29</div>
+<div class="news-breadcrumbs"><a href="/">Inicio</a> / <a href="/novedades/">Novedades</a> / Marea 1.3.28 → 1.3.30</div>
 <section class="m128-hero" aria-labelledby="m128-headline">
  <div class="m128-hero-copy">
   <small class="m128-eyebrow">A 90 FILES · MAREA STUDIO · 30 OCT 2026</small>
   <h1 id="m128-headline">De la idea<br><span>a la producción.</span></h1>
-  <p>Primero llegó <strong>Marea Studio Composer 1.3.28</strong>, una actualización enorme del estudio musical. Después, la <strong>1.3.29</strong> pulió el camino para convertir una canción en un remix sin perderse entre pantallas.</p>
-  <div class="m128-tags"><span>1.3.28 · GRAN ACTUALIZACIÓN</span><span>1.3.29 · HOTFIX REMIX</span><span>WINDOWS x64</span></div>
+  <p>Primero llegó <strong>Marea Studio Composer 1.3.28</strong>, con un salto enorme en Producción. La <strong>1.3.29</strong> facilitó los remixes; ahora la <strong>1.3.30</strong> corrige dependencias de PyTorch que faltaban en el paquete de Windows.</p>
+  <div class="m128-tags"><span>1.3.28 · PRODUCCIÓN</span><span>1.3.29 · REMIX</span><span>1.3.30 · ESTABILIDAD</span><span>WINDOWS x64</span></div>
   <div class="m128-buttons"><a href="https://apps.microsoft.com/detail/9mz3j3tgxzgg?hl=es-ES&amp;gl=ES" target="_blank" rel="noopener noreferrer">♫ Ver en Microsoft Store ↗</a><a href="#m128-capturas">Capturas reales ↓</a><a href="/descargas/#marea">Descargas y guías ↗</a></div>
  </div>
 </section>
 <p class="m128-caption">Imagen promocional original de A 90 Files; las cinco capturas de la interfaz auténtica están más abajo.</p>
-<div class="news-reading-rail"><span>A90 / MAREA 1.3.28 → 1.3.29</span><nav aria-label="Secciones de la noticia"><a href="#m128-28">Actualización 1.3.28 ↓</a><a href="#m128-29">Hotfix 1.3.29 ↓</a><a href="#m128-capturas">Capturas ↓</a><a href="#m128-guias">Guías ↓</a></nav></div>
+<div class="news-reading-rail"><span>A90 / MAREA 1.3.28 → 1.3.30</span><nav aria-label="Secciones de la noticia"><a href="#m128-30">Solución 1.3.30 ↓</a><a href="#m128-28">Producción 1.3.28 ↓</a><a href="#m128-29">Remix 1.3.29 ↓</a><a href="#m128-capturas">Capturas ↓</a><a href="#m128-guias">Guías ↓</a></nav></div>
 <article class="news-article-body" id="article-content">
+ <aside class="m128-hotfix m128-stability" id="m128-30">
+  <p class="m128-story-kicker">30 OCT 2026 · ÚLTIMO HOTFIX · WINDOWS</p>
+  <h2>Actualización 1.3.30: solucionado el fallo de PyTorch</h2>
+  <p>La 1.3.29 tenía un problema de <strong>empaquetado</strong>: faltaban tres archivos internos de dependencias, incluido <code>torch/utils/data/_utils/worker.py</code>. Podía aparecer un error de importación de PyTorch al generar canciones, hacer remixes o continuar y regenerar fragmentos con IA.</p>
+  <p><strong>La 1.3.30 restaura esos archivos</strong> y añade comprobaciones para detectar paquetes incompletos antes de distribuirlos. Es una corrección de <strong>estabilidad y compatibilidad</strong>, no un motor musical nuevo. <strong>No hace falta volver a descargar los modelos</strong> por este error: los proyectos y la biblioteca se conservan.</p>
+  <p><strong>Pruebas completadas:</strong> integridad de 26.786 archivos de dependencias, carga de PyTorch 2.7.1+cu128 y CUDA en NVIDIA. También finalizaron correctamente nueve pruebas funcionales reales que incluyen generación con ACE-Step Turbo, Remix con ACE-Step XL, continuación, regeneración, separación con Demucs, transcripción y exportación WAV/FLAC/MP3.</p>
+  <p><strong>Comprobación adicional en Windows (30/10):</strong> la versión 1.3.30.0 estaba instalada y un remix real llegó al procesamiento de su primer tramo sin repetir el error. <em>Eso no confirma todavía que esa canción terminase correctamente.</em></p>
+  <p class="m128-stability-footer">La marea volvió a subir. Esta vez, PyTorch también se ha subido al barco. 🌊</p>
+ </aside>
  <p class="m128-story-kicker">28 OCT 2026 · PRIMERA ENTREGA</p>
  <h2 id="m128-28" class="m128-story-title">1.3.28: el gran salto de Marea Studio Composer</h2>
  <p class="m128-intro">El editor sencillo sigue ahí para construir una canción pieza a pieza, pero ahora convive con <strong>Producción</strong>, un entorno más completo que comparte el mismo proyecto <code>.marea</code> y el mismo motor de audio. Puedes empezar con una idea, abrir sus notas, mezclar y automatizar sin rehacer el trabajo. Esta versión recoge también mejoras acumuladas desde la 1.3.27.</p>
@@ -65,7 +74,7 @@
   </ol>
   <p>Si falta el separador, Marea ofrece instalar <strong>Demucs 6s</strong> y continuar. Las pistas separadas pueden organizarse por compases, conservar la alineación y añadirse <strong>sin borrar el montaje</strong> que ya tenías abierto.</p>
  </aside>
- <div class="m128-note"><strong>Importante, sin letra pequeña:</strong> YouTube admite vídeos públicos de hasta 15 minutos; algunos enlaces pueden estar restringidos y no se utilizan sesiones ni cookies del navegador. Trabaja con música que tengas permiso para transformar. Una separación automática puede dejar restos de otros instrumentos y los cortes por compases no garantizan loops perfectos. Las pruebas de esta entrega acreditan importación real, reproducción, exportación MP3 y transferencia con resultados preparados; <strong>la calidad final de generación IA y de inferencia Demucs no se revaluó en este hotfix</strong>.</div>
+ <div class="m128-note"><strong>Importante, sin letra pequeña:</strong> YouTube admite vídeos públicos de hasta 15 minutos; algunos enlaces pueden estar restringidos y no se utilizan sesiones ni cookies del navegador. Trabaja con música que tengas permiso para transformar. Una separación automática puede dejar restos de otros instrumentos y los cortes por compases no garantizan loops perfectos. En el hotfix 1.3.29 se comprobó la importación, reproducción, exportación MP3 y transferencia. <strong>La 1.3.30 añadió pruebas funcionales del motor de IA, pero no garantiza resultados musicales perfectos.</strong></div>
 
  <div class="m126-section-head"><h2 id="m128-capturas">Así se ve Producción por dentro</h2><small>05 CAPTURAS REALES · 1.3.28</small></div>
  <p class="m128-gallery-label">Estas sí son pantallas auténticas de Marea Studio Composer 1.3.28. Desliza la tira o deja que avance sola; pulsa una miniatura para verla grande y recorrer la galería.</p>
@@ -79,15 +88,15 @@
    <figure class="m126-shot"><a class="m126-shot-link" href="/assets/marea/1-3-28/05-Modelos-IA.jpg" data-marea-full="/assets/marea/1-3-28/05-Modelos-IA.jpg" data-marea-label="Modelos IA" target="_blank" rel="noopener noreferrer"><img src="/assets/marea/1-3-28/05-Modelos-IA.jpg" alt="Captura real de Marea 1.3.28: gestor de modelos IA" loading="lazy" decoding="async"></a><figcaption><strong>05 · Modelos IA</strong></figcaption></figure>
   </div>
  </div>
- <div class="m126-section-head"><h2 id="m128-guias">Manuales y descarga</h2><small>DOCUMENTACIÓN REVISADA · 1.3.29</small></div>
+ <div class="m126-section-head"><h2 id="m128-guias">Manuales y descarga</h2><small>GUÍAS 1.3.29 · HOTFIX 1.3.30</small></div>
  <p>Las guías se han actualizado para el nuevo recorrido de Marea: una versión básica de 9 páginas y otra avanzada de 20, ambas en español. El paquete de Microsoft Store se envió a certificación; la versión que Microsoft ofrece al público puede actualizarse con retraso.</p>
  <div class="m126-documents">
   <a class="m126-doc" href="/assets/marea/manuales/Marea-Studio-Guia-Basica-1.3.29.pdf" download><span class="m126-doc-icon">PDF</span><span class="m126-doc-detail"><strong>Guía básica 1.3.29</strong><span>9 páginas · Comenzar, crear, editar y Remix</span></span><span class="m126-doc-download">↓</span></a>
   <a class="m126-doc" href="/assets/marea/manuales/Marea-Studio-Guia-Avanzada-1.3.29.pdf" download><span class="m126-doc-icon">PDF</span><span class="m126-doc-detail"><strong>Guía avanzada 1.3.29</strong><span>20 páginas · Producción, efectos, mezcla y opciones</span></span><span class="m126-doc-download">↓</span></a>
  </div>
- <p class="m128-note">La compilación 1.3.29 está validada para envío; <strong>certificación de Microsoft Store pendiente en el informe técnico</strong>. Los ZIP de portable e instalador existen en la entrega local, pero no publicamos botones de descarga directa hasta disponer de enlaces públicos verificados. No es necesario desactivar las protecciones de Windows.</p>
+ <p class="m128-note">La <strong>1.3.30.0 ya se comprobó instalada en Windows</strong>; la versión que Microsoft Store ofrece públicamente puede tardar en actualizarse. Conservamos los enlaces oficiales y los manuales 1.3.29, que siguen explicando las funciones. Los ZIP de portable e instalador no tienen todavía aquí enlaces públicos verificados, por lo que no añadimos descargas directas. No desactives las protecciones de Windows.</p>
  <div class="m128-cta"><a href="https://apps.microsoft.com/detail/9mz3j3tgxzgg?hl=es-ES&amp;gl=ES" target="_blank" rel="noopener noreferrer">Marea en Microsoft Store ↗</a><a href="/descargas/#marea">Centro de descargas ↗</a><a href="/foro/marea-studio/">Comunidad Marea ↗</a><a href="/foro/marea-studio-novedades/">Notas de versión en el foro ↗</a></div>
- <p class="m126-footnote">28/10: entrega principal 1.3.28 · 29/10: hotfix 1.3.29. Capturas de la 1.3.28, no simulaciones; portada, imagen promocional. El software evoluciona y algunas funciones requieren complementos descargables.</p>
+ <p class="m126-footnote">28/10: Producción 1.3.28 · 29/10: Remix 1.3.29 · 30/10: estabilidad 1.3.30. Capturas reales de la 1.3.28, no simulaciones; portada promocional. Los manuales publicados son los de 1.3.29 y algunas funciones requieren complementos descargables.</p>
 </article>
 <dialog id="m126-lightbox" aria-labelledby="m126-lightbox-title"><div class="m126-lightbox-toolbar"><strong id="m126-lightbox-title">Captura</strong><button type="button" data-m126-close>Cerrar ✕</button></div><img id="m126-lightbox-image" src="" alt=""><div class="m126-lightbox-nav"><button type="button" data-m126-prev>← Anterior</button><button type="button" data-m126-next>Siguiente →</button></div></dialog>
 </main>

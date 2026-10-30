@@ -13,6 +13,7 @@ const more=root.querySelector('.a90-news-more');
 if(!stage||!dotBar)return;
 const reduce=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches||false;
 const icons={
+ '/novedades/fuera-de-registro-diario-ia-premiere/':'/assets/channel/channel-icon.svg',
  '/novedades/marea-studio-1-3-28-1-3-29-hotfix/':'/assets/marea/marea-icon.webp',
  '/novedades/vaultpool-3-0-11-multinube-espacio-gratis-windows/':'/assets/vaultpool/vaultpool-icon-20261005.png',
  '/novedades/pilot-station/':'/assets/pilot-station/pilot-station-official-icon.png',
@@ -26,6 +27,7 @@ const icons={
  '/novedades/surviving-the-fallout/':'/assets/home-modules/games-banner.webp'
 };
 const projectLinks={
+ '/novedades/fuera-de-registro-diario-ia-premiere/':'/proyectos/fuera-de-registro/',
  '/novedades/marea-studio-1-3-28-1-3-29-hotfix/':'/software/marea-studio/',
  '/novedades/vaultpool-3-0-11-multinube-espacio-gratis-windows/':'/descargas/#vaultpool',
  '/novedades/vaultpool-v3-estable-nuevas-nubes/':'/software/vaultpool/',
@@ -36,7 +38,8 @@ const projectLinks={
  '/novedades/marea-studio-1-3-26/':'/software/marea-studio/'
 };
 const friendlyHeadlines={
- '/novedades/marea-studio-1-3-28-1-3-29-hotfix/':['Marea 1.3.28.','Y Remix 1.3.29.'],
+ '/novedades/fuera-de-registro-diario-ia-premiere/':['Fuera de Registro.','GPT aprende Premiere.'],
+ '/novedades/marea-studio-1-3-28-1-3-29-hotfix/':['Marea 1.3.30.','PyTorch arreglado.'],
  '/novedades/vaultpool-3-0-11-multinube-espacio-gratis-windows/':['VaultPool 3.0.11.','Tus nubes, a mano.'],
  '/novedades/metal-gear-msx2-ingenieria-inversa-descubrimientos/':['Metal Gear (1987).','Descifrándolo al 100 %.'],
  '/novedades/vaultpool-v3-estable-nuevas-nubes/':['VaultPool V3.','Más nubes.'],
