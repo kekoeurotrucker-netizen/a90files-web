@@ -1,0 +1,34 @@
+/* Isolated editorial styling for the 1.3.28 launch + 1.3.29 remix hotfix article. */
+.m128-hero{position:relative;isolation:isolate;min-height:445px;display:flex;align-items:center;overflow:hidden;border:1px solid rgba(106,218,232,.34);border-radius:19px;background:#061723;box-shadow:0 20px 52px rgba(0,0,0,.34)}
+.m128-hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#051622 0%,rgba(5,22,34,.98) 25%,rgba(5,22,34,.80) 47%,rgba(5,22,34,.16) 82%),url('/assets/marea/marea-1-3-28-29-cover-20261030.jpg') right center / cover no-repeat;z-index:-1}
+.m128-hero:after{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,#4cd1e5,#f9b75f 74%,transparent)}
+.m128-hero-copy{max-width:640px;padding:51px 42px;position:relative}
+.m128-eyebrow{display:block;color:#f1c27a;font:800 11px ui-monospace,Consolas,monospace;letter-spacing:.13em;text-transform:uppercase}
+.m128-hero h1{margin:17px 0!important;color:#f4fbff!important;font-size:clamp(34px,4.3vw,59px)!important;line-height:1.055!important;letter-spacing:-.045em!important}
+.m128-hero h1 span{color:#8fe4f1}
+.m128-hero p{color:#d4e5e8;font-size:14px;line-height:1.75;max-width:510px}
+.m128-tags{display:flex;flex-wrap:wrap;gap:9px;margin:22px 0}
+.m128-tags span{padding:6px 10px;border-radius:5px;border:1px solid rgba(141,224,230,.45);background:rgba(1,35,47,.63);font-size:10px;letter-spacing:.035em;color:#e8f7fa;font-weight:800}
+.m128-buttons{display:flex;flex-wrap:wrap;gap:10px}
+.m128-buttons a{display:inline-flex;align-items:center;min-height:42px;padding:11px 15px;border:1px solid rgba(156,220,225,.55);border-radius:9px;color:#e9faff;text-decoration:none;font-size:12px;font-weight:800;background:rgba(11,52,67,.85)}
+.m128-buttons a:first-child{background:#eeb75d;color:#16222b;border-color:#eeb75d}
+.m128-caption{margin:7px 2px 0!important;color:#aac3c8;font-size:10px!important}
+.m128-story-kicker{margin-top:39px!important;margin-bottom:9px!important;color:#f6bf72;font:800 12px ui-monospace,Consolas,monospace;letter-spacing:.08em;text-transform:uppercase}
+.m128-story-title{margin:0 0 12px!important;font-size:clamp(24px,3vw,36px)!important;color:#effafd!important}
+.m128-intro{font-size:15px;line-height:1.78;color:#c2d9de}
+.m128-feature-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:24px 0}
+.m128-feature{padding:20px;border:1px solid rgba(88,158,177,.29);border-radius:13px;background:linear-gradient(145deg,#0b2835,#071d29)}
+.m128-feature h3{color:#e4c08b;margin:0 0 7px!important;font-size:15px!important}
+.m128-feature p{font-size:12px!important;line-height:1.65!important;color:#b1cad2;margin:0!important}
+.m128-hotfix{margin:35px 0;padding:27px 28px;border-radius:16px;border:1px solid rgba(232,169,88,.58);background:radial-gradient(ellipse at 100% 0%,rgba(221,149,48,.13),transparent 48%),linear-gradient(140deg,#0e2c38,#101d27)}
+.m128-hotfix .m128-story-kicker{margin-top:0!important}
+.m128-hotfix h2{margin:6px 0 12px!important;color:#fff2d9!important;font-size:clamp(23px,3vw,32px)!important}
+.m128-hotfix ol{padding-left:21px;margin:18px 0;color:#ccdee0}
+.m128-hotfix li{margin:10px 0;line-height:1.65}
+.m128-note{margin:24px 0;padding:16px 18px;border-left:3px solid #67d2df;border-radius:7px;background:rgba(9,44,56,.87);color:#c5d9df;font-size:12px;line-height:1.75}
+.m128-cta{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0 34px}
+.m128-cta a{display:inline-flex;padding:10px 16px;border-radius:9px;border:1px solid #74aebb;background:#102f3a;color:#ecfbff;text-decoration:none;font-size:12px;font-weight:790}
+.m128-cta a:first-child{background:#f0b762;border-color:#f0b762;color:#1e2129}
+.m128-gallery-label{font-size:11px;color:#b4ccd3;margin-bottom:13px}
+@media(max-width:760px){.m128-hero:before{background:linear-gradient(90deg,rgba(5,22,34,.97),rgba(5,22,34,.78)),url('/assets/marea/marea-1-3-28-29-cover-20261030.jpg') center / cover no-repeat}.m128-hero{min-height:380px}.m128-hero-copy{padding:34px 23px}.m128-feature-grid{grid-template-columns:1fr}.m128-hotfix{padding:21px 18px}}
+@media(prefers-reduced-motion:reduce){.m128-hero,.m128-buttons a{transition:none}}
